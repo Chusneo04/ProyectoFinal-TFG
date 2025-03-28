@@ -1,0 +1,34 @@
+{% extends './layout.html' %}
+
+    {% block body %}
+
+        <div class="w-full">
+            <header class="w-full h-[13vh] flex flex-row items-center justify-between bg-[#F2F2F2] px-[30px] text-[20px]">
+                <img src="../static/logo.png" alt="CURRICULUMS" class="w-[5rem]">
+                <a href="/login">Iniciar Sesión</a>
+            </header>
+            <div class="w-full flex flex-row h-[75vh]">
+                <img src="../static/Imagen_portada.png" alt="Imagen de portada" class="w-[45%]">
+                <div class="w-full bg-[#4FA389] text-[white] flex flex-col items-center justify-evenly">
+                    <h1 class="text-[38px] w-[60%] text-center font-semibold">Convierte tus logros en un currículum impresionante que te haga destacar</h1>
+                    <h3 class="text-[30px] italic font-light">Define tu trayectoria profesional</h3>
+                    <button class="w-[40%] h-[60px] rounded-[10px] bg-[#FFAB45] text-center text-[25px] font-semibold italic"><a href="/login">Empezar a crear</a></button>
+                </div>
+            </div>
+            <div class="bg-[#E5E4E4] h-[60vh] flex">
+                <div class="w-[50%] flex flex-col items-center justify-evenly  h-full">
+                    <i class="fa-solid fa-file text-[#EE5353] text-[40px]"></i>
+                    <h3 class="text-[30px] w-[35%] text-center font-semibold italic">Tu currículum al instante</h3>
+                    <p class="w-[50%] text-[20px] text-center">Con nuestra plataforma tendrás la oportunidad de crear tus currículums en cuestión de minutos</p>
+                </div>
+                <div class="w-[50%] flex flex-col items-center justify-evenly h-full">
+                    <i class="fa-solid fa-inbox text-[#1CB8A9] text-[40px]"></i>
+                    <h3 class="text-[30px] w-[35%] text-center font-semibold italic">Puestos de trabajo mas cerca</h3>
+                    <p class="w-[50%] text-[20px] text-center">Gracias a nuestra plataforma, tu currículum tendrá un diseño que lo hará irrechazable </p>
+                </div>
+            </div>
+
+            
+        </div>
+
+    {% endblock %}
