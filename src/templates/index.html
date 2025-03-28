@@ -2,29 +2,30 @@
 
     {% block body %}
 
-        <div class="w-full">
-            <header class="w-full h-[13vh] flex flex-row items-center justify-between bg-[#F2F2F2] px-[30px] text-[20px]">
+        <div class="w-full flex flex-col">
+            <header class="w-full h-[6rem] flex flex-row items-center justify-between bg-[#F2F2F2] px-[30px] text-[20px] sm:h-[30vh] lg:h-[8rem]">
                 <img src="../static/logo.png" alt="CURRICULUMS" class="w-[5rem]">
-                <a href="/login">Iniciar Sesión</a>
+                <a href="/login" class="text-[30px]">Iniciar Sesión</a>
             </header>
-            <div class="w-full flex flex-row h-[75vh]">
-                <img src="../static/Imagen_portada.png" alt="Imagen de portada" class="w-[45%]">
-                <div class="w-full bg-[#4FA389] text-[white] flex flex-col items-center justify-evenly">
-                    <h1 class="text-[38px] w-[60%] text-center font-semibold">Convierte tus logros en un currículum impresionante que te haga destacar</h1>
-                    <h3 class="text-[30px] italic font-light">Define tu trayectoria profesional</h3>
-                    <button class="w-[40%] h-[60px] rounded-[10px] bg-[#FFAB45] text-center text-[25px] font-semibold italic"><a href="/login">Empezar a crear</a></button>
+            <div class="w-full flex flex-col sm:flex-row lg:flex-row lg:h-[75vh]">
+                <img src="../static/Imagen_portada.png" alt="Imagen de portada" class="w-full sm:h-[130vh] sm:w-[45%] lg:w-[45%]">
+                <div class="w-full bg-[#4FA389] text-[white] flex flex-col items-center justify-evenly gap-[20px] lg:gap-0 lg:p-0 py-[30px]">
+                    <h1 class="text-[40px] lg:text-[50px] font-extrabold">Currículum360</h1>
+                    <h1 class="text-[30px] lg:text-[38px] w-[90%] lg:w-[60%] text-center font-semibold">Convierte tus logros en un currículum impresionante que te haga destacar</h1>
+                    <h3 class="text-[20px] lg:text-[30px] italic font-light">Define tu trayectoria profesional</h3>
+                    <button class="w-[70%] lg:w-[40%] h-[60px] rounded-[10px] bg-[#FFAB45] text-center text-[25px] font-semibold italic"><a href="/login">Empezar a crear</a></button>
                 </div>
             </div>
-            <div class="bg-[#E5E4E4] h-[60vh] flex">
-                <div class="w-[50%] flex flex-col items-center justify-evenly  h-full">
+            <div class="bg-[#E5E4E4] lg:h-[60vh] flex flex-col lg:flex-row sm:flex-row">
+                <div class="lg:w-[50%] flex flex-col items-center justify-evenly h-full lg:p-0 p-[20px] gap-[50px] lg:gap-0">
                     <i class="fa-solid fa-file text-[#EE5353] text-[40px]"></i>
-                    <h3 class="text-[30px] w-[35%] text-center font-semibold italic">Tu currículum al instante</h3>
-                    <p class="w-[50%] text-[20px] text-center">Con nuestra plataforma tendrás la oportunidad de crear tus currículums en cuestión de minutos</p>
+                    <h3 class="text-[30px] h-[50px] sm:text-[25px] lg:w-[35%] sm:w-full text-center font-semibold italic">Tu currículum al instante</h3>
+                    <p class="lg:w-[50%] text-[20px] text-center">Con nuestra plataforma tendrás la oportunidad de crear tus currículums en cuestión de minutos</p>
                 </div>
-                <div class="w-[50%] flex flex-col items-center justify-evenly h-full">
+                <div class="lg:w-[50%] flex flex-col items-center justify-evenly h-full lg:p-0 p-[20px] gap-[50px] lg:gap-0">
                     <i class="fa-solid fa-inbox text-[#1CB8A9] text-[40px]"></i>
-                    <h3 class="text-[30px] w-[35%] text-center font-semibold italic">Puestos de trabajo mas cerca</h3>
-                    <p class="w-[50%] text-[20px] text-center">Gracias a nuestra plataforma, tu currículum tendrá un diseño que lo hará irrechazable </p>
+                    <h3 class="text-[30px] h-[50px] sm:text-[25px] lg:w-[35%] sm:w-full text-center font-semibold italic">Puestos de trabajo mas cerca</h3>
+                    <p class="lg:w-[50%] text-[20px] text-center">Gracias a nuestra plataforma, tu currículum tendrá un diseño que lo hará irrechazable </p>
                 </div>
             </div>
 
