@@ -5,7 +5,11 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     return render_template('index.html')
-    
+
+@app.route('/register')
+def register():
+    return render_template('register.html')    
+
 
 if __name__ == '__main__':
-    app.run(debug=True, host="172.31.52.67", port=5500)
+    app.run(debug=True)

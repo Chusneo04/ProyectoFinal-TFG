@@ -1,0 +1,42 @@
+{% extends './layout.html' %}
+
+    {% block body %}
+
+    <div class="w-full flex flex-col items-center">
+        <header class="w-full h-[6rem] flex flex-row items-center justify-between bg-[#F2F2F2] px-[30px] text-[20px] sm:h-[7rem] lg:h-[8rem]">
+            <img src="../static/img/logo.png" alt="CURRICULUMS" class="w-[5rem]">
+            <a href="/login" class="text-[30px]">Inicio</a>
+        </header>
+        <h1 class="text-[30px] w-[90%] min-[568px]:text-[40px] text-center font-bold italic mt-[20px] mb-[20px]">Formulario de registro</h1>
+        <div class="w-[85%] sm:w-[30rem] lg:w-[60%] min-[568px]:w-[80%] mb-[20px] flex flex-col lg:flex-row items-center bg-[#4FA389] rounded-lg">
+            <div class="w-full min-[568px]:h-[90vh] lg:w-[70%] h-[40vh] sm:h-[20rem] rounded-t-lg lg:rounded-l-lg">
+                <img class="w-full h-full" src="../static/img/user.png" alt="Imagen de Usuario">
+            </div>
+            <form method="post" class="bg-[#CDCBCB] rounded-b-lg w-full flex flex-col items-center gap-[20px] pt-[15px] pb-[15px] lg:rounded-r-lg lg:rounded-l-none">
+                 
+                <div class="w-[90%] flex flex-col gap-[15px]">
+                    <span class="text-[20px] font-bold">Nombre</span>
+                    <input name="nombre" placeholder="Introduce tu nombre" class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic">
+                </div>
+                
+                <div class="w-[90%] flex flex-col gap-[15px]">
+                    <span class="text-[20px] font-bold">Apellidos</span>
+                    <input name="apellidos" placeholder="Introduce tus apellidos" class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic">
+                </div>
+
+                <div class="w-[90%] flex flex-col gap-[15px]">
+                    <span class="text-[20px] font-bold">Correo electrónico</span>
+                    <input name="correo" placeholder="Introduce tu correo" class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic">
+                </div>
+
+                <div class="w-[90%] flex flex-col gap-[15px]">
+                    <span class="text-[20px] font-bold">Clave</span>
+                    <input name="clave" placeholder="Introduce una clave" class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic">
+                </div>
+                <button type="submit" class="bg-[#FFAB45] h-[50px] w-[50%] text-[20px] text-[white] rounded-[10px] cursor-[pointer]">Registrarse</button>
+            </form>
+
+        </div>
+    </div>
+
+    {% endblock %}
