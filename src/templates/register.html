@@ -5,35 +5,86 @@
     <div class="w-full flex flex-col items-center">
         <header class="w-full h-[6rem] flex flex-row items-center justify-between bg-[#F2F2F2] px-[30px] text-[20px] sm:h-[7rem] lg:h-[8rem]">
             <img src="../static/img/logo.png" alt="CURRICULUMS" class="w-[5rem]">
-            <a href="/login" class="text-[30px]">Inicio</a>
+            <a href="/" class="text-[30px]">Inicio</a>
         </header>
+        
+        <!-- Obtenemos el mensaje enviado desde el flask -->
+        
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for msg in messages %}
+        <div id="usuario_existe" class="bg-gray-500 text-white p-4 rounded text-center fixed top-4 right-4 shadow-lg z-50 duration-2500 opacity-200">
+            <p>{{msg}}</p>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
         <h1 class="text-[30px] w-[90%] min-[568px]:text-[40px] text-center font-bold italic mt-[20px] mb-[20px]">Formulario de registro</h1>
         <div class="w-[85%] sm:w-[30rem] lg:w-[60%] min-[568px]:w-[80%] mb-[20px] flex flex-col lg:flex-row items-center bg-[#4FA389] rounded-lg">
+            <!-- Imagen de usuario -->
             <div class="w-full min-[568px]:h-[90vh] lg:w-[70%] h-[40vh] sm:h-[20rem] rounded-t-lg lg:rounded-l-lg">
                 <img class="w-full h-full" src="../static/img/user.png" alt="Imagen de Usuario">
             </div>
+
+            <!-- Aqui tenemos el formulario de registro -->
+
             <form method="post" class="bg-[#CDCBCB] rounded-b-lg w-full flex flex-col items-center gap-[20px] pt-[15px] pb-[15px] lg:rounded-r-lg lg:rounded-l-none">
                  
+                <!-- Aqui el campo del nombre -->
+
                 <div class="w-[90%] flex flex-col gap-[15px]">
-                    <span class="text-[20px] font-bold">Nombre</span>
-                    <input name="nombre" placeholder="Introduce tu nombre" class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic">
+                    {{ usuario.nombre.label(class="text-[20px] font-bold") }}
+                    {{ usuario.nombre(class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic",placeholder='Introduce tu nombre') }}
+                    
                 </div>
                 
-                <div class="w-[90%] flex flex-col gap-[15px]">
-                    <span class="text-[20px] font-bold">Apellidos</span>
-                    <input name="apellidos" placeholder="Introduce tus apellidos" class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic">
-                </div>
+                <!-- Aqui el campo de los apellidos -->
 
                 <div class="w-[90%] flex flex-col gap-[15px]">
-                    <span class="text-[20px] font-bold">Correo electrónico</span>
-                    <input name="correo" placeholder="Introduce tu correo" class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic">
+                    {{ usuario.apellidos.label(class="text-[20px] font-bold") }}
+                    {{ usuario.apellidos(class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic",placeholder='Introduce tus apellidos') }}
                 </div>
 
+                <!-- Aqui el campo del correo electronico -->
+
                 <div class="w-[90%] flex flex-col gap-[15px]">
-                    <span class="text-[20px] font-bold">Clave</span>
-                    <input name="clave" placeholder="Introduce una clave" class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic">
+                    {{ usuario.correo.label(class="text-[20px] font-bold") }}
+                    {{ usuario.correo(class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic",placeholder='Introduce tu correo') }}    
                 </div>
-                <button type="submit" class="bg-[#FFAB45] h-[50px] w-[50%] text-[20px] text-[white] rounded-[10px] cursor-[pointer]">Registrarse</button>
+
+                <!-- Aqui el campo de clave -->
+
+                <div class="w-[90%] flex flex-col gap-[15px]">
+                    {{ usuario.clave.label(class="text-[20px] font-bold") }}
+                    <div class="flex w-full justify-end items-center">
+                        {{ usuario.clave(id="clave", class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic",placeholder='Confirma tu clave') }}  
+                        
+                        <!-- Aqui esta el ojo que se ve en el campo para mostrar/ocultar la clave -->
+                        
+                        <input type="checkbox" id='mostrar_clave' class="hidden" onchange="document.getElementById('clave').type = this.checked ? 'text' : 'password'">
+                        <label for="mostrar_clave" class="absolute flex justify-end mr-[10px] cursor-pointer"><i class="fa-regular fa-eye"></i></label>
+                    </div>                
+                </div>
+
+                <!-- Aqui el campo de confirmar clave -->
+
+                <div class="w-[90%] flex flex-col gap-[15px]">
+                    {{ usuario.confirmar_clave.label(class="text-[20px] font-bold") }}
+                        
+                    <div class="flex w-full justify-end items-center">
+                        {{ usuario.confirmar_clave(id="confirmar_clave", class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic",placeholder='Confirma tu clave') }}  
+                        
+                        <!-- Aqui esta el ojo que se ve en el campo para mostrar/ocultar la clave -->
+
+                        <input type="checkbox" id='mostrar_clave_confirmada' class="hidden" onchange="document.getElementById('confirmar_clave').type = this.checked ? 'text' : 'password'">
+                        <label for="mostrar_clave_confirmada" class="absolute flex justify-end mr-[10px] cursor-pointer"><i class="fa-regular fa-eye"></i></label>
+                    </div>
+                </div>
+
+                <!-- Y aqui tenemos el boton para registrar el usuario -->
+
+                {{ usuario.registrar(class="bg-[#FFAB45] h-[50px] w-[50%] text-[20px] text-[white] rounded-[10px] cursor-[pointer]") }}
             </form>
 
         </div>
