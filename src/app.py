@@ -3,7 +3,7 @@ import os
 from flask_mysqldb import MySQL
 from datetime import datetime
 from dotenv import load_dotenv
-from forms import Usuario
+from forms import Usuario_register, Usuario_login
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, current_user, logout_user
 
@@ -73,7 +73,7 @@ def register():
 
 
         cursor = mysql.connection.cursor()
-        usuario = Usuario() #Aqui traemos el formulario para llevar a cabo el registro del usuario
+        usuario = Usuario_register() #Aqui traemos el formulario para llevar a cabo el registro del usuario
 
         #Si todos los campos del formulario se han validado correctamente 
 
@@ -120,7 +120,55 @@ def register():
     except:
         flash('Error al registrar')
 
-    
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    try:
+        #Aqui comprobamos si el usuario ya esta autenticado, si lo está te redirije a la interfaz de perfil
+
+        if current_user.is_authenticated:
+            return redirect(url_for('perfil'))
+
+
+        cursor = mysql.connection.cursor()
+        usuario = Usuario_login() #Aqui traemos el formulario para llevar a cabo el registro del usuario
+
+        #Si todos los campos del formulario se han validado correctamente 
+
+        if usuario.validate_on_submit and request.method == 'POST':
+
+            #Obtenemos todos los datos sobre el usuario para proceder al inicio de sesión
+
+            correo = request.form.get('correo')
+            clave = request.form.get('clave')
+
+            cursor.execute('SELECT * FROM usuarios WHERE correo = %s', (correo,)) #Aqui comprobamos si el usuario existe ya en la base de datos
+            usuario_existente = cursor.fetchone()
+
+            #Aqui le mostramos un mensaje al usuario en caso de que no esté registrado
+
+            if not usuario_existente:
+                flash('Las credenciales introducidas son incorrectas')
+                return render_template('login.html', usuario=usuario)
+
+            else:
+                #Y aqui ya llevamos a cabo el inicio de sesión para que pueda acceder a las rutas protegidas
+                
+                if check_password_hash(usuario_existente[4], clave):
+                    usuario_obj = User(usuario_existente[0], usuario_existente[1], usuario_existente[2], usuario_existente[3], usuario_existente[4], usuario_existente[5])
+                    login_user(usuario_obj)    
+                    return redirect(url_for('perfil')) #Si todo va bien redirige al usuario a la interfaz de perfil 
+                else:
+                    flash('Las credenciales introducidas son incorrectas')
+                    return render_template('login.html', usuario=usuario)
+        return render_template('login.html', usuario=usuario) #Muestra la interfaz de login y envia al html el formulario para gestionar alli el diseño   
+
+    except:
+        flash('Error al Iniciar sesión')
+        return render_template('login.html', usuario=usuario)
+
+
+
+
 #Esta es la funcion de la interfaz de perfil
 
 @app.route('/perfil')
