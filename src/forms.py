@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, EmailField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
 
-class Usuario(FlaskForm):
+class Usuario_register(FlaskForm):
     nombre = StringField('Nombre', validators=[
         DataRequired(),
         Length(max=30)
@@ -31,3 +31,16 @@ class Usuario(FlaskForm):
     ])
 
     registrar = SubmitField('Registrar')
+
+class Usuario_login(FlaskForm):
+    correo = EmailField('Correo', validators=[
+        DataRequired(),
+        Length(max=100),
+        Email()
+    ])
+
+    clave = PasswordField('Clave', validators=[
+        DataRequired()
+    ])
+
+    iniciar_sesion = SubmitField('Iniciar sesión')
