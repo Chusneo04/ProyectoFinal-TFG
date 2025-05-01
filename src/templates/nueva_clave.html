@@ -20,11 +20,11 @@
         {% endif %}
         {% endwith %}
 
-        <h1 class="text-[30px] w-[90%] min-[568px]:text-[40px] text-center font-bold italic mt-[20px] mb-[20px]">Formulario de inicio de sesión</h1>
+        <h1 class="text-[30px] w-[90%] min-[568px]:text-[40px] text-center font-bold italic mt-[20px] mb-[20px]">Recuperación de contraseña</h1>
         <div class="w-[85%] sm:w-[30rem] lg:w-[60%] min-[568px]:w-[80%] mb-[20px] flex flex-col lg:flex-row-reverse items-center bg-[#4FA389] rounded-lg">
             <!-- Imagen de usuario -->
             <div class="w-full min-[568px]:h-[90vh] lg:w-[70%] h-[40vh] sm:h-[20rem] rounded-t-lg lg:rounded-l-lg">
-                <img class="w-full h-full" src="../static/img/user.png" alt="Imagen de Usuario">
+                <img class="w-full h-full" src="../static/img/clave_olvidada.jpg" alt="Imagen de Usuario">
             </div>
 
             <!-- Aqui tenemos el formulario de registro -->
@@ -34,29 +34,32 @@
                 <!-- Aqui el campo del correo electronico -->
 
                 <div class="w-[90%] flex flex-col gap-[15px]">
-                    {{ usuario.correo.label(class="text-[20px] font-bold") }}
-                    {{ usuario.correo(class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic",placeholder='Introduce tu correo') }}    
-                </div>
-
-                <!-- Aqui el campo de clave -->
-
-                <div class="w-[90%] flex flex-col gap-[15px]">
-                    {{ usuario.clave.label(class="text-[20px] font-bold") }}
+                    {{ formulario.contraseña.label(class="text-[20px] font-bold") }}
                     <div class="flex w-full justify-end items-center">
-                        {{ usuario.clave(id="clave", class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic",placeholder='Confirma tu clave') }}  
+                        {{ formulario.contraseña(id="clave", class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic",placeholder='Introduce tu nueva contraseña') }}  
                         
                         <!-- Aqui esta el ojo que se ve en el campo para mostrar/ocultar la clave -->
                         
                         <input type="checkbox" id='mostrar_clave' class="hidden" onchange="document.getElementById('clave').type = this.checked ? 'text' : 'password'">
                         <label for="mostrar_clave" class="absolute flex justify-end mr-[10px] cursor-pointer"><i class="fa-regular fa-eye"></i></label>
-                    </div>
-                    <a href="/recuperar_clave" class="underline">¿Has olvidado tu clave?</a>          
+                    </div>                
+                </div>
+
+                <div class="w-[90%] flex flex-col gap-[15px]">
+                    {{ formulario.confirmar_clave.label(class="text-[20px] font-bold") }}
+                    <div class="flex w-full justify-end items-center">
+                        {{ formulario.confirmar_clave(id="clave_confirmada", class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic",placeholder='Confirma tu contraseña') }}  
+                        
+                        <!-- Aqui esta el ojo que se ve en el campo para mostrar/ocultar la clave -->
+                        
+                        <input type="checkbox" id='mostrar_clave_confirmada' class="hidden" onchange="document.getElementById('clave_confirmada').type = this.checked ? 'text' : 'password'">
+                        <label for="mostrar_clave_confirmada" class="absolute flex justify-end mr-[10px] cursor-pointer"><i class="fa-regular fa-eye"></i></label>
+                    </div>                
                 </div>
 
                 <!-- Y aqui tenemos el boton para iniciar sesión -->
 
-                {{ usuario.iniciar_sesion(class="bg-[#FFAB45] h-[50px] w-[50%] text-[20px] text-[white] rounded-[10px] cursor-[pointer]") }}
-                <p>¿No tienes cuenta? <a href="/register" class="underline">Regístrate ahora</a></p>
+                {{ formulario.enviar(class="bg-[#FFAB45] h-[50px] w-[50%] text-[20px] text-[white] rounded-[10px] cursor-[pointer]") }}
             </form>
 
         </div>
