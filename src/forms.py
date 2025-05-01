@@ -44,3 +44,26 @@ class Usuario_login(FlaskForm):
     ])
 
     iniciar_sesion = SubmitField('Iniciar sesión')
+
+class Recuperar_clave_email(FlaskForm):
+    correo = EmailField('Correo', validators=[
+        DataRequired(),
+        Length(max=100),
+        Email()
+    ])
+
+    enviar = SubmitField('Enviar')
+
+class Nueva_Clave(FlaskForm):
+    contraseña = PasswordField('Nueva Contraseña', validators=[
+        DataRequired(),
+        Length(min=8, max=255),
+        EqualTo('confirmar_clave', message='La confirmación debe coincidir con la clave')
+    ])
+
+    confirmar_clave = PasswordField('Confirmar contraseña', validators=[
+        DataRequired(),
+        Length(min=8, max=255)
+    ])
+
+    enviar = SubmitField('Enviar')

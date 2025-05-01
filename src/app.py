@@ -3,13 +3,13 @@ import os
 from flask_mysqldb import MySQL
 from datetime import datetime
 from dotenv import load_dotenv
-from forms import Usuario_register, Usuario_login
+from forms import Usuario_register, Usuario_login, Recuperar_clave_email, Nueva_Clave
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, current_user, logout_user
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from email.mime.image import MIMEImage
+from secrets import token_urlsafe
 
 app = Flask(__name__)
 
@@ -27,13 +27,14 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 #Aqui definimos el objeto del usuario para usarlo mas adelante
 
 class User(UserMixin):
-    def __init__(self, id, nombre, apellidos, correo, clave, fecha):
+    def __init__(self, id, nombre, apellidos, correo, clave, fecha, token):
         self.id = str(id)
         self.nombre = nombre
         self.apellidos = apellidos
         self.correo = correo
         self.clave = clave
         self.fecha = fecha
+        self.token = token
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -44,7 +45,7 @@ login_manager.init_app(app)
 def load_user(id):
     try:
         cursor = mysql.connection.cursor() #Aqui abrimos el cursor de la base de datos
-        cursor.execute("SELECT id, nombre, apellidos, correo, clave, fecha_de_creacion FROM usuarios WHERE id = %s", (id,)) #Aqui obtenemos el usuario para comprobar si existe en la base de datos
+        cursor.execute("SELECT id, nombre, apellidos, correo, clave, fecha_de_creacion, token FROM usuarios WHERE id = %s", (id,)) #Aqui obtenemos el usuario para comprobar si existe en la base de datos
         user = cursor.fetchone() #Aqui se introducen en una variable los campos que le hemos pedido sobre el usuario en la linea anterior
         cursor.close() #Cerramos el cursor
 
@@ -55,7 +56,7 @@ def load_user(id):
     
     #Aqui nos devuelve el usuario en caso de que haya salido todo correcto y sin que haya saltado la excepción anterior
     if user:
-        return User(user[0], user[1], user[2], user[3], user[4], user[5])
+        return User(user[0], user[1], user[2], user[3], user[4], user[5], user[6])
     return None
 
 
@@ -78,10 +79,10 @@ def register():
 
         cursor = mysql.connection.cursor()
         usuario = Usuario_register() #Aqui traemos el formulario para llevar a cabo el registro del usuario
-
+        
         #Si todos los campos del formulario se han validado correctamente 
 
-        if usuario.validate_on_submit and request.method == 'POST':
+        if usuario.validate_on_submit() and request.method == 'POST':
 
             #Obtenemos todos los datos sobre el usuario para almacenarlo en la base de datos en caso de que no exista previamente
 
@@ -91,6 +92,7 @@ def register():
             clave = request.form.get('clave')
             clave = generate_password_hash(clave)
             fecha = datetime.now()
+            token = None
 
             cursor.execute('SELECT * FROM usuarios WHERE correo = %s', (correo,)) #Aqui comprobamos si el usuario existe ya en la base de datos
             usuario_existente = cursor.fetchone()
@@ -103,19 +105,22 @@ def register():
             #Aqui llevamos a cabo el registro del nuevo usuario
             else:
                 #Introducimos al usuario en la base de datos con los campos correspondientes
-                cursor.execute('INSERT INTO usuarios(nombre, apellidos, correo, clave, fecha_de_creacion) VALUES (%s, %s, %s, %s, %s)', (nombre, apellidos, correo, clave, fecha))
+                cursor.execute('INSERT INTO usuarios(nombre, apellidos, correo, clave, fecha_de_creacion, token) VALUES (%s, %s, %s, %s, %s, %s)', (nombre, apellidos, correo, clave, fecha, token))
                 mysql.connection.commit() #Guardamos los cambios
-
+                print('110')
                 #Obtenemos el nuevo usuario una vez ya está registrado en la base de datos
 
-                cursor.execute('SELECT id, nombre, apellidos, correo, clave, fecha_de_creacion FROM usuarios WHERE correo = %s', (correo,))
+                cursor.execute('SELECT id, nombre, apellidos, correo, clave, fecha_de_creacion, token FROM usuarios WHERE correo = %s', (correo,))
                 nuevo_usuario = cursor.fetchone()
+                print('111')
                 #Y aqui ya llevamos a cabo el inicio de sesión para que pueda acceder a las rutas protegidas
                 if nuevo_usuario:
-                    usuario_obj = User(nuevo_usuario[0], nuevo_usuario[1], nuevo_usuario[2], nuevo_usuario[3], nuevo_usuario[4], nuevo_usuario[5])
+                    print('Hola')
+                    usuario_obj = User(nuevo_usuario[0], nuevo_usuario[1], nuevo_usuario[2], nuevo_usuario[3], nuevo_usuario[4], nuevo_usuario[5], nuevo_usuario[6])
+                    print('Adios')
                     print(type(nuevo_usuario[3]))
                     login_user(usuario_obj)
-
+                    print('112')
                     #Preparamos las credenciales del correo para poder enviar correos
 
                     servidor_smtp = "smtp.gmail.com"
@@ -181,13 +186,16 @@ def login():
             if not usuario_existente:
                 flash('Las credenciales introducidas son incorrectas')
                 return render_template('login.html', usuario=usuario)
-
+                
             else:
                 #Y aqui ya llevamos a cabo el inicio de sesión para que pueda acceder a las rutas protegidas
-                
+                print('192')
                 if check_password_hash(usuario_existente[4], clave):
-                    usuario_obj = User(usuario_existente[0], usuario_existente[1], usuario_existente[2], usuario_existente[3], usuario_existente[4], usuario_existente[5])
-                    login_user(usuario_obj)    
+                    print('194')
+                    usuario_obj = User(usuario_existente[0], usuario_existente[1], usuario_existente[2], usuario_existente[3], usuario_existente[4], usuario_existente[5], usuario_existente[6])
+                    print('196')
+                    login_user(usuario_obj)
+                    print('198')    
                     return redirect(url_for('perfil')) #Si todo va bien redirige al usuario a la interfaz de perfil 
                 else:
                     flash('Las credenciales introducidas son incorrectas')
@@ -199,7 +207,98 @@ def login():
         return render_template('login.html', usuario=usuario)
 
 
+@app.route('/recuperar_clave', methods = ['GET', 'POST'])
+def recuperar_clave():
+    try:
+        if current_user.is_authenticated:
+            return redirect(url_for('perfil'))
+        
+        cursor = mysql.connection.cursor()
+        formulario_email = Recuperar_clave_email()
 
+        if formulario_email.validate_on_submit and request.method == 'POST':
+            correo = request.form.get('correo')
+            cursor.execute('SELECT * FROM usuarios WHERE correo = %s', (correo,))
+            usuario_existe = cursor.fetchone()
+            print(usuario_existe)
+            if not usuario_existe:
+                flash('El usuario no existe')
+                return render_template('recuperar_contraseña.html', formulario = formulario_email)
+            
+            else:
+                token = token_urlsafe(32)
+                print(token)
+                cursor = mysql.connection.cursor()
+                cursor.execute('UPDATE usuarios SET token = %s WHERE correo = %s', (token, correo))
+                mysql.connection.commit()
+                reset_url = url_for('nueva_clave', token = token, _external = True)
+
+                #Preparamos las credenciales del correo para poder enviar correos
+
+                servidor_smtp = "smtp.gmail.com"
+                puerto_smtp = 587
+                usuario_smtp = "infocurriculum360@gmail.com"
+                clave_smtp = os.getenv('EMAIL_KEY')
+
+                #Preparamos el mensaje para enviarlo por correo
+
+                msg = MIMEMultipart()
+                msg['From'] = usuario_smtp
+                msg['To'] = correo
+                msg['Subject'] = "Recuperación de contraseña"
+                mensaje = "Para recuperar la contraseña accede al siguiente enlace: {}".format(reset_url)
+                msg.attach(MIMEText(mensaje, "plain")) #Esto introduce el mensaje de la linea superior en el cuerpo del correo
+                try:
+                    with smtplib.SMTP(servidor_smtp, puerto_smtp) as server:
+                        server.starttls() #Iniciamos la conexion con seguridad 
+                        server.login(usuario_smtp, clave_smtp) #Iniciamos sesion en el correo
+                        server.sendmail(usuario_smtp, msg["To"], msg.as_string()) #Enviamos el mensaje de bienvenida al nuevo usuario
+                        flash("Correo enviado correctamente")
+                        return render_template('recuperar_contraseña.html', formulario = formulario_email)  
+                     
+                except Exception as e:
+                    flash("Error al enviar correo: {}".format(e))
+                    return render_template('recuperar_contraseña.html', formulario = formulario_email)
+    except Exception as e:
+        flash('Ha ocurrido un error, {}'.format(e))
+        return render_template('recuperar_contraseña.html', formulario = formulario_email)
+    return render_template('recuperar_contraseña.html', formulario = formulario_email)
+
+
+@app.route('/nueva_clave/<token>', methods = ['GET', 'POST'])
+def nueva_clave(token):
+
+    try:
+        if current_user.is_authenticated:
+            return redirect(url_for('perfil'))
+        cursor = mysql.connection.cursor()
+        cursor.execute('SELECT * FROM usuarios WHERE token = %s', (token,))
+        usuario_existe = cursor.fetchone()
+
+        if not usuario_existe:
+            flash('El enlace ha caducado')
+            return redirect(url_for('recuperar_clave'))
+        else:
+            formulario = Nueva_Clave()
+
+            if formulario.validate_on_submit and request.method == 'POST':
+                clave = request.form.get('contraseña')
+                clave_confirmada = request.form.get('confirmar_clave')
+
+                if clave != clave_confirmada:
+                    flash('Las contraseñas no coinciden')
+                    return render_template('nueva_clave.html', formulario = formulario)
+
+                clave = generate_password_hash(clave)
+                cursor.execute('UPDATE usuarios SET clave = %s WHERE token = %s', (clave, token))
+                mysql.connection.commit()
+                cursor.execute('UPDATE usuarios SET token = %s WHERE token = %s', (None, token))
+                mysql.connection.commit()
+                return redirect(url_for('login'))
+    except Exception as e:
+        flash('Ha ocurrido un error')
+        return render_template('nueva_clave.html', formulario = formulario)
+    return render_template('nueva_clave.html', formulario = formulario)
 
 #Esta es la funcion de la interfaz de perfil
 
