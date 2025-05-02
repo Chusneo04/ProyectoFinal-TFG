@@ -3,7 +3,7 @@ import os
 from flask_mysqldb import MySQL
 from datetime import datetime
 from dotenv import load_dotenv
-from forms import Usuario_register, Usuario_login, Recuperar_clave_email, Nueva_Clave
+from forms import Usuario_register, Usuario_login, Recuperar_clave_email, Nueva_Clave, Editar_perfil
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, current_user, logout_user
 import smtplib
@@ -305,9 +305,34 @@ def nueva_clave(token):
 @app.route('/perfil')
 @login_required #Esta linea significa que para poder acceder a esta interfaz debes tener la sesion iniciada, si no es asi no permitira el acceso
 def perfil():
-    return render_template('perfil.html')
+
+    return render_template('perfil.html', usuario = current_user)
 
 #Esta es la funcion que cierra la sesión para que el usuario pueda acceder a las rutas en las que no puedes tener una sesion iniciada
+
+@app.route('/editar_perfil', methods = ['GET', 'POST'])
+@login_required
+def editar_perfil():
+    try:
+        formulario = Editar_perfil()
+
+        if formulario.validate_on_submit and request.method == 'POST':
+            id = current_user.id
+            print(id)
+            nombre = request.form.get('nombre')
+            apellidos = request.form.get('apellidos')
+            correo = request.form.get('correo')
+            cursor = mysql.connection.cursor()
+            cursor.execute('UPDATE usuarios SET nombre = %s, apellidos = %s, correo = %s WHERE id = %s', (nombre, apellidos, correo, id))
+            mysql.connection.commit()
+            flash('Datos actualizados correctamente')
+            return redirect(url_for('perfil'))
+
+        return render_template('editar_perfil.html', usuario = current_user, formulario = formulario)
+    except Exception as e:
+        flash('Ha ocurrido un error: {}'.format(e))
+        return render_template('editar_perfil.html', usuario = current_user, formulario = formulario)
+
 
 @app.route('/logout')
 @login_required

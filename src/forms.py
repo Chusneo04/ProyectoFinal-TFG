@@ -67,3 +67,22 @@ class Nueva_Clave(FlaskForm):
     ])
 
     enviar = SubmitField('Enviar')
+
+class Editar_perfil(FlaskForm):
+    nombre = StringField('Nombre', validators=[
+        DataRequired(),
+        Length(max=30)
+    ])
+
+    apellidos = StringField('Apellidos', validators=[
+        DataRequired(),
+        Length(max=80)
+    ])
+
+    correo = EmailField('Correo', validators=[
+        DataRequired(),
+        Length(max=100),
+        Email()
+    ])
+
+    guardar = SubmitField('Guardar')

@@ -1,0 +1,54 @@
+{% extends './layout.html' %}
+
+    {% block body %}
+
+    <div class="w-full flex flex-col items-center ">
+        <header class="w-full h-[6rem] flex flex-row items-center justify-between bg-[#F2F2F2] px-[30px] text-[20px] sm:h-[7rem] lg:h-[8rem]">
+            <img src="../static/img/logo.png" alt="CURRICULUMS" class="w-[5rem]">
+            <a href="/perfil" class="text-[30px]">Perfil</a>
+        </header>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for msg in messages %}
+        <div id="usuario_existe" class="bg-gray-500 text-white p-4 rounded text-center fixed top-4 right-4 shadow-lg z-50 duration-2500 opacity-200">
+            <p>{{msg}}</p>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <h1 class="text-[20px] sm:text-[45px] lg:text-[45px] font-bold mt-[10px]">Editar perfil</h1>
+
+        <form method="post" class="bg-[#CDCBCB] rounded-b-lg w-[50%] flex flex-col items-center gap-[20px] pt-[15px] pb-[15px] rounded-lg mt-[30px] mb-[30px]">
+                 
+            <!-- Aqui el campo del nombre -->
+
+            <div class="w-[90%] flex flex-col gap-[15px]">
+                {{ formulario.nombre.label(class="text-[20px] font-bold") }}
+                {{ formulario.nombre(class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic",placeholder='Introduce tu nombre', value = usuario.nombre) }}
+                
+            </div>
+            
+            <!-- Aqui el campo de los apellidos -->
+
+            <div class="w-[90%] flex flex-col gap-[15px]">
+                {{ formulario.apellidos.label(class="text-[20px] font-bold") }}
+                {{ formulario.apellidos(class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic",placeholder='Introduce tus apellidos', value = usuario.apellidos) }}
+            </div>
+
+            <!-- Aqui el campo del correo electronico -->
+
+            <div class="w-[90%] flex flex-col gap-[15px]">
+                {{ formulario.correo.label(class="text-[20px] font-bold") }}
+                {{ formulario.correo(class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic",placeholder='Introduce tu correo', value = usuario.correo) }}    
+            </div>
+
+            <a href="#" class="w-[90%] underline">Si deseas cambiar la contraseña pulsa aqui</a>
+
+            <!-- Y aqui tenemos el boton para registrar el usuario -->
+
+            {{ formulario.guardar(class="bg-[#FFAB45] h-[50px] w-[50%] text-[20px] text-[white] rounded-[10px] cursor-[pointer]") }}
+
+        </form>
+    </div>
+
+    {% endblock %}

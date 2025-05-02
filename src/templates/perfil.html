@@ -2,9 +2,28 @@
 
     {% block body %}
 
-    <div>
-        <h1>INTERFAZ DE PERFIL</h1>
-        <a href="/logout">Volver</a>
+    <div class="w-full flex flex-col items-center ">
+        <header class="w-full h-[6rem] flex flex-row items-center justify-between bg-[#F2F2F2] px-[30px] text-[20px] sm:h-[7rem] lg:h-[8rem]">
+            <img src="../static/img/logo.png" alt="CURRICULUMS" class="w-[5rem]">
+            <a href="/logout" class="text-[30px]">Cerrar sesión</a>
+        </header>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for msg in messages %}
+        <div id="usuario_existe" class="bg-gray-500 text-white p-4 rounded text-center fixed top-4 right-4 shadow-lg z-50 duration-2500 opacity-200">
+            <p>{{msg}}</p>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <h1 class="text-[20px] sm:text-[45px] lg:text-[45px] font-bold mt-[10px]">Bienvenido a tu perfil, {{usuario.nombre}}</h1>
+        <p class="text-[16px] sm:text-[20px]">¿Todavia no tienes currículums? ¡Empieza a crear!</p>
+
+        <div class="w-full lg:w-[40%] flex items-center justify-evenly mt-[10px]">
+            <a href="#" class="bg-[#4fa389] text-[16px] sm:text-[20px] text-[white] h-[50px] w-[8rem] sm:w-[12rem] rounded-[8px] flex items-center justify-center">Crear currículum</a>
+            <a href="/editar_perfil" class="bg-[#FFAB45] text-[16px] sm:text-[20px] text-[white] h-[50px] w-[8rem] sm:w-[12rem] rounded-[8px] flex items-center justify-center">Editar perfil</a>
+        </div>
+
     </div>
 
     {% endblock %}
