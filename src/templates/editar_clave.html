@@ -1,0 +1,51 @@
+{% extends './layout.html' %}
+
+    {% block body %}
+
+    <div class="w-full flex flex-col items-center ">
+        <header class="w-full h-[6rem] flex flex-row items-center justify-between bg-[#F2F2F2] px-[30px] text-[20px] sm:h-[7rem] lg:h-[8rem]">
+            <img src="../static/img/logo.png" alt="CURRICULUMS" class="w-[5rem]">
+            <a href="/" class="text-[30px]">Inicio</a>
+        </header>
+        
+        <!-- Obtenemos el mensaje enviado desde el flask -->
+        
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for msg in messages %}
+        <div id="usuario_existe" class="bg-gray-500 text-white p-4 rounded text-center fixed top-4 right-4 shadow-lg z-50 duration-2500 opacity-200">
+            <p>{{msg}}</p>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <h1 class="text-[30px] w-[90%] min-[568px]:text-[40px] text-center font-bold italic mt-[20px] mb-[20px]">Cambiar clave</h1>
+        <div class="w-[85%] sm:w-[30rem] lg:w-[60%] min-[568px]:w-[80%] mb-[20px] flex flex-col lg:flex-row-reverse items-center bg-[#4FA389] rounded-lg">
+            
+
+            <form method="post" class="bg-[#CDCBCB] rounded-b-lg w-full h-[25rem] sm:h-[25rem] flex flex-col items-center gap-[20px] pt-[15px] pb-[15px] lg:rounded-l-lg lg:rounded-r-none">
+
+                <!-- Aqui el campo del correo electronico -->
+
+                <div class="w-[90%] flex flex-col gap-[15px]">
+                    {{ formulario.contraseña.label(class="text-[20px] font-bold") }}
+                    <div class="flex w-full justify-end items-center">
+                        {{ formulario.contraseña(id="clave", class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic",placeholder='Introduce tu contraseña actual') }}  
+                        
+                        <!-- Aqui esta el ojo que se ve en el campo para mostrar/ocultar la clave -->
+                        
+                        <input type="checkbox" id='mostrar_clave' class="hidden" onchange="document.getElementById('clave').type = this.checked ? 'text' : 'password'">
+                        <label for="mostrar_clave" class="absolute flex justify-end mr-[10px] cursor-pointer"><i class="fa-regular fa-eye"></i></label>
+                    </div>                
+                </div>
+
+                <!-- Y aqui tenemos el boton para iniciar sesión -->
+
+                {{ formulario.siguiente(class="bg-[#FFAB45] h-[50px] w-[50%] text-[20px] text-[white] rounded-[10px] cursor-[pointer]") }}
+            </form>
+
+        </div>
+    </div>
+
+    {% endblock %}

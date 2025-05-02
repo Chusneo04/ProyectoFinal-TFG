@@ -86,3 +86,19 @@ class Editar_perfil(FlaskForm):
     ])
 
     guardar = SubmitField('Guardar')
+
+class Editar_clave(FlaskForm):
+    contraseña = PasswordField('Contraseña actual', validators=[
+        DataRequired(),
+        Length(min=8, max=255),
+    ])
+
+    siguiente = SubmitField('Siguiente')
+
+class Clave_nueva(FlaskForm):
+    contraseña = PasswordField('Nueva contraseña', validators = [
+        DataRequired(),
+        Length(min=8, max=255),
+    ])
+
+    actualizar = SubmitField('Actualizar contraseña')

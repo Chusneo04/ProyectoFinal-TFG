@@ -3,7 +3,7 @@ import os
 from flask_mysqldb import MySQL
 from datetime import datetime
 from dotenv import load_dotenv
-from forms import Usuario_register, Usuario_login, Recuperar_clave_email, Nueva_Clave, Editar_perfil
+from forms import Usuario_register, Usuario_login, Recuperar_clave_email, Nueva_Clave, Editar_perfil, Editar_clave, Clave_nueva
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, current_user, logout_user
 import smtplib
@@ -318,7 +318,6 @@ def editar_perfil():
 
         if formulario.validate_on_submit and request.method == 'POST':
             id = current_user.id
-            print(id)
             nombre = request.form.get('nombre')
             apellidos = request.form.get('apellidos')
             correo = request.form.get('correo')
@@ -332,6 +331,46 @@ def editar_perfil():
     except Exception as e:
         flash('Ha ocurrido un error: {}'.format(e))
         return render_template('editar_perfil.html', usuario = current_user, formulario = formulario)
+
+@app.route('/editar_clave', methods = ['GET', 'POST'])
+@login_required
+def editar_clave():
+    try:
+        formulario = Editar_clave()
+        if formulario.validate_on_submit and request.method == 'POST':
+            id = current_user.id
+            cursor = mysql.connection.cursor()
+            cursor.execute('SELECT clave FROM usuarios WHERE id = %s', (id,))
+            clave_almacenada = cursor.fetchone()
+            clave_introducida = request.form.get('contraseña')
+            if check_password_hash(clave_almacenada[0], clave_introducida):
+                return redirect(url_for('clave_nueva'))
+            flash('La contraseña introducida no es correcta')
+        return render_template('editar_clave.html', formulario = formulario, usuario = current_user)
+    except Exception as e:
+        flash('Ha ocurrrido un error: {}'.format(e))
+        return render_template('editar_clave.html', formulario = formulario, usuario = current_user)
+
+@app.route('/clave_nueva', methods = ['GET', 'POST'])
+@login_required
+def clave_nueva():
+
+    try:
+        formulario = Clave_nueva()
+
+        if formulario.validate_on_submit and request.method == 'POST':
+            id = current_user.id
+            clave = request.form.get('contraseña')
+            clave = generate_password_hash(clave)
+            cursor = mysql.connection.cursor()
+            cursor.execute('UPDATE usuarios SET clave = %s WHERE id = %s', (clave, id))
+            mysql.connection.commit()
+            flash('Clave actualizada correctamente')
+            return redirect(url_for('perfil'))
+    except Exception as e:
+        flash('Ha ocurrido un error')
+        return render_template('clave_nueva.html', formulario = formulario)
+    return render_template('clave_nueva.html', formulario = formulario)
 
 
 @app.route('/logout')
