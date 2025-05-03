@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, EmailField
+from wtforms import StringField, PasswordField, SubmitField, EmailField, TextAreaField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
 
 class Usuario_register(FlaskForm):
@@ -102,3 +102,21 @@ class Clave_nueva(FlaskForm):
     ])
 
     actualizar = SubmitField('Actualizar contraseña')
+
+class Contacto(FlaskForm):
+    nombre = StringField('Nombre', validators=[
+        DataRequired(),
+        Length(max=30)
+    ])
+
+    correo = EmailField('Correo', validators=[
+        DataRequired(),
+        Length(max=100),
+        Email()
+    ])
+
+    mensaje = TextAreaField('Mensaje', validators=[
+        DataRequired()
+    ])
+
+    enviar = SubmitField('Enviar')
