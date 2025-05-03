@@ -1,0 +1,63 @@
+{% extends './layout.html' %}
+
+    {% block body %}
+
+    <div class="w-full flex flex-col items-center ">
+        <header class="w-full h-[6rem] flex flex-row items-center justify-between bg-[#F2F2F2] px-[30px] text-[20px] sm:h-[7rem] lg:h-[8rem]">
+            <img src="../static/img/logo.png" alt="CURRICULUMS" class="w-[5rem]">
+            <a href="{{boton_volver}}" class="text-[30px]">Volver</a>
+        </header>
+        
+        <!-- Obtenemos el mensaje enviado desde el flask -->
+        
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for msg in messages %}
+        <div id="usuario_existe" class="bg-gray-500 text-white p-4 rounded text-center fixed top-4 right-4 shadow-lg z-50 duration-2500 opacity-200">
+            <p>{{msg}}</p>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <h1 class="text-[30px] w-[90%] min-[568px]:text-[40px] text-center font-bold italic mt-[20px] mb-[20px]">Formulario de contacto</h1>
+        <div class="w-[85%] sm:w-[30rem] lg:w-[60%] min-[568px]:w-[80%] mb-[20px] flex flex-col lg:flex-row-reverse items-center bg-[#4FA389] rounded-lg">
+            <!-- Imagen de usuario -->
+            <div class="w-full flex items-center justify-center [568px]:h-[90vh] lg:w-[70%] h-[40vh] sm:h-[20rem] rounded-t-lg lg:rounded-l-lg">
+                <img class="w-[80%] h-[80%] rounded-[20px]" src="../static/img/contacto.png" alt="Imagen de Usuario">
+            </div>
+
+            <!-- Aqui tenemos el formulario de contacto -->
+
+            <form method="post" class="bg-[#CDCBCB] rounded-b-lg w-full flex flex-col items-center gap-[20px] pt-[15px] pb-[15px] lg:rounded-l-lg lg:rounded-r-none">
+
+                <!-- Aqui el campo del nombre -->
+
+                <div class="w-[90%] flex flex-col gap-[15px]">
+                    {{ formulario.nombre.label(class="text-[20px] font-bold") }}
+                    {{ formulario.nombre(class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic",placeholder='Introduce tu nombre', value=nombre) }}    
+                </div>
+
+                <!-- Aqui el campo del correo electronico -->
+
+                <div class="w-[90%] flex flex-col gap-[15px]">
+                    {{ formulario.correo.label(class="text-[20px] font-bold") }}
+                    {{ formulario.correo(class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic",placeholder='Introduce tu correo', value=correo) }}    
+                </div>
+
+                <!-- Aqui el campo del mensaje -->
+
+                <div class="w-[90%] flex flex-col gap-[15px]">
+                    {{ formulario.mensaje.label(class="text-[20px] font-bold") }}
+                    {{ formulario.mensaje(class="resize-none w-full h-[200px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic",placeholder='Introduce tu mensaje') }}    
+                </div>
+
+                <!-- Y aqui tenemos el boton para iniciar sesión -->
+
+                {{ formulario.enviar(class="bg-[#FFAB45] h-[50px] w-[50%] text-[20px] text-[white] rounded-[10px] cursor-[pointer]") }}
+            </form>
+
+        </div>
+    </div>
+
+    {% endblock %}
