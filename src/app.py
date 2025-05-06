@@ -427,6 +427,16 @@ def contacto():
         flash('Ha ocurrido un error: {}'.format(e))
         return render_template('contacto.html', formulario = formulario, nombre = nombre, correo = correo, boton_volver = volver)
 
+@app.route('/elegir_plantilla')
+@login_required
+def elegir_plantilla():
+    try:
+        return render_template('elegir_plantilla.html')
+    except Exception as e:
+        flash('Ha ocurrido un error: {}'.format(e))
+        return render_template('elegir_plantilla.html')
+    
+
 @app.route('/logout')
 @login_required
 def logout():
