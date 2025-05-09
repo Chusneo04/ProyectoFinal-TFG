@@ -3,7 +3,7 @@ import os
 from flask_mysqldb import MySQL
 from datetime import datetime
 from dotenv import load_dotenv
-from forms import Usuario_register, Usuario_login, Recuperar_clave_email, Nueva_Clave, Editar_perfil, Editar_clave, Clave_nueva, Contacto
+from forms import Usuario_register, Usuario_login, Recuperar_clave_email, Nueva_Clave, Editar_perfil, Editar_clave, Clave_nueva, Contacto, Curriculum
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, current_user, logout_user
 import smtplib
@@ -435,6 +435,22 @@ def elegir_plantilla():
     except Exception as e:
         flash('Ha ocurrido un error: {}'.format(e))
         return render_template('elegir_plantilla.html')
+
+@app.route('/curriculum/<id>', methods = ['GET', 'POST'])
+@login_required
+def curriculum(id):
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('SELECT imagen FROM usuarios WHERE id = %s',(current_user.id,))
+        imagen = cursor.fetchone()
+        imagen = imagen[0]
+        print('Hola')
+        flash(imagen)
+        curriculum = Curriculum()
+        return render_template('curriculum.html', curriculum_id = id, usuario = current_user, imagen = imagen, formulario = curriculum)
+    except Exception as e:
+        flash('Error: {}'.format(e))
+        return render_template('curriculum.html', curriculum_id = id, usuario = current_user, imagen = imagen, formulario = curriculum)
     
 
 @app.route('/logout')
