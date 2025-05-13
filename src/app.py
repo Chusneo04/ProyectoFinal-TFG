@@ -447,11 +447,14 @@ def curriculum(id):
         print('Hola')
         flash(imagen)
         curriculum = Curriculum()
-        return render_template('curriculum.html', curriculum_id = id, usuario = current_user, imagen = imagen, formulario = curriculum)
+        if int(id) >= 1 and int(id) <= 9:
+            return render_template('plantilla{}.html'.format(id), curriculum_id = id, usuario = current_user, imagen = imagen, formulario = curriculum)
+        
+        return redirect(url_for('elegir_plantilla'))
     except Exception as e:
         flash('Error: {}'.format(e))
-        return render_template('curriculum.html', curriculum_id = id, usuario = current_user, imagen = imagen, formulario = curriculum)
-    
+        return render_template('plantilla{}.html'.format(id), curriculum_id = id, usuario = current_user, imagen = imagen, formulario = curriculum)
+
 
 @app.route('/logout')
 @login_required
