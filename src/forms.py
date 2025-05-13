@@ -186,16 +186,29 @@ class Curriculum(FlaskForm):
         Length(max=255)
     ])
 
-    formacion_año = StringField('', validators=[
+    formacion_1_año = StringField('', validators=[
         Length(min=4,max=4)
     ])
-    formacion_titulo = StringField('', validators=[
+    formacion_1_titulo = StringField('', validators=[
         Length(max=100)
     ])
-    formacion_lugar = StringField('', validators=[
+    formacion_1_lugar = StringField('', validators=[
         Length(max=255)
     ])
-    formacion_temas = TextAreaField('', default="Administración de operaciones\nUniversidad Complutense, Madrid\nTemas abordados durante el curso: oratoria y comunicación, sociología y psicología.", validators=[
+    formacion_1_temas = TextAreaField('', default="Administración de operaciones\nUniversidad Complutense, Madrid\nTemas abordados durante el curso: oratoria y comunicación, sociología y psicología.", validators=[
+        Length(max=255)
+    ])
+
+    formacion_2_año = StringField('', validators=[
+        Length(min=4,max=4)
+    ])
+    formacion_2_titulo = StringField('', validators=[
+        Length(max=100)
+    ])
+    formacion_2_lugar = StringField('', validators=[
+        Length(max=255)
+    ])
+    formacion_2_temas = TextAreaField('', default="Administración de operaciones\nUniversidad Complutense, Madrid\nTemas abordados durante el curso: oratoria y comunicación, sociología y psicología.", validators=[
         Length(max=255)
     ])
 
@@ -203,4 +216,4 @@ class Curriculum(FlaskForm):
         Length(max=255)
     ])
 
-    finalizar = SubmitField('Finalizar')
+    finalizar = SubmitField('Finalizar y Guardar')

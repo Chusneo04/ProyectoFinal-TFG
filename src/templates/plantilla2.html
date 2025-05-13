@@ -18,19 +18,17 @@
         {% endwith %}
         
         <div class="w-full flex flex-col items-center overflow-y-scroll">
-            {% if curriculum_id == "1" %}
+            <form id="plantilla_2" class="flex w-[90%] sm:w-[80%] bg-[white] mt-[50px] mb-[50px] xl:w-[60%]" method="POST" >
+                <div class="w-[60%] bg-[#785d8e]">
+                    <div class="h-[50px] sm:h-[120px] lg:h-[8rem] bg-[#5a1196]">
 
-            <form class="flex w-[90%] sm:w-[80%] bg-[white] mt-[50px] mb-[50px] xl:w-[60%]" method="POST" >
-                <div class="w-[60%] bg-[gray]">
-                     <div class="h-[50px] sm:h-[120px] lg:h-[8rem] bg-[#124459]">
-
-                     </div>
-                     <div class="w-full flex flex-col items-center gap-[20px] text-[white]">
+                    </div>
+                    <div class="w-full flex flex-col items-center gap-[20px] text-[white]">
                         <img src="{{ url_for('static', filename=imagen) }}" alt="imagen de perfil de {{usuario.nombre}}" class="mt-[-40px] bg-[white] border-[1px] w-[75%] sm:mt-[-80px] lg:mt-[-110px] rounded-full static">
                         <div class="w-[85%] flex flex-col gap-[10px]">
                             <div class="w-full flex items-start justify-start">
                                 <i class="fa-solid fa-location-dot text-[8px] sm:text-[10px] lg:text-[15px] sm:mt-[4px] items-center justify-center"></i>
-                                {{ formulario.direccion(value="C/Don Ramón de la Cruz, 81 Bajo D", class="text-[6px] ml-[3px] sm:text-[11px] lg:text-[17px] font-semibold w-full sm:ml-[5px]")}}
+                                {{ formulario.direccion(value="C/Don Ramón de la Cruz, 81 Bajo D", class="text-[5px] ml-[3px] sm:text-[11px] lg:text-[15px] font-semibold w-full sm:ml-[5px]")}}
                             </div>
                             <div class="w-full flex items-start justify-start">
                                 <i class="fa-solid fa-phone text-[8px] sm:text-[10px] lg:text-[15px] sm:mt-[4px] items-center justify-center"></i>
@@ -44,8 +42,8 @@
                             <div class="w-full flex flex-col items-center">
                                 <hr class="text-[white] font-[extrabold] text-center w-full">
                                 <div class="w-full">
-                                    {{ formulario.resumen_profesional.label(class="text-[9px] sm:text-[14px] lg:text-[20px] font-bold") }}
-                                    {{ formulario.resumen_profesional( value="", placeholder="Escribe sobre ti...", class="w-full text-[white] text-[9px] sm:text-[13px] lg:text-[18px] resize-none h-[10rem] sm:h-[12rem] lg:h-[15rem] outline-none")}}
+                                    {{ formulario.resumen_profesional.label(class="text-[7px] sm:text-[14px] lg:text-[20px] font-bold") }}
+                                    {{ formulario.resumen_profesional( value="", placeholder="Escribe sobre ti...", class="w-full text-[white] text-[7px] sm:text-[13px] lg:text-[18px] resize-none h-[8rem] sm:h-[12rem] lg:h-[15rem] outline-none")}}
                                 </div>
                             </div>
 
@@ -69,31 +67,31 @@
                 <div class="w-full flex flex-col items-center gap-[20px] pb-[20px]">
                     <h1 class="text-center font-bold text-[25px] lg:text-[60px] mt-[20px]">{{ usuario.nombre }} {{ usuario.apellidos.split()[0] }}</h1>
                     <div class="w-[90%] flex flex-col gap-[5px]">
-                        <hr class="bg-[#1777cd] border-none h-[2px] text-center w-full">
-                        <h1 class="text-[15px] sm:text-[20px] text-[#1777cd] font-bold">Experiencia</h1>
+                        <hr class="bg-[#5a1196] border-none h-[2px] text-center w-full">
+                        <h1 class="text-[15px] sm:text-[20px] text-[#5a1196] font-bold">Experiencia</h1>
 
-                        {{ formulario.experiencia_1_fechas(class="text-[15px] sm:text-[15px] lg:text-[30px]", value="Septiembre 2015-Actual") }}
-                        {{ formulario.experiencia_1_puesto(class="text-[9px] sm:text-[15px] lg:text-[20px] font-bold w-full outline-none", value="Gerente de distrito Movistar | Madrid") }}
+                        {{ formulario.experiencia_1_fechas(class="text-[11px] sm:text-[15px] lg:text-[30px]", value="Septiembre 2015-Actual") }}
+                        {{ formulario.experiencia_1_puesto(class="text-[7px] sm:text-[15px] lg:text-[20px] font-bold w-full outline-none", value="Gerente de distrito Movistar | Madrid") }}
                         <div class="flex w-full gap-[3px]">
                             <div class="h-[1px] flex flex-col justify-start items-start">
-                                <p class="mt-[-18px] text-[30px] sm:mt-[-25px] sm:text-[40px]">·</p>
+                                <p class="mt-[-18px] text-[30px] sm:mt-[-25px] sm:text-[40px] lg:mt-[-20px]">·</p>
                             </div>
                             {{ formulario.experiencia_1_labor_1(class="text-[black] max-[321px]:text-[6px] text-[10px] h-[90px] lg:text-[20px] lg:h-[12rem] sm:text-[12px] sm:h-[70px] max-[321px]:h-[40px] outline-none resize-none w-full") }}
                         </div>
                         <div class="flex w-full gap-[3px]">
                             <div class="h-[1px] flex flex-col justify-start items-start">
-                                <p class="mt-[-18px] text-[30px] sm:mt-[-25px] sm:text-[40px]">·</p>
+                                <p class="mt-[-18px] text-[30px] sm:mt-[-25px] sm:text-[40px] lg:mt-[-20px]">·</p>
                             </div>
                             {{ formulario.experiencia_1_labor_2(class="text-[black] max-[321px]:text-[6px] text-[10px] h-[90px] lg:text-[20px] lg:h-[12rem] sm:text-[12px] sm:h-[70px] max-[321px]:h-[40px] outline-none resize-none w-full") }}
                         </div>
                         <div class="flex w-full gap-[3px]">
                             <div class="h-[1px] flex flex-col justify-start items-start">
-                                <p class="mt-[-18px] text-[30px] sm:mt-[-25px] sm:text-[40px]">·</p>
+                                <p class="mt-[-18px] text-[30px] sm:mt-[-25px] sm:text-[40px] lg:mt-[-20px]">·</p>
                             </div>
                             {{ formulario.experiencia_1_labor_3(class="text-[black] max-[321px]:text-[6px] text-[10px] h-[90px] lg:text-[20px] lg:h-[12rem] sm:text-[12px] sm:h-[70px] max-[321px]:h-[40px] outline-none resize-none w-full") }}
                         </div>
-                        {{ formulario.experiencia_2_fechas(class="text-[15px] sm:text-[15px] lg:text-[30px]", value="Agosto 2005 - Septiembre 2015") }}
-                        {{ formulario.experiencia_2_puesto(class="text-[9px] sm:text-[15px] lg:text-[20px] font-bold w-full outline-none", value="Gerente de operaciones ElCorteInglés | Madrid") }}
+                        {{ formulario.experiencia_2_fechas(class="text-[11px] sm:text-[15px] lg:text-[30px]", value="Agosto 2005 - Septiembre 2015") }}
+                        {{ formulario.experiencia_2_puesto(class="text-[7px] sm:text-[15px] lg:text-[20px] font-bold w-full outline-none", value="Gerente de operaciones ElCorteInglés | Madrid") }}
                         <div class="flex w-full gap-[3px]">
                             <div class="h-[1px] flex flex-col justify-start items-start">
                                 <p class="mt-[-18px] text-[30px] sm:mt-[-25px] sm:text-[40px]">·</p>
@@ -113,57 +111,18 @@
                             {{ formulario.experiencia_2_labor_3(class="text-[black] max-[321px]:text-[6px] text-[10px] lg:text-[20px] lg:h-[12rem] h-[90px] sm:text-[12px] sm:h-[70px] max-[321px]:h-[40px] outline-none resize-none w-full") }}
                         </div>
 
-                        <hr class="bg-[#1777cd] border-none h-[2px] text-center w-full">
-                        <h1 class="text-[15px] sm:text-[20px] lg:text-[30px] text-[#1777cd] font-bold">Formación</h1>
-                        {{ formulario.formacion_año(class="text-[12px] sm:text-[15px] lg:text-[30px] outline-none", value="2009") }}
-                        {{ formulario.formacion_titulo(class="text-[9px] sm:text-[15px] lg:text-[20px] font-bold w-full outline-none", value="Máster en Administración de Empresas") }}
-                        {{ formulario.formacion_temas(class="text-[black] max-[321px]:text-[6px] text-[10px] h-[90px] lg:text-[20px] lg:h-[12rem] sm:text-[12px] sm:h-[70px] max-[321px]:h-[40px] outline-none resize-none w-full") }}
+                        <hr class="bg-[#5a1196] border-none h-[2px] text-center w-full">
+                        <h1 class="text-[15px] sm:text-[20px] lg:text-[30px] text-[#5a1196] font-bold">Formación</h1>
+                        {{ formulario.formacion_1_año(class="text-[12px] sm:text-[15px] lg:text-[30px] outline-none", value="2009") }}
+                        {{ formulario.formacion_1_titulo(class="text-[8px] sm:text-[15px] lg:text-[20px] font-bold w-full outline-none", value="Máster en Administración de Empresas") }}
+                        {{ formulario.formacion_1_temas(class="text-[black] max-[321px]:text-[6px] text-[10px] h-[90px] lg:text-[20px] lg:h-[12rem] sm:text-[12px] sm:h-[70px] max-[321px]:h-[40px] outline-none resize-none w-full") }}
 
                     </div>
                 </div>
                 
             </form>
-
-            {% elif curriculum_id == "2" %}
-
-            <div>Curriculum 2</div>
-
-            {% elif curriculum_id == "3" %}
-
-            <div>Curriculum 3</div>
-
-            {% elif curriculum_id == "4" %}
-
-            <div>Curriculum 4</div>
-
-            {% elif curriculum_id == "5" %}
-
-            <div>Curriculum 5</div>
-
-            {% elif curriculum_id == "6" %}
-
-            <div>Curriculum 6</div>
-
-            {% elif curriculum_id == "7" %}
-
-            <div>Curriculum 7</div>
-
-            {% elif curriculum_id == "8" %}
-
-            <div>Curriculum 8</div>
-            
-            {% elif curriculum_id == "9" %}
-
-            <div>Curriculum 9</div>
-
-            {% else %}
-
-                <h1>Hola</h1>
-
-            {% endif %}
-
+            {{ formulario.finalizar(form="plantilla_2", class="bg-[#FFAB45] h-[50px] w-[13rem]  text-[20px] text-[white] rounded-[10px] cursor-[pointer] mb-[40px]") }}
+    
         </div>
-
     </div>
-
     {% endblock %}
