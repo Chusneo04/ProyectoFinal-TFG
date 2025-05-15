@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, EmailField, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, EmailField, TextAreaField, IntegerField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
 
 class Usuario_register(FlaskForm):
@@ -170,7 +170,7 @@ class Curriculum(FlaskForm):
         Length(max=255)
     ])
 
-    experiencia_2_fechas = StringField('', validators = [
+    experiencia_2_fechas = IntegerField('', validators = [
         Length(max=50)
     ])
     experiencia_2_puesto = StringField('', validators = [
@@ -187,13 +187,10 @@ class Curriculum(FlaskForm):
     ])
 
     formacion_1_año = StringField('', validators=[
-        Length(min=4,max=4)
+        Length(min=4,max=5)
     ])
     formacion_1_titulo = StringField('', validators=[
         Length(max=100)
-    ])
-    formacion_1_lugar = StringField('', validators=[
-        Length(max=255)
     ])
     formacion_1_temas = TextAreaField('', default="Administración de operaciones\nUniversidad Complutense, Madrid\nTemas abordados durante el curso: oratoria y comunicación, sociología y psicología.", validators=[
         Length(max=255)
@@ -205,14 +202,7 @@ class Curriculum(FlaskForm):
     formacion_2_titulo = StringField('', validators=[
         Length(max=100)
     ])
-    formacion_2_lugar = StringField('', validators=[
-        Length(max=255)
-    ])
     formacion_2_temas = TextAreaField('', default="Administración de operaciones\nUniversidad Complutense, Madrid\nTemas abordados durante el curso: oratoria y comunicación, sociología y psicología.", validators=[
-        Length(max=255)
-    ])
-
-    otros = TextAreaField('', validators=[
         Length(max=255)
     ])
 
