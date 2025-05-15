@@ -436,9 +436,9 @@ def elegir_plantilla():
         flash('Ha ocurrido un error: {}'.format(e))
         return render_template('elegir_plantilla.html')
 
-@app.route('/curriculum/<id>', methods = ['GET', 'POST'])
+@app.route('/curriculum/<plantilla>', methods = ['GET', 'POST'])
 @login_required
-def curriculum(id):
+def curriculum(plantilla):
     try:
         cursor = mysql.connection.cursor()
         cursor.execute('SELECT imagen FROM usuarios WHERE id = %s',(current_user.id,))
@@ -447,13 +447,72 @@ def curriculum(id):
         print('Hola')
         flash(imagen)
         curriculum = Curriculum()
-        if int(id) >= 1 and int(id) <= 9:
-            return render_template('plantilla{}.html'.format(id), curriculum_id = id, usuario = current_user, imagen = imagen, formulario = curriculum)
-        
+        if int(plantilla) >= 1 and int(plantilla) <= 9:
+            if curriculum.validate_on_submit and request.method == 'POST':
+                cursor.execute('INSERT INTO curriculums(id_usuario, plantilla) VALUES(%s, %s)', (current_user.id, plantilla))
+                mysql.connection.commit()
+                
+                cursor.execute('SELECT id_curriculum FROM curriculums ORDER BY id_curriculum DESC LIMIT 1')
+                
+                id_curriculum = cursor.fetchone()[0]
+                
+                
+
+                experiencia_1_fechas = request.form.get('experiencia_1_fechas')
+                experiencia_1_puesto = request.form.get('experiencia_1_puesto')
+                experiencia_1_labor_1 = request.form.get('experiencia_1_labor_1')
+                experiencia_1_labor_2 = request.form.get('experiencia_1_labor_2')
+                experiencia_1_labor_3 = request.form.get('experiencia_1_labor_3')
+
+                cursor.execute('INSERT INTO experiencia(id_curriculum, fechas, puesto, labor_1, labor_2, labor_3) VALUES(%s, %s, %s, %s, %s, %s)', (id_curriculum, experiencia_1_fechas, experiencia_1_puesto, experiencia_1_labor_1, experiencia_1_labor_2, experiencia_1_labor_3))
+                mysql.connection.commit()
+
+                datos_direccion = request.form.get('direccion')
+                datos_telefono = request.form.get('telefono')
+                datos_resumen_profesional = request.form.get('resumen_profesional')
+                datos_aptitud_1 = request.form.get('Aptitud_1')
+                datos_aptitud_2 = request.form.get('Aptitud_2')
+                datos_aptitud_3 = request.form.get('Aptitud_3')
+                datos_aptitud_4 = request.form.get('Aptitud_4')
+                datos_aptitud_5 = request.form.get('Aptitud_5')
+
+                cursor.execute('INSERT INTO datos(id_curriculum, direccion, telefono, resumen_profesional, aptitud_1, aptitud_2, aptitud_3, aptitud_4, aptitud_5) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)', (id_curriculum, datos_direccion, datos_telefono, datos_resumen_profesional, datos_aptitud_1, datos_aptitud_2, datos_aptitud_3, datos_aptitud_4, datos_aptitud_5))
+                mysql.connection.commit()
+
+                formacion_1_año = request.form.get('formacion_1_año')
+                formacion_1_titulo = request.form.get('formacion_1_titulo')
+                formacion_1_temas = request.form.get('formacion_1_temas')
+
+                cursor.execute('INSERT INTO formacion(id_curriculum, año, titulo, temas) VALUES (%s, %s, %s, %s)', (id_curriculum, formacion_1_año, formacion_1_titulo, formacion_1_temas))
+                mysql.connection.commit()
+
+
+                if int(id_curriculum) != 1 and int(id_curriculum) != 2 and int(id_curriculum) != 3:
+                    formacion_2_año = request.form.get('formacion_2_año')
+                    formacion_2_titulo = request.form.get('formacion_2_titulo')
+                    formacion_2_temas = request.form.get('formacion_2_temas')
+
+                    cursor.execute('INSERT INTO formacion(id_curriculum, año, titulo, temas) VALUES (%s, %s, %s, %s)', (id_curriculum, formacion_2_año, formacion_2_titulo, formacion_2_temas))
+                    mysql.connection.commit()
+ 
+                elif int(id_curriculum) != 7 and int(id_curriculum) != 8 and int(id_curriculum) != 9:
+                    experiencia_2_fechas = request.form.get('experiencia_2_fechas')
+                    experiencia_2_puesto = request.form.get('experiencia_2_puesto')
+                    experiencia_2_labor_1 = request.form.get('experiencia_2_labor_1')
+                    experiencia_2_labor_2 = request.form.get('experiencia_2_labor_2')
+                    experiencia_2_labor_3 = request.form.get('experiencia_2_labor_3')
+
+                    cursor.execute('INSERT INTO experiencia(id_curriculum, fechas, puesto, labor_1, labor_2, labor_3) VALUES(%s, %s, %s, %s, %s, %s)', (id_curriculum, experiencia_2_fechas, experiencia_2_puesto, experiencia_2_labor_1, experiencia_2_labor_2, experiencia_2_labor_3))
+                    mysql.connection.commit()
+
+
+
+                return render_template('plantilla{}.html'.format(plantilla), curriculum_id = id, usuario = current_user, imagen = imagen, formulario = curriculum)
+            return render_template('plantilla{}.html'.format(plantilla), curriculum_id = id, usuario = current_user, imagen = imagen, formulario = curriculum)
         return redirect(url_for('elegir_plantilla'))
     except Exception as e:
-        flash('Error: {}'.format(e))
-        return render_template('plantilla{}.html'.format(id), curriculum_id = id, usuario = current_user, imagen = imagen, formulario = curriculum)
+        print('Error: {}'.format(e))
+        return render_template('plantilla{}.html'.format(plantilla), curriculum_id = id, usuario = current_user, imagen = imagen, formulario = curriculum)
 
 
 @app.route('/logout')
