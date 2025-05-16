@@ -195,7 +195,7 @@ def login():
                     usuario_obj = User(usuario_existente[0], usuario_existente[1], usuario_existente[2], usuario_existente[3], usuario_existente[4], usuario_existente[5], usuario_existente[6])
                     print('196')
                     login_user(usuario_obj)
-                    print('198')    
+                    print('198')
                     return redirect(url_for('perfil')) #Si todo va bien redirige al usuario a la interfaz de perfil 
                 else:
                     flash('Las credenciales introducidas son incorrectas')
@@ -456,7 +456,37 @@ def curriculum(plantilla):
         imagen = imagen[0]
         print('Hola')
         flash(imagen)
-        curriculum = Curriculum()
+
+        parametros_por_defecto_inputs = {
+            'direccion':'C/Don Ramón de la Cruz, 81 Bajo D',
+            'telefono':'612345678',
+            'experiencia_1_fechas':'Septiembre 2015-Actual',
+            'experiencia_1_puesto':'Gerente de distrito Movistar | Madrid',
+            'experiencia_2_fechas':'Agosto 2005 - Septiembre 2015',
+            'experiencia_2_puesto':'Gerente de operaciones ElCorteInglés | Madrid',
+            'formacion_1_año':'2009',
+            'formacion_1_titulo':'Máster en Administración de Empresas',
+            'formacion_2_año':'2019',
+            'formacion_2_titulo':'Máster en Ciencias Sociales y Humanidades'
+        }
+
+        parametros_por_defecto_textareas = {
+            'resumen_profesional':"Gestor experimentado con excelentes aptitudes de gestión de clientes y proyectos. Orientado a la acción con gran capacidad para comunicarse de forma eficaz con público del sector tecnológico, ejecutivo y empresarial.",
+            'Aptitud_1':"Gerente de compras titulado",
+            'Aptitud_2':"Actitud de trabajo activa",
+            'Aptitud_3':"Actualización de sistemas",
+            'Aptitud_4':"Acompañamiento de confianza",
+            'Aptitud_5':"Supervisión del sitio comercial",
+            'experiencia_1_labor_1':"Dirigí las iniciativas de desarrollo de contratación/formación/empleados para aumentar al máximo la productividad y el potencial de los ingresos a través del desarrollo de un equipo comercial.",
+            'experiencia_1_labor_2':"Planifiqué y ejecuté iniciativas de expositores promocionales en colaboración con el departamento de administración de promociones.",
+            'experiencia_1_labor_3':"Me ocupé de que el establecimiento estuviera preparado para someterse a auditorías internas mediante el análisis o la preparación de controles de calidad y de estadísticas de inventario.",
+            'experiencia_2_labor_1':"Supervisé las operaciones de apertura y cierre de un establecimiento con ingresos anuales de 4 millones de euros en cumplimiento con las políticas y procedimientos actuales de la empresa.",
+            'experiencia_2_labor_2':"Gestioné los costes operativos encabezando el control de inventario y liderando las actividades del departamento de envío además de fijar las nóminas.",
+            'experiencia_2_labor_3':"Administré los procesos financieros, incluidas las cuentas a pagar y las cuentas por cobrar mediante la gestión de una oficina de contabilidad y la actualización de los archivos del servicio de atención al cliente.",
+            'formacion_1_temas':"Administración de operaciones\nUniversidad Complutense, Madrid\nTemas abordados durante el curso: oratoria y comunicación, sociología y psicología.",
+            'formacion_2_temas':"Ciencias Sociales y Humanidades\nUniversidad de Salamanca\nTemas abordados durante el curso: Especialización en áreas como historia, sociología, antropología, filosofía o comunicación. "
+            }
+        curriculum = Curriculum(data = parametros_por_defecto_textareas)
         if int(plantilla) >= 1 and int(plantilla) <= 9:
             if curriculum.validate_on_submit and request.method == 'POST':
                 cursor.execute('INSERT INTO curriculums(id_usuario, plantilla) VALUES(%s, %s)', (current_user.id, plantilla))
@@ -517,12 +547,12 @@ def curriculum(plantilla):
 
 
 
-                return render_template('plantilla{}.html'.format(plantilla), curriculum_id = id, usuario = current_user, imagen = imagen, formulario = curriculum)
-            return render_template('plantilla{}.html'.format(plantilla), curriculum_id = id, usuario = current_user, imagen = imagen, formulario = curriculum)
+                return render_template('plantilla{}.html'.format(plantilla), curriculum_id = id, usuario = current_user, imagen = imagen, formulario = curriculum, parametros = parametros_por_defecto_inputs)
+            return render_template('plantilla{}.html'.format(plantilla), curriculum_id = id, usuario = current_user, imagen = imagen, formulario = curriculum, parametros = parametros_por_defecto_inputs)
         return redirect(url_for('elegir_plantilla'))
     except Exception as e:
         print('Error: {}'.format(e))
-        return render_template('plantilla{}.html'.format(plantilla), curriculum_id = id, usuario = current_user, imagen = imagen, formulario = curriculum)
+        return render_template('plantilla{}.html'.format(plantilla), curriculum_id = id, usuario = current_user, imagen = imagen, formulario = curriculum, parametros = parametros_por_defecto_inputs)
 
 @app.route('/eliminar_curriculum/<id_curriculum>')
 @login_required
@@ -541,7 +571,78 @@ def eliminar_curriculum(id_curriculum):
         flash(e)
         return redirect(url_for('perfil'))
 
+@app.route('/editar_curriculum/<id_curriculum>', methods = ['GET', 'POST'])
+@login_required
+def editar_curriculum(id_curriculum):
+    try:
+        
+        cursor = mysql.connection.cursor()
+        
+        cursor.execute('SELECT id_usuario, plantilla FROM curriculums WHERE id_curriculum = %s', (id_curriculum,))
+        curriculum = cursor.fetchone()
+        
+        cursor.execute('SELECT imagen FROM usuarios WHERE id = %s', (current_user.id,))
+        imagen = cursor.fetchone()
+        imagen = imagen[0]
 
+        cursor.execute('SELECT * FROM datos INNER JOIN curriculums ON datos.id_curriculum = curriculums.id_curriculum WHERE curriculums.id_curriculum = %s', (id_curriculum,))
+        datos = cursor.fetchall()
+        datos = datos[0]
+        datos_usuario = {'id_datos':datos[0], 'id_curriculum':datos[1], 'direccion':datos[2], 'telefono':datos[3], 'resumen_profesional':datos[4], 'aptitud_1':datos[5], 'aptitud_2':datos[6], 'aptitud_3':datos[7], 'aptitud_4':datos[8], 'aptitud_5':datos[9]}
+        
+        cursor.execute('SELECT * FROM experiencia INNER JOIN curriculums ON experiencia.id_curriculum = curriculums.id_curriculum WHERE curriculums.id_curriculum = %s', (id_curriculum,))
+        experiencias = cursor.fetchall()
+        experiencias_usuario = []
+        for experiencia in experiencias:
+            experiencias_usuario.append({'id_experiencia':experiencia[0], 'id_curriculum':experiencia[1], 'fechas':experiencia[2], 'puesto':experiencia[3], 'labor_1':experiencia[4], 'labor_2':experiencia[5], 'labor_3':experiencia[6]})
+        
+        cursor.execute('SELECT * FROM formacion INNER JOIN curriculums ON formacion.id_curriculum = curriculums.id_curriculum WHERE curriculums.id_curriculum = %s', (id_curriculum,))
+        formaciones = cursor.fetchall()
+        formaciones_usuario = []
+        for formacion in formaciones:
+            formaciones_usuario.append({'id_formacion':formacion[0], 'id_curriculum':formacion[1], 'año':formacion[2], 'titulo':formacion[3], 'temas':formacion[4]})
+        
+
+        parametros_por_defecto_inputs = {
+            'direccion':datos_usuario['direccion'],
+            'telefono':datos_usuario['telefono'],
+            'experiencia_1_fechas':experiencias_usuario[0]['fechas'],
+            'experiencia_1_puesto':experiencias_usuario[0]['puesto'],
+            'experiencia_2_fechas':experiencias_usuario[-1]['fechas'],
+            'experiencia_2_puesto':experiencias_usuario[-1]['puesto'],
+            'formacion_1_año':formaciones_usuario[0]['año'],
+            'formacion_1_titulo':formaciones_usuario[0]['titulo'],
+            'formacion_2_año':formaciones_usuario[-1]['año'],
+            'formacion_2_titulo':formaciones_usuario[-1]['titulo']
+        }
+
+
+        parametros_por_defecto_textareas = {
+            'resumen_profesional':datos_usuario['resumen_profesional'],
+            'Aptitud_1':datos_usuario['aptitud_1'],
+            'Aptitud_2':datos_usuario['aptitud_2'],
+            'Aptitud_3':datos_usuario['aptitud_3'],
+            'Aptitud_4':datos_usuario['aptitud_4'],
+            'Aptitud_5':datos_usuario['aptitud_5'],
+            'experiencia_1_labor_1':experiencias_usuario[0]['labor_1'],
+            'experiencia_1_labor_2':experiencias_usuario[0]['labor_2'],
+            'experiencia_1_labor_3':experiencias_usuario[0]['labor_3'],
+            'experiencia_2_labor_1':experiencias_usuario[-1]['labor_1'],
+            'experiencia_2_labor_2':experiencias_usuario[-1]['labor_2'],
+            'experiencia_2_labor_3':experiencias_usuario[-1]['labor_3'],
+            'formacion_1_temas':formaciones_usuario[0]['temas'],
+            'formacion_2_temas':formaciones_usuario[-1]['temas']
+        }
+        
+        formulario = Curriculum(data = parametros_por_defecto_textareas)
+        if curriculum[0] == current_user.id:
+            print(curriculum[1])
+            return render_template('plantilla{}.html'.format(curriculum[1]), usuario = current_user, formulario = formulario, imagen = imagen, parametros = parametros_por_defecto_inputs)
+        return render_template('plantilla{}.html'.format(curriculum[1]), usuario = current_user, formulario = formulario, imagen = imagen, parametros = parametros_por_defecto_inputs)
+    
+    except Exception as e:
+        flash('Ha ocurrido un error: {}'.format(e))
+        return redirect(url_for('perfil'))
 @app.route('/logout')
 @login_required
 def logout():

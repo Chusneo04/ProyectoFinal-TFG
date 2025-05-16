@@ -131,26 +131,26 @@ class Curriculum(FlaskForm):
         DataRequired(),
         Length(min=9, max=9)
     ])
-    resumen_profesional = TextAreaField('RESUMEN PROFESIONAL', default="Gestor experimentado con excelentes aptitudes de gestión de clientes y proyectos. Orientado a la acción con gran capacidad para comunicarse de forma eficaz con público del sector tecnológico, ejecutivo y empresarial.", validators = [
+    resumen_profesional = TextAreaField('RESUMEN PROFESIONAL', validators = [
         DataRequired(),
         Length(max=255)
     ])
-    Aptitud_1 = TextAreaField('', default="Gerente de compras titulado", validators = [
+    Aptitud_1 = TextAreaField('', validators = [
         DataRequired(),
         Length(min=10, max=40)
     ])
-    Aptitud_2 = TextAreaField('', default="Actitud de trabajo activa", validators = [
+    Aptitud_2 = TextAreaField('', validators = [
         DataRequired(),
         Length(min=10, max=40)
     ])
-    Aptitud_3 = TextAreaField('', default="Actualización de sistemas",validators = [
+    Aptitud_3 = TextAreaField('',validators = [
         DataRequired(),
         Length(min=10, max=40)
     ])
-    Aptitud_4 = TextAreaField('', default="Acompañamiento de confianza",validators = [
+    Aptitud_4 = TextAreaField('',validators = [
         Length(max=40)
     ])
-    Aptitud_5 = TextAreaField('', default="Supervisión del sitio comercial",validators = [
+    Aptitud_5 = TextAreaField('',validators = [
         Length(max=40)
     ])
 
@@ -160,13 +160,13 @@ class Curriculum(FlaskForm):
     experiencia_1_puesto = StringField('', validators = [
         Length(max=100)
     ])
-    experiencia_1_labor_1 = TextAreaField('', default="Dirigí las iniciativas de desarrollo de contratación/formación/empleados para aumentar al máximo la productividad y el potencial de los ingresos a través del desarrollo de un equipo comercial.",validators = [
+    experiencia_1_labor_1 = TextAreaField('',validators = [
         Length(max=255)
     ])
-    experiencia_1_labor_2 = TextAreaField('', default="Planifiqué y ejecuté iniciativas de expositores promocionales en colaboración con el departamento de administración de promociones.",validators = [
+    experiencia_1_labor_2 = TextAreaField('',validators = [
         Length(max=255)
     ])
-    experiencia_1_labor_3 = TextAreaField('', default="Me ocupé de que el establecimiento estuviera preparado para someterse a auditorías internas mediante el análisis o la preparación de controles de calidad y de estadísticas de inventario.", validators = [
+    experiencia_1_labor_3 = TextAreaField('', validators = [
         Length(max=255)
     ])
 
@@ -176,13 +176,13 @@ class Curriculum(FlaskForm):
     experiencia_2_puesto = StringField('', validators = [
         Length(max=100)
     ])
-    experiencia_2_labor_1 = TextAreaField('', default="Supervisé las operaciones de apertura y cierre de un establecimiento con ingresos anuales de 4 millones de euros en cumplimiento con las políticas y procedimientos actuales de la empresa.", validators = [
+    experiencia_2_labor_1 = TextAreaField('', validators = [
         Length(max=255)
     ])
-    experiencia_2_labor_2 = TextAreaField('', default="Gestioné los costes operativos encabezando el control de inventario y liderando las actividades del departamento de envío además de fijar las nóminas.", validators = [
+    experiencia_2_labor_2 = TextAreaField('', validators = [
         Length(max=255)
     ])
-    experiencia_2_labor_3 = TextAreaField('', default="Administré los procesos financieros, incluidas las cuentas a pagar y las cuentas por cobrar mediante la gestión de una oficina de contabilidad y la actualización de los archivos del servicio de atención al cliente.", validators = [
+    experiencia_2_labor_3 = TextAreaField('', validators = [
         Length(max=255)
     ])
 
@@ -192,7 +192,7 @@ class Curriculum(FlaskForm):
     formacion_1_titulo = StringField('', validators=[
         Length(max=100)
     ])
-    formacion_1_temas = TextAreaField('', default="Administración de operaciones\nUniversidad Complutense, Madrid\nTemas abordados durante el curso: oratoria y comunicación, sociología y psicología.", validators=[
+    formacion_1_temas = TextAreaField('', validators=[
         Length(max=255)
     ])
 
@@ -202,7 +202,7 @@ class Curriculum(FlaskForm):
     formacion_2_titulo = StringField('', validators=[
         Length(max=100)
     ])
-    formacion_2_temas = TextAreaField('', default="Administración de operaciones\nUniversidad Complutense, Madrid\nTemas abordados durante el curso: oratoria y comunicación, sociología y psicología.", validators=[
+    formacion_2_temas = TextAreaField('', validators=[
         Length(max=255)
     ])
 
