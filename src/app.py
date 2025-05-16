@@ -524,7 +524,22 @@ def curriculum(plantilla):
         print('Error: {}'.format(e))
         return render_template('plantilla{}.html'.format(plantilla), curriculum_id = id, usuario = current_user, imagen = imagen, formulario = curriculum)
 
-
+@app.route('/eliminar_curriculum/<id_curriculum>')
+@login_required
+def eliminar_curriculum(id_curriculum):
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('SELECT id_usuario FROM curriculums WHERE id_curriculum = %s', (id_curriculum,))
+        id_usuario = cursor.fetchone()
+        if id_usuario == current_user.id:
+            cursor.execute('DELETE FROM curriculums WHERE id_curriculum = %s', (id_curriculum,))
+            mysql.connection.commit()
+            return redirect(url_for('perfil'))
+        flash('No puedes eliminar curriculums que no son tuyos.')
+        return redirect(url_for('perfil'))
+    except Exception as e:
+        flash(e)
+        return redirect(url_for('perfil'))
 
 
 @app.route('/logout')
