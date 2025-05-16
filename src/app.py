@@ -105,7 +105,7 @@ def register():
             #Aqui llevamos a cabo el registro del nuevo usuario
             else:
                 #Introducimos al usuario en la base de datos con los campos correspondientes
-                cursor.execute('INSERT INTO usuarios(nombre, apellidos, correo, clave, fecha_de_creacion, token) VALUES (%s, %s, %s, %s, %s, %s)', (nombre, apellidos, correo, clave, fecha, token))
+                cursor.execute('INSERT INTO usuarios(nombre, apellidos, correo, clave, fecha_de_creacion, token, imagen) VALUES (%s, %s, %s, %s, %s, %s, %s)', (nombre, apellidos, correo, clave, fecha, token, '../static/img/user.png'))
                 mysql.connection.commit() #Guardamos los cambios
                 print('110')
                 #Obtenemos el nuevo usuario una vez ya está registrado en la base de datos
@@ -305,8 +305,18 @@ def nueva_clave(token):
 @app.route('/perfil')
 @login_required #Esta linea significa que para poder acceder a esta interfaz debes tener la sesion iniciada, si no es asi no permitira el acceso
 def perfil():
-
-    return render_template('perfil.html', usuario = current_user)
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('SELECT id_curriculum, plantilla FROM curriculums INNER JOIN usuarios ON curriculums.id_usuario = usuarios.id WHERE usuarios.id = %s', (current_user.id,))
+        curriculums = cursor.fetchall()
+        curriculums_usuario = []
+        for curriculum in curriculums:
+            curriculums_usuario.append({'id_curriculum': curriculum[0], 'plantilla':curriculum[1]})
+            print(curriculums_usuario)
+        return render_template('perfil.html', usuario = current_user, curriculums_usuario = curriculums_usuario)
+    except Exception as e:
+        flash('Ha ocurrido un errror: {}'.format(e))
+        return render_template('perfil.html', usuario = current_user, curriculums_usuario = curriculums_usuario)
 
 #Esta es la funcion que cierra la sesión para que el usuario pueda acceder a las rutas en las que no puedes tener una sesion iniciada
 
@@ -513,6 +523,8 @@ def curriculum(plantilla):
     except Exception as e:
         print('Error: {}'.format(e))
         return render_template('plantilla{}.html'.format(plantilla), curriculum_id = id, usuario = current_user, imagen = imagen, formulario = curriculum)
+
+
 
 
 @app.route('/logout')
