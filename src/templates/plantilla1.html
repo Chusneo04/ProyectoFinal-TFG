@@ -28,11 +28,11 @@
                         <div class="w-[85%] flex flex-col gap-[10px]">
                             <div class="w-full flex items-start justify-start">
                                 <i class="fa-solid fa-location-dot text-[8px] sm:text-[10px] lg:text-[15px] sm:mt-[4px] items-center justify-center"></i>
-                                {{ formulario.direccion(value="C/Don Ramón de la Cruz, 81 Bajo D", class="text-[5px] ml-[3px] sm:text-[11px] lg:text-[15px] font-semibold w-full sm:ml-[5px]")}}
+                                {{ formulario.direccion(value=parametros.direccion, class="text-[5px] ml-[3px] sm:text-[11px] lg:text-[15px] font-semibold w-full sm:ml-[5px]")}}
                             </div>
                             <div class="w-full flex items-start justify-start">
                                 <i class="fa-solid fa-phone text-[8px] sm:text-[10px] lg:text-[15px] sm:mt-[4px] items-center justify-center"></i>
-                                {{ formulario.telefono(value="612345678", class="text-[6px] ml-[3px] sm:text-[11px] lg:text-[17px] font-semibold w-full sm:ml-[5px]")}}
+                                {{ formulario.telefono(value=parametros.telefono, class="text-[6px] ml-[3px] sm:text-[11px] lg:text-[17px] font-semibold w-full sm:ml-[5px]")}}
                             </div>
                             <div class="w-full flex items-start justify-start">
                                 <i class="fa-solid fa-paper-plane text-[8px] sm:text-[10px] lg:text-[15px] sm:mt-[4px] items-center justify-center"></i>
@@ -66,8 +66,8 @@
                         <hr class="bg-[#124459] border-none h-[2px] text-center w-full">
                         <h1 class="text-[15px] sm:text-[20px] text-[#124459] font-bold">Experiencia</h1>
 
-                        {{ formulario.experiencia_1_fechas(class="text-[11px] sm:text-[15px] lg:text-[30px]", value="Septiembre 2015-Actual") }}
-                        {{ formulario.experiencia_1_puesto(class="text-[7px] sm:text-[15px] lg:text-[20px] font-bold w-full outline-none", value="Gerente de distrito Movistar | Madrid") }}
+                        {{ formulario.experiencia_1_fechas(class="text-[11px] sm:text-[15px] lg:text-[30px]", value=parametros.experiencia_1_fechas) }}
+                        {{ formulario.experiencia_1_puesto(class="text-[7px] sm:text-[15px] lg:text-[20px] font-bold w-full outline-none", value=parametros.experiencia_1_puesto) }}
                         <div class="flex w-full gap-[3px]">
                             <div class="h-[1px] flex flex-col justify-start items-start">
                                 <p class="mt-[-18px] text-[30px] sm:mt-[-25px] sm:text-[40px] lg:mt-[-20px]">·</p>
@@ -86,8 +86,8 @@
                             </div>
                             {{ formulario.experiencia_1_labor_3(class="text-[black] max-[321px]:text-[6px] text-[10px] h-[90px] lg:text-[20px] lg:h-[12rem] sm:text-[12px] sm:h-[70px] max-[321px]:h-[40px] outline-none resize-none w-full") }}
                         </div>
-                        {{ formulario.experiencia_2_fechas(class="text-[11px] sm:text-[15px] lg:text-[30px]", value="Agosto 2005 - Septiembre 2015") }}
-                        {{ formulario.experiencia_2_puesto(class="text-[7px] sm:text-[15px] lg:text-[20px] font-bold w-full outline-none", value="Gerente de operaciones ElCorteInglés | Madrid") }}
+                        {{ formulario.experiencia_2_fechas(class="text-[11px] sm:text-[15px] lg:text-[30px]", value=parametros.experiencia_2_fechas) }}
+                        {{ formulario.experiencia_2_puesto(class="text-[7px] sm:text-[15px] lg:text-[20px] font-bold w-full outline-none", value=parametros.experiencia_2_puesto) }}
                         <div class="flex w-full gap-[3px]">
                             <div class="h-[1px] flex flex-col justify-start items-start">
                                 <p class="mt-[-18px] text-[30px] sm:mt-[-25px] sm:text-[40px]">·</p>
@@ -109,8 +109,8 @@
 
                         <hr class="bg-[#124459] border-none h-[2px] text-center w-full">
                         <h1 class="text-[15px] sm:text-[20px] lg:text-[30px] text-[#124459] font-bold">Formación</h1>
-                        {{ formulario.formacion_1_año(class="text-[12px] sm:text-[15px] lg:text-[30px] outline-none", value="2009") }}
-                        {{ formulario.formacion_1_titulo(class="text-[8px] sm:text-[15px] lg:text-[20px] font-bold w-full outline-none", value="Máster en Administración de Empresas") }}
+                        {{ formulario.formacion_1_año(class="text-[12px] sm:text-[15px] lg:text-[30px] outline-none", value=parametros.formacion_1_año) }}
+                        {{ formulario.formacion_1_titulo(class="text-[8px] sm:text-[15px] lg:text-[20px] font-bold w-full outline-none", value=parametros.formacion_1_titulo) }}
                         {{ formulario.formacion_1_temas(class="text-[black] max-[321px]:text-[6px] text-[10px] h-[90px] lg:text-[20px] lg:h-[12rem] sm:text-[12px] sm:h-[70px] max-[321px]:h-[40px] outline-none resize-none w-full") }}
 
                     </div>
