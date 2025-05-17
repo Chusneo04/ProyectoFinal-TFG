@@ -638,6 +638,71 @@ def editar_curriculum(id_curriculum):
         if curriculum[0] == current_user.id:
             print(curriculum[1])
             return render_template('plantilla{}.html'.format(curriculum[1]), usuario = current_user, formulario = formulario, imagen = imagen, parametros = parametros_por_defecto_inputs)
+        if formulario.validate_on_submit and request.method == 'POST':
+            
+            experiencia_1_fechas = request.form.get('experiencia_1_fechas')
+            experiencia_1_puesto = request.form.get('experiencia_1_puesto')
+            experiencia_1_labor_1 = request.form.get('experiencia_1_labor_1')
+            experiencia_1_labor_2 = request.form.get('experiencia_1_labor_2')
+            experiencia_1_labor_3 = request.form.get('experiencia_1_labor_3')
+
+            cursor.execute('SELECT id_experiencia FROM experiencia WHERE id_curriculum = %s', (id_curriculum))
+            
+            id_experiencia = cursor.fetchall()[0][0]
+            cursor.execute('UPDATE experiencia SET fechas = %s, puesto = %s, labor_1 = %s, labor_2 = %s, labor_3 = %s WHERE id_experiencia = %s', (experiencia_1_fechas, experiencia_1_puesto, experiencia_1_labor_1, experiencia_1_labor_2, experiencia_1_labor_3, id_experiencia))
+            mysql.connection.commit()
+            
+
+            datos_direccion = request.form.get('direccion')
+            datos_telefono = request.form.get('telefono')
+            datos_resumen_profesional = request.form.get('resumen_profesional')
+            datos_aptitud_1 = request.form.get('Aptitud_1')
+            datos_aptitud_2 = request.form.get('Aptitud_2')
+            datos_aptitud_3 = request.form.get('Aptitud_3')
+            datos_aptitud_4 = request.form.get('Aptitud_4')
+            datos_aptitud_5 = request.form.get('Aptitud_5')
+
+            cursor.execute('SELECT id_datos FROM datos WHERE id_curriculum = %s', (id_curriculum))
+            id_datos = cursor.fetchall()[0][0]
+            cursor.execute('UPDATE datos SET direccion = %s, telefono = %s, resumen_profesional = %s, aptitud_1 = %s, aptitud_2 = %s, aptitud_3 = %s, aptitud_4 = %s, aptitud_5 = %s WHERE id_datos = %s', (datos_direccion, datos_telefono, datos_resumen_profesional, datos_aptitud_1, datos_aptitud_2, datos_aptitud_3, datos_aptitud_4, datos_aptitud_5, id_datos))
+            mysql.connection.commit()
+
+            formacion_1_año = request.form.get('formacion_1_año')
+            formacion_1_titulo = request.form.get('formacion_1_titulo')
+            formacion_1_temas = request.form.get('formacion_1_temas')
+
+            cursor.execute('SELECT id_formacion FROM formacion WHERE id_curriculum = %s', (id_curriculum))
+            id_formacion = cursor.fetchall()[0][0]
+            cursor.execute('UPDATE formacion SET año = %s, titulo = %s, temas = %s WHERE id_formacion = %s', (formacion_1_año, formacion_1_titulo, formacion_1_temas, id_formacion))
+            mysql.connection.commit()
+
+            if int(id_curriculum) != 1 and int(id_curriculum) != 2 and int(id_curriculum) != 3:
+                formacion_2_año = request.form.get('formacion_2_año')
+                formacion_2_titulo = request.form.get('formacion_2_titulo')
+                formacion_2_temas = request.form.get('formacion_2_temas')
+
+                cursor.execute('SELECT id_formacion FROM formacion WHERE id_curriculum = %s', (id_curriculum))
+                id_formacion = cursor.fetchall()[-1][0]
+                cursor.execute('UPDATE formacion SET año = %s, titulo = %s, temas = %s WHERE id_formacion = %s', (formacion_2_año, formacion_2_titulo, formacion_2_temas, id_formacion))
+                mysql.connection.commit()
+                
+
+            elif int(id_curriculum) != 7 and int(id_curriculum) != 8 and int(id_curriculum) != 9:
+                experiencia_2_fechas = request.form.get('experiencia_2_fechas')
+                experiencia_2_puesto = request.form.get('experiencia_2_puesto')
+                experiencia_2_labor_1 = request.form.get('experiencia_2_labor_1')
+                experiencia_2_labor_2 = request.form.get('experiencia_2_labor_2')
+                experiencia_2_labor_3 = request.form.get('experiencia_2_labor_3')
+
+                cursor.execute('SELECT id_experiencia FROM experiencia WHERE id_curriculum = %s', (id_curriculum))
+                id_experiencia = cursor.fetchall()[-1][0]
+                print(id_experiencia)
+                cursor.execute('UPDATE experiencia SET fechas = %s, puesto = %s, labor_1 = %s, labor_2 = %s, labor_3 = %s WHERE id_experiencia = %s', (experiencia_2_fechas, experiencia_2_puesto, experiencia_2_labor_1, experiencia_2_labor_2, experiencia_2_labor_3, id_experiencia))
+                mysql.connection.commit()
+                
+            flash('Datos guardados correctamente')
+            return render_template('plantilla{}.html'.format(curriculum[1]), usuario = current_user, formulario = formulario, imagen = imagen, parametros = parametros_por_defecto_inputs)
+
         return render_template('plantilla{}.html'.format(curriculum[1]), usuario = current_user, formulario = formulario, imagen = imagen, parametros = parametros_por_defecto_inputs)
     
     except Exception as e:

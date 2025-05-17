@@ -170,7 +170,7 @@ class Curriculum(FlaskForm):
         Length(max=255)
     ])
 
-    experiencia_2_fechas = IntegerField('', validators = [
+    experiencia_2_fechas = StringField('', validators = [
         Length(max=50)
     ])
     experiencia_2_puesto = StringField('', validators = [
