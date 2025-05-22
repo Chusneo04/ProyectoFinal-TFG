@@ -24,7 +24,7 @@
 
                      </div>
                      <div class="w-full flex flex-col items-center gap-[20px] text-[white]">
-                        <img src="{{ url_for('static', filename=imagen) }}" alt="imagen de perfil de {{usuario.nombre}}" class="mt-[-40px] bg-[white] border-[1px] w-[75%] sm:mt-[-80px] lg:mt-[-110px] rounded-full static">
+                        <img src="{{ url_for('static', filename=imagen) }}" alt="imagen de perfil de {{usuario[0]}}" class="mt-[-40px] bg-[white] border-[1px] w-[75%] sm:mt-[-80px] lg:mt-[-110px] rounded-full static">
                         <div class="w-[85%] flex flex-col gap-[10px]">
                             <div class="w-full flex items-start justify-start">
                                 <i class="fa-solid fa-location-dot text-[8px] sm:text-[10px] lg:text-[15px] sm:mt-[4px] items-center justify-center"></i>
@@ -36,7 +36,7 @@
                             </div>
                             <div class="w-full flex items-start justify-start">
                                 <i class="fa-solid fa-paper-plane text-[8px] sm:text-[10px] lg:text-[15px] sm:mt-[4px] items-center justify-center"></i>
-                                <p class="text-[6px] ml-[3px] sm:text-[11px] lg:text-[17px] font-semibold w-full sm:ml-[5px]">{{ usuario.correo }}</p>
+                                <p class="text-[6px] ml-[3px] sm:text-[11px] lg:text-[17px] font-semibold w-full sm:ml-[5px]">{{ usuario_actual[0][3] }}</p>
                             </div>
                             <div class="w-full flex flex-col items-center">
                                 <hr class="text-[white] font-[extrabold] text-center w-full">
@@ -61,7 +61,7 @@
                 </div>
 
                 <div class="w-full flex flex-col items-center gap-[20px] pb-[20px]">
-                    <h1 class="text-center font-bold text-[25px] lg:text-[60px] mt-[20px]">{{ usuario.nombre }} {{ usuario.apellidos.split()[0] }}</h1>
+                    <h1 class="text-center font-bold text-[25px] lg:text-[60px] mt-[20px]">{{ usuario_actual[0][1] }} {{usuario_actual[0][2].split()[0]}}</h1>
                     <div class="w-[90%] flex flex-col gap-[5px]">
                         <hr class="bg-[#124459] border-none h-[2px] text-center w-full">
                         <h1 class="text-[15px] sm:text-[20px] text-[#124459] font-bold">Experiencia</h1>
