@@ -801,5 +801,23 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+def status_401(error):
+    if current_user.is_authenticated:
+        volver = '/perfil'
+    else:
+        volver = '/'
+    
+    return render_template('error_401.html', boton_volver = volver)
+
+def status_404(error):
+    if current_user.is_authenticated:
+        volver = '/perfil'
+    else:
+        volver = '/'
+    
+    return render_template('error_404.html', boton_volver = volver)
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.register_error_handler(401, status_401)
+    app.register_error_handler(404, status_404)
+    app.run(debug = True)

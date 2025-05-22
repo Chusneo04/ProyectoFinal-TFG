@@ -1,0 +1,34 @@
+{% extends './layout.html' %}
+
+    {% block body %}
+
+    <div class="w-full flex flex-col items-center ">
+        <header class="w-full h-[6rem] flex flex-row items-center justify-between bg-[#F2F2F2] px-[30px] text-[20px] sm:h-[7rem] lg:h-[8rem]">
+            <img src="../static/img/logo.png" alt="CURRICULUMS" class="w-[5rem]">
+            <a href="{{ boton_volver }}" class="text-[30px]">Volver</a>
+        </header>
+        
+        <!-- Obtenemos el mensaje enviado desde el flask -->
+        
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for msg in messages %}
+        <div id="usuario_existe" class="bg-gray-500 text-white p-4 rounded text-center fixed top-4 right-4 shadow-lg z-50 duration-2500 opacity-200">
+            <p>{{msg}}</p>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <div class="flex flex-col-reverse sm:flex-row md:flex-col-reverse lg:flex-row w-full justify-evenly items-center h-full">
+            <img src="../static/img/404.png" class="h-[25rem] md:h-[35rem] lg:h-[40rem] lg:mt-0">
+            <div class="w-[50%] flex flex-col items-center justify-center">
+                <h1 class="text-[60px] lg:w-[90%] min-[568px]:text-[80px] text-center font-bold italic mt-[20px]">Error 404</h1>
+                <p class="text-[50px] lg:w-[90%] min-[568px]:text-[50px] text-center italic mt-[10px] ">Página no encontrada</p>
+            </div>
+        </div>
+        
+        
+    </div>
+
+    {% endblock %}
