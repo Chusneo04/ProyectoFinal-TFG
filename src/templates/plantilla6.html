@@ -21,7 +21,7 @@
             <form id="plantilla_6" class="flex-col w-[90%] sm:w-[80%] bg-[white] mt-[50px] mb-[50px] xl:w-[60%]" method="POST" >
                 
                 <div class="h-[90px] w-full sm:h-[120px] lg:h-[8rem] bg-[#731c1c]">
-                    <h1 class="ml-[20px] font-bold text-[35px] sm:text-[40px] md:text-[50px] flex flex-col items-center justify-center text-center h-full lg:text-[60px] text-[white]">{{ usuario.nombre }} {{ usuario.apellidos.split()[0] }}</h1>
+                    <h1 class="ml-[20px] font-bold text-[35px] sm:text-[40px] md:text-[50px] flex flex-col items-center justify-center text-center h-full lg:text-[60px] text-[white]">{{ usuario_actual[0][1] }} {{ usuario_actual[0][2].split()[0] }}</h1>
 
                 </div>
                 <div class="flex flex-row">
@@ -39,7 +39,7 @@
                                 </div>
                                 <div class="w-full flex items-start justify-start">
                                     <i class="fa-solid fa-paper-plane text-[8px] sm:text-[10px] lg:text-[15px] sm:mt-[4px] items-center justify-center"></i>
-                                    <p class="text-[6px] ml-[3px] sm:text-[11px] lg:text-[17px] font-semibold w-full sm:ml-[5px]">{{ usuario.correo }}</p>
+                                    <p class="text-[6px] ml-[3px] sm:text-[11px] lg:text-[17px] font-semibold w-full sm:ml-[5px]">{{ usuario_actual[0][3] }}</p>
                                 </div>
 
                                 

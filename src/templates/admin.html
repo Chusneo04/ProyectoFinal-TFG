@@ -5,7 +5,7 @@
     <div class="w-full flex flex-col items-center">
         <header class="w-full h-[6rem] flex flex-row items-center justify-between bg-[#F2F2F2] px-[30px] text-[20px] sm:h-[7rem] lg:h-[8rem]">
             <img src="../static/img/logo.png" alt="CURRICULUMS" class="w-[5rem]">
-            <a href="/logout" class="text-[30px]">Cerrar sesión</a>
+            <a href="/perfil" class="text-[30px]">Perfil</a>
         </header>
         {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -22,16 +22,19 @@
         -->
         
         
-        <div class="w-full lg:w-[40%] flex items-center justify-evenly mt-[10px] gap-[20px]">
-            <a href="/elegir_plantilla" class="bg-[#4fa389] text-[16px] sm:text-[20px] text-[white] h-[50px] w-[8rem] sm:w-[12rem] rounded-[8px] flex items-center justify-center">Crear currículum</a>
-            <a href="/editar_perfil" class="bg-[#FFAB45] text-[16px] sm:text-[20px] text-[white] h-[50px] w-[8rem] sm:w-[12rem] rounded-[8px] flex items-center justify-center">Editar perfil</a>
-            {% if usuario.nombre == 'Administrador' %}
-            <a href="/admin" class="bg-blue-500 text-[16px] sm:text-[20px] text-[white] h-[50px] w-[8rem] sm:w-[12rem] rounded-[8px] flex items-center justify-center">Administrar</a>
-            {% endif %}
+        <div class="w-full lg:w-[40%] flex items-center justify-evenly mt-[10px]">
+            <a href="/admin/usuarios" class="bg-[#FFAB45] text-[16px] sm:text-[20px] text-[white] h-[50px] w-[8rem] sm:w-[12rem] rounded-[8px] flex items-center justify-center">Listado de usuarios</a>
         </div>
         <div class="w-full flex flex-col items-center justify-center lg:mt-[30px]">
+            {% for usuario in usuarios %}
+            {% if usuario.curriculums != [] %}
+
+            <h1 class="text-[40px] font-bold mb-[50px]">Currículums de {{ usuario['nombre'] }} {{usuario['apellidos']}}</h1>
+            {% endif %}
             <div class="w-full grid xl:grid-cols-3 place-items-center lg:gap-y-[50px]">
-                {% for curriculum in curriculums_usuario %}
+                
+
+                {% for curriculum in usuario.curriculums %}
 
                 <div>
                     <img src="../static/img/plantilla{{curriculum['plantilla']}}.png" alt="Plantilla {{ curriculum['plantilla'] }}" class=" w-[20rem] h-[27rem]">
@@ -39,12 +42,14 @@
                         <a href="/editar_curriculum/{{ curriculum['id_curriculum'] }}" class="bg-[#FFAB45] w-[50px] h-[50px] flex items-center justify-center rounded-full pointer"><i class="fa-solid fa-pen-to-square text-[white]"></i></a>
 
                         <a href="/eliminar_curriculum/{{ curriculum['id_curriculum'] }}" class="bg-[#c51818] w-[50px] h-[50px] flex items-center justify-center rounded-full pointer"><i class="fa-solid fa-trash text-[white] pointer"></i></a>
-                    
                     </div>
                 </div>
-                
+
+
                 {% endfor %}
+                
             </div>
+            {% endfor %}
         </div>
         
     </div>

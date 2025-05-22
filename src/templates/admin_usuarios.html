@@ -1,0 +1,54 @@
+{% extends './layout.html' %}
+
+    {% block body %}
+
+    <div class="min-w-full flex flex-col items-center min-h-[90vh] ">
+        <header class="w-full h-[6rem] flex flex-row items-center justify-between bg-[#F2F2F2] px-[30px] text-[20px] sm:h-[7rem] lg:h-[8rem]">
+            <img src="../static/img/logo.png" alt="CURRICULUMS" class="w-[5rem]">
+            <a href="/perfil" class="text-[30px]">Perfil</a>
+        </header>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for msg in messages %}
+        <div id="usuario_existe" class="bg-gray-500 text-white p-4 rounded text-center fixed top-4 right-4 shadow-lg z-50 duration-2500 opacity-200">
+            <p>{{msg}}</p>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <h1 class="text-[20px] sm:text-[45px] lg:text-[45px] font-bold mt-[10px]">Listado de usuarios</h1>
+        <!--
+        <p class="text-[16px] sm:text-[20px]">¿Todavia no tienes currículums? ¡Empieza a crear!</p>
+        -->
+        
+        
+        <div class="w-full lg:w-[40%] flex items-center justify-evenly mt-[10px]">
+            <a href="/admin" class="bg-blue-500 text-[16px] sm:text-[20px] text-[white] h-[50px] w-[8rem] sm:w-[12rem] rounded-[8px] flex items-center justify-center">Administrar</a>
+        </div>
+        <div class=" flex flex-col items-center justify-center mt-[30px] sm:mt-[50px] lg:mt-[30px] mb-[30px]">
+            <table class="flex flex-col">
+                <tr class="rounded-full">
+                    <th class="bg-[#FFAB45] p-[5px] text-center text-[9px] sm:text-[15px] lg:text-[25px] rounded-tl-[10px]">Nombre</th>
+                    <th class="bg-[#FFAB45] p-[5px] text-center text-[9px] sm:text-[15px] lg:text-[25px]">Apellidos</th>
+                    <th class="bg-[#FFAB45] p-[5px] text-center text-[9px] sm:text-[15px] lg:text-[25px]">Correo electrónico</th>
+                    <th class="bg-[#FFAB45] p-[5px] text-center text-[9px] sm:text-[15px] lg:text-[25px]">Fecha de creación</th>
+                    <th class="bg-[#FFAB45] p-[5px] text-center text-[9px] sm:text-[15px] lg:text-[25px] rounded-tr-[10px]">Acción</th>
+                </tr>
+                {% for usuario in usuarios %}
+                
+                <tr class="w-screen">
+                    <td class="bg-[white] p-[5px] text-center text-[9px] sm:text-[15px] lg:text-[25px]">{{ usuario[1] }}</td>
+                    <td class="bg-[white] p-[5px] text-center text-[9px] sm:text-[15px] lg:text-[25px]">{{ usuario[2] }}</td>
+                    <td class="bg-[white] p-[5px] text-center text-[9px] sm:text-[15px] lg:text-[25px]">{{ usuario[3] }}</td>
+                    <td class="bg-[white] p-[5px] text-center text-[9px] sm:text-[15px] lg:text-[25px]">{{ usuario[5] }}</td>
+                    <td class="bg-[white] p-[5px] text-center text-[9px] sm:text-[15px] lg:text-[15px]"><a href="/eliminar_usuario/{{ usuario[0] }}" class="bg-[#c51818] w-[30px] h-[30px] lg:w-[50px] lg:h-[50px] flex items-center justify-center rounded-full pointer ml-[10px]"><i class="fa-solid fa-trash text-[white] pointer"></i></a></td>
+                </tr>
+
+                {% endfor %}
+            </table>
+            
+        </div>
+        
+    </div>
+
+    {% endblock %}
