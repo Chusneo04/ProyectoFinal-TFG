@@ -18,7 +18,7 @@
         {% endwith %}
         <h1 class="text-[20px] sm:text-[45px] lg:text-[45px] font-bold mt-[10px]">Editar perfil</h1>
 
-        <form method="post" class="bg-[#CDCBCB] rounded-b-lg w-[50%] flex flex-col items-center gap-[20px] pt-[15px] pb-[15px] rounded-lg mt-[30px] mb-[30px]">
+        <form method="post" enctype="multipart/form-data" class="bg-[#CDCBCB] rounded-b-lg w-[50%] flex flex-col items-center gap-[20px] pt-[15px] pb-[15px] rounded-lg mt-[30px] mb-[30px]">
                  
             <!-- Aqui el campo del nombre -->
 
@@ -37,9 +37,18 @@
 
             <!-- Aqui el campo del correo electronico -->
 
+            {% if usuario.correo != "infocurriculum360@gmail.com" %}
+
             <div class="w-[90%] flex flex-col gap-[15px]">
                 {{ formulario.correo.label(class="text-[20px] font-bold") }}
                 {{ formulario.correo(class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic",placeholder='Introduce tu correo', value = usuario.correo) }}    
+            </div>
+
+            {% endif %}
+
+            <div class="w-[90%] flex flex-col gap-[15px]">
+                {{ formulario.imagen.label(class="text-[20px] font-bold") }}
+                {{ formulario.imagen(class="w-full h-[50px] bg-[#DCF5D6] rounded-[7px] p-[10px] text-[17px] italic cursor-[pointer]", accept="image/*") }}    
             </div>
 
             <a href="/editar_clave" class="w-[90%] underline">Si deseas cambiar la contraseña pulsa aqui</a>
