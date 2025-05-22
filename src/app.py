@@ -136,6 +136,7 @@ def register():
                     puerto_smtp = 587
                     usuario_smtp = "infocurriculum360@gmail.com"
                     clave_smtp = os.getenv('EMAIL_KEY')
+                    print("Clave SMTP obtenida:", clave_smtp)
 
                     #Preparamos el mensaje para enviarlo por correo
 
@@ -599,7 +600,7 @@ def editar_curriculum(id_curriculum):
         cursor = mysql.connection.cursor()
         cursor.execute('SELECT id_usuario, plantilla FROM curriculums WHERE id_curriculum = %s', (id_curriculum,))
         curriculum = cursor.fetchone()
-        cursor.execute('SELECT * FROM usuarios WHERE id = %s', (current_user.id,))
+        cursor.execute('SELECT * FROM usuarios WHERE id = %s', (curriculum[0],))
         usuario_actual = cursor.fetchall()
         print('HOLA')
         print(curriculum[0])
@@ -609,7 +610,7 @@ def editar_curriculum(id_curriculum):
             
             
             
-            cursor.execute('SELECT nombre, apellidos, correo FROM usuarios INNER JOIN curriculums ON usuarios.id = curriculums.id_usuario WHERE curriculums.id_curriculum = %s', (id_curriculum))
+            cursor.execute('SELECT nombre, apellidos, correo FROM usuarios INNER JOIN curriculums ON usuarios.id = curriculums.id_usuario WHERE curriculums.id_curriculum = %s', (id_curriculum,))
             usuario = cursor.fetchone()
 
             cursor.execute('SELECT imagen FROM usuarios WHERE id = %s', (curriculum[0],))
