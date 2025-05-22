@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, EmailField, TextAreaField, IntegerField
+from wtforms import StringField, PasswordField, SubmitField, EmailField, TextAreaField, FileField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
 
 class Usuario_register(FlaskForm):
@@ -84,6 +84,7 @@ class Editar_perfil(FlaskForm):
         Length(max=100),
         Email()
     ])
+    imagen = FileField('Selecciona una imagen')
 
     guardar = SubmitField('Guardar')
 

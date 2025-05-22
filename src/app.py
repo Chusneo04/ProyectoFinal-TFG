@@ -5,6 +5,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 from forms import Usuario_register, Usuario_login, Recuperar_clave_email, Nueva_Clave, Editar_perfil, Editar_clave, Clave_nueva, Contacto, Curriculum
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from flask_login import LoginManager, UserMixin, login_user, login_required, current_user, logout_user
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -24,7 +25,7 @@ app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
 app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
-carpeta_de_subida = 'static/uploads'
+carpeta_de_subida = './src/static/img'
 app.config['UPLOAD_FOLDER'] = carpeta_de_subida
 
 extensiones_permitidas = {'png', 'jpg', 'jpeg', 'gif'}
@@ -339,8 +340,19 @@ def editar_perfil():
             nombre = request.form.get('nombre')
             apellidos = request.form.get('apellidos')
             correo = request.form.get('correo')
+
+            file = request.files.get('imagen')
+            print(file)
+            if file and hasattr(file, 'filename'):
+                filename = secure_filename(file.filename)
+                filepath = os.path.normpath(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                print(filepath)
+                print("Ruta donde se intentará guardar el archivo:", os.path.abspath(filepath))
+                file.save(filepath)
+                ruta_imagen_bd = '../static/img/{}'.format(filename)
+                print(ruta_imagen_bd)
             cursor = mysql.connection.cursor()
-            cursor.execute('UPDATE usuarios SET nombre = %s, apellidos = %s, correo = %s WHERE id = %s', (nombre, apellidos, correo, id))
+            cursor.execute('UPDATE usuarios SET nombre = %s, apellidos = %s, correo = %s, imagen = %s WHERE id = %s', (nombre, apellidos, correo, ruta_imagen_bd, id))
             mysql.connection.commit()
             flash('Datos actualizados correctamente')
             return redirect(url_for('perfil'))
@@ -561,7 +573,7 @@ def curriculum(plantilla):
         return redirect(url_for('elegir_plantilla'))
     except Exception as e:
         print('Error: {}'.format(e))
-        return render_template('plantilla{}.html'.format(plantilla), usuario_actual = usuario_actual, curriculum_id = id, usuario = current_user, imagen = imagen, formulario = curriculum, parametros = parametros_por_defecto_inputs)
+        return(redirect(url_for('perfil')))
 
 @app.route('/eliminar_curriculum/<id_curriculum>')
 @login_required
@@ -587,9 +599,14 @@ def editar_curriculum(id_curriculum):
         cursor = mysql.connection.cursor()
         cursor.execute('SELECT id_usuario, plantilla FROM curriculums WHERE id_curriculum = %s', (id_curriculum,))
         curriculum = cursor.fetchone()
-        if curriculum[0] == current_user.id or current_user.correo == 'infocurriculum360@gmail.com':
-            print('HOLA')
-            print(curriculum[1])
+        cursor.execute('SELECT * FROM usuarios WHERE id = %s', (current_user.id,))
+        usuario_actual = cursor.fetchall()
+        print('HOLA')
+        print(curriculum[0])
+        print(current_user.id)
+        if str(curriculum[0]) == str(current_user.id) or current_user.correo == 'infocurriculum360@gmail.com':
+            
+            
             
             
             cursor.execute('SELECT nombre, apellidos, correo FROM usuarios INNER JOIN curriculums ON usuarios.id = curriculums.id_usuario WHERE curriculums.id_curriculum = %s', (id_curriculum))
@@ -712,13 +729,14 @@ def editar_curriculum(id_curriculum):
                 flash('Datos guardados correctamente')
                 return redirect(url_for('perfil'))            
             
-            
-            return render_template('plantilla{}.html'.format(curriculum[1]), usuario = usuario, formulario = formulario, imagen = imagen, parametros = parametros_por_defecto_inputs)
+            return render_template('plantilla{}.html'.format(curriculum[1]), usuario = usuario, usuario_actual = usuario_actual, formulario = formulario, imagen = imagen, parametros = parametros_por_defecto_inputs)
+        return render_template('plantilla{}.html'.format(curriculum[1]), usuario = usuario, usuario_actual = usuario_actual, formulario = formulario, imagen = imagen, parametros = parametros_por_defecto_inputs)
     
     except Exception as e:
         flash('Ha ocurrido un error: {}'.format(e))
         return redirect(url_for('perfil'))
-
+    
+    
 
 
 @app.route('/admin')
