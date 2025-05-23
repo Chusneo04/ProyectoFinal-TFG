@@ -16,7 +16,7 @@ recuperar_clave_bp = Blueprint('recuperar_clave', __name__)
 def recuperar_clave():
     try:
         if current_user.is_authenticated:
-            return redirect(url_for('perfil'))
+            return redirect(url_for('perfil.perfil'))
         
         cursor = mysql.connection.cursor()
         formulario_email = Recuperar_clave_email()
@@ -75,14 +75,14 @@ def nueva_clave(token):
 
     try:
         if current_user.is_authenticated:
-            return redirect(url_for('perfil'))
+            return redirect(url_for('perfil.perfil'))
         cursor = mysql.connection.cursor()
         cursor.execute('SELECT * FROM usuarios WHERE token = %s', (token,))
         usuario_existe = cursor.fetchone()
 
         if not usuario_existe:
             flash('El enlace ha caducado')
-            return redirect(url_for('recuperar_clave'))
+            return redirect(url_for('recuperar_clave.recuperar_clave'))
         else:
             formulario = Nueva_Clave()
 
@@ -99,7 +99,7 @@ def nueva_clave(token):
                 mysql.connection.commit()
                 cursor.execute('UPDATE usuarios SET token = %s WHERE token = %s', (None, token))
                 mysql.connection.commit()
-                return redirect(url_for('login'))
+                return redirect(url_for('auth.login'))
     except Exception as e:
         flash('Ha ocurrido un error')
         return render_template('nueva_clave.html', formulario = formulario)

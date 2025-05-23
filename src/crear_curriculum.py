@@ -118,7 +118,7 @@ def curriculum(plantilla):
 
                 return render_template('plantilla{}.html'.format(plantilla), usuario_actual = usuario_actual, curriculum_id = id, usuario = current_user, imagen = imagen, formulario = curriculum, parametros = parametros_por_defecto_inputs)
             return render_template('plantilla{}.html'.format(plantilla), usuario_actual = usuario_actual, curriculum_id = id, usuario = current_user, imagen = imagen, formulario = curriculum, parametros = parametros_por_defecto_inputs)
-        return redirect(url_for('elegir_plantilla'))
+        return redirect(url_for('crear_curriculum.elegir_plantilla'))
     except Exception as e:
         print('Error: {}'.format(e))
-        return(redirect(url_for('perfil')))
+        return(redirect(url_for('perfil.perfil')))

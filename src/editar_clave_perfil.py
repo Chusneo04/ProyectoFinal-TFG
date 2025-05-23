@@ -19,7 +19,7 @@ def editar_clave():
             clave_almacenada = cursor.fetchone()
             clave_introducida = request.form.get('contraseña')
             if check_password_hash(clave_almacenada[0], clave_introducida):
-                return redirect(url_for('clave_nueva'))
+                return redirect(url_for('editar_clave_perfil.clave_nueva'))
             flash('La contraseña introducida no es correcta')
         return render_template('editar_clave.html', formulario = formulario, usuario = current_user)
     except Exception as e:
@@ -41,7 +41,7 @@ def clave_nueva():
             cursor.execute('UPDATE usuarios SET clave = %s WHERE id = %s', (clave, id))
             mysql.connection.commit()
             flash('Clave actualizada correctamente')
-            return redirect(url_for('perfil'))
+            return redirect(url_for('perfil.perfil'))
     except Exception as e:
         flash('Ha ocurrido un error')
         return render_template('clave_nueva.html', formulario = formulario)

@@ -15,12 +15,12 @@ def eliminar_curriculum(id_curriculum):
         if id_usuario == current_user.id or current_user.correo == 'infocurriculum360@gmail.com':
             cursor.execute('DELETE FROM curriculums WHERE id_curriculum = %s', (id_curriculum,))
             mysql.connection.commit()
-            return redirect(url_for('perfil'))
+            return redirect(url_for('perfil.perfil'))
         flash('No puedes eliminar curriculums que no son tuyos.')
-        return redirect(url_for('perfil'))
+        return redirect(url_for('perfil.perfil'))
     except Exception as e:
         flash(e)
-        return redirect(url_for('perfil'))
+        return redirect(url_for('perfil.perfil'))
 
 @modificar_curriculum_bp.route('/editar_curriculum/<id_curriculum>', methods = ['GET', 'POST'])
 @login_required
@@ -154,11 +154,11 @@ def editar_curriculum(id_curriculum):
                     mysql.connection.commit()
                     
                 flash('Datos guardados correctamente')
-                return redirect(url_for('perfil'))            
+                return redirect(url_for('perfil.perfil'))            
             
             return render_template('plantilla{}.html'.format(curriculum[1]), usuario = usuario, usuario_actual = usuario_actual, formulario = formulario, imagen = imagen, parametros = parametros_por_defecto_inputs)
         return render_template('plantilla{}.html'.format(curriculum[1]), usuario = usuario, usuario_actual = usuario_actual, formulario = formulario, imagen = imagen, parametros = parametros_por_defecto_inputs)
     
     except Exception as e:
         flash('Ha ocurrido un error: {}'.format(e))
-        return redirect(url_for('perfil'))
+        return redirect(url_for('perfil.perfil'))

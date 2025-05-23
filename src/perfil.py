@@ -65,7 +65,7 @@ def editar_perfil():
             cursor.execute('UPDATE usuarios SET nombre = %s, apellidos = %s, correo = %s, imagen = %s WHERE id = %s', (nombre, apellidos, correo, ruta_imagen_bd, id))
             mysql.connection.commit()
             flash('Datos actualizados correctamente')
-            return redirect(url_for('perfil'))
+            return redirect(url_for('perfil.perfil'))
 
         return render_template('editar_perfil.html', usuario = current_user, formulario = formulario)
     except Exception as e:
