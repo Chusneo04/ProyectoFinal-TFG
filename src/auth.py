@@ -36,45 +36,6 @@ def load_user(id):
     return None
 
 
-@auth_bp.route('/login', methods=['GET', 'POST'])
-def login():
-    try:
-        # Verifica si el usuario ya está autenticado
-        if current_user.is_authenticated:
-            return redirect(url_for('perfil'))
-
-        cursor = mysql.connection.cursor()
-        usuario = Usuario_login()  # Carga el formulario de login
-
-        # Si los campos del formulario se validan correctamente
-        if usuario.validate_on_submit() and request.method == 'POST':
-            correo = request.form.get('correo')
-            clave = request.form.get('clave')
-
-            # Verifica si el usuario existe en la base de datos
-            cursor.execute('SELECT * FROM usuarios WHERE correo = %s', (correo,))
-            usuario_existente = cursor.fetchone()
-
-            if not usuario_existente:
-                flash('Las credenciales introducidas son incorrectas')
-                return render_template('login.html', usuario=usuario)
-            else:
-                # Compara la contraseña con el hash almacenado
-                if check_password_hash(usuario_existente[4], clave):
-                    usuario_obj = User(*usuario_existente)  # Asigna los datos del usuario
-                    login_user(usuario_obj)  # Autentica al usuario
-                    return redirect(url_for('perfil'))
-                else:
-                    flash('Las credenciales introducidas son incorrectas')
-                    return render_template('login.html', usuario=usuario)
-
-        return render_template('login.html', usuario=usuario)
-
-    except Exception as e:
-        flash(f'Error al iniciar sesión: {str(e)}')
-        return render_template('login.html', usuario=usuario)
-
-
 #Esta es la funcion de la interfaz de registro
 
 @auth_bp.route('/register', methods = ['GET', 'POST'])
@@ -84,12 +45,12 @@ def register():
         #Aqui comprobamos si el usuario ya esta autenticado, si lo está te redirije a la interfaz de perfil
 
         if current_user.is_authenticated:
-            return redirect(url_for('perfil'))
+            return redirect(url_for('perfil.perfil'))
 
 
         cursor = mysql.connection.cursor()
         usuario = Usuario_register() #Aqui traemos el formulario para llevar a cabo el registro del usuario
-        
+
         #Si todos los campos del formulario se han validado correctamente 
 
         if usuario.validate_on_submit and request.method == 'POST':
@@ -137,7 +98,7 @@ def register():
                     puerto_smtp = 587
                     usuario_smtp = "infocurriculum360@gmail.com"
                     clave_smtp = Config['EMAIL_KEY']
-                    print("Clave SMTP obtenida:", clave_smtp)
+
 
                     #Preparamos el mensaje para enviarlo por correo
 
@@ -153,13 +114,13 @@ def register():
                             server.login(usuario_smtp, clave_smtp) #Iniciamos sesion en el correo
                             server.sendmail(usuario_smtp, msg["To"], msg.as_string()) #Enviamos el mensaje de bienvenida al nuevo usuario
                             print("Correo enviado correctamente")
-                            return redirect(url_for('perfil')) #Si todo va bien redirigirá al usuario a la interfaz de perfil
+                            return redirect(url_for('perfil.perfil')) #Si todo va bien redirigirá al usuario a la interfaz de perfil
                     except Exception as e:
                         print("Error al enviar correo: {}".format(e))
                         return render_template('register.html', usuario=usuario)
 
 
-                    
+
                 return render_template('register.html', usuario=usuario) #Si algo falla te vuelve a mostrar la de registro
 
         return render_template('register.html', usuario=usuario) #Muestra la interfaz de registro y envia al html el formulario para gestionar alli el diseño   
@@ -167,6 +128,57 @@ def register():
     except:
         flash('Error al registrar')
         return render_template('register.html', usuario=usuario)
+
+@auth_bp.route('/login', methods=['GET', 'POST'])
+def login():
+    try:
+        #Aqui comprobamos si el usuario ya esta autenticado, si lo está te redirije a la interfaz de perfil
+
+        if current_user.is_authenticated:
+            return redirect(url_for('perfil.perfil'))
+
+
+        cursor = mysql.connection.cursor()
+        usuario = Usuario_login() #Aqui traemos el formulario para llevar a cabo el registro del usuario
+
+        #Si todos los campos del formulario se han validado correctamente 
+
+        if usuario.validate_on_submit and request.method == 'POST':
+
+            #Obtenemos todos los datos sobre el usuario para proceder al inicio de sesión
+
+            correo = request.form.get('correo')
+            clave = request.form.get('clave')
+
+            cursor.execute('SELECT * FROM usuarios WHERE correo = %s', (correo,)) #Aqui comprobamos si el usuario existe ya en la base de datos
+            usuario_existente = cursor.fetchone()
+
+            #Aqui le mostramos un mensaje al usuario en caso de que no esté registrado
+
+            if not usuario_existente:
+                flash('Las credenciales introducidas son incorrectas')
+                return render_template('login.html', usuario=usuario)
+
+            else:
+                #Y aqui ya llevamos a cabo el inicio de sesión para que pueda acceder a las rutas protegidas
+                print('192')
+                if check_password_hash(usuario_existente[4], clave):
+                    print('194')
+                    usuario_obj = User(usuario_existente[0], usuario_existente[1], usuario_existente[2], usuario_existente[3], usuario_existente[4], usuario_existente[5], usuario_existente[6])
+                    print('196')
+                    login_user(usuario_obj)
+                    print('198')
+                    return redirect(url_for('perfil.perfil')) #Si todo va bien redirige al usuario a la interfaz de perfil 
+                else:
+                    flash('Las credenciales introducidas son incorrectas')
+                    return render_template('login.html', usuario=usuario)
+        return render_template('login.html', usuario=usuario) #Muestra la interfaz de login y envia al html el formulario para gestionar alli el diseño   
+
+    except:
+        flash('Error al Iniciar sesión')
+        return render_template('login.html', usuario=usuario)
+
+
 
 @auth_bp.route('/logout')
 @login_required

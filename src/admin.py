@@ -10,7 +10,7 @@ admin_bp = Blueprint('admin', __name__)
 def admin():
     try:
         if current_user.correo != 'infocurriculum360@gmail.com':
-            return redirect(url_for('perfil'))
+            return redirect(url_for('perfil.perfil'))
         
         cursor = mysql.connection.cursor()
         cursor.execute('SELECT id, nombre, apellidos FROM usuarios')
@@ -30,7 +30,7 @@ def admin():
         return render_template('admin.html', usuario=current_user, usuarios=usuarios)
     except Exception as e:
         flash(f'Ha ocurrido un error: {e}')
-        return redirect(url_for('perfil'))
+        return redirect(url_for('perfil.perfil'))
 
 @admin_bp.route('/admin/usuarios')
 @login_required
@@ -42,10 +42,10 @@ def admin_usuarios():
             usuarios = cursor.fetchall()
             return render_template('admin_usuarios.html', usuarios=usuarios)
 
-        return redirect(url_for('perfil'))
+        return redirect(url_for('perfil.perfil'))
     except Exception as e:
         flash(f'Ha ocurrido un error: {e}')
-        return redirect(url_for('perfil'))
+        return redirect(url_for('perfil.perfil'))
 
 @admin_bp.route('/eliminar_usuario/<int:id>')
 @login_required
@@ -54,7 +54,7 @@ def eliminar_usuario(id):
         cursor = mysql.connection.cursor()
         cursor.execute('DELETE FROM usuarios WHERE id = %s', (id,))
         mysql.connection.commit()
-        return redirect(url_for('admin'))
+        return redirect(url_for('admin.admin'))
     except Exception:
         flash('Ha ocurrido un error')
         return redirect(url_for('admin_usuarios'))
