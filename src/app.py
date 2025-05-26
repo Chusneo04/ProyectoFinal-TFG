@@ -20,7 +20,7 @@ def create_app():
     mysql.init_app(app)
     login_manager.init_app(app)
 
-    @inicio_bp.errorhandler(401)
+    @app.errorhandler(401)
     def status_401(error):
 
         if current_user.is_authenticated:
@@ -31,7 +31,7 @@ def create_app():
 
         return render_template('error_401.html', boton_volver=boton_volver)
 
-    @inicio_bp.errorhandler(404)
+    @app.errorhandler(404)
     def status_404(error):
         if current_user.is_authenticated:
             boton_volver = '/perfil'
