@@ -8,6 +8,7 @@ from editar_clave_perfil import editar_clave_perfil_bp
 from contacto import contacto_bp
 from crear_curriculum import crear_curriculum_bp
 from modificar_curriculum import modificar_curriculum_bp
+from inicio import inicio_bp
 from admin import admin_bp
 
 def create_app():
@@ -19,6 +20,7 @@ def create_app():
     login_manager.init_app(app)
 
     # Registrar Blueprints con prefijos claros
+    app.register_blueprint(inicio_bp, url_prefix="/")
     app.register_blueprint(auth_bp, url_prefix="/")
     app.register_blueprint(recuperar_clave_bp, url_prefix="/")
     app.register_blueprint(perfil_bp, url_prefix="/")
@@ -29,3 +31,5 @@ def create_app():
     app.register_blueprint(admin_bp, url_prefix="/")
 
     return app
+
+
