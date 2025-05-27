@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask import Blueprint, render_template, redirect, url_for, flash, request, Blueprint, flash
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.security import check_password_hash
 from models import User  # Asegúrate de importar tu modelo de usuario
@@ -10,7 +10,6 @@ from datetime import datetime
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from flask import Blueprint, flash
 
 
 auth_bp = Blueprint('auth', __name__)
@@ -78,27 +77,21 @@ def register():
                 #Introducimos al usuario en la base de datos con los campos correspondientes
                 cursor.execute('INSERT INTO usuarios(nombre, apellidos, correo, clave, fecha_de_creacion, token, imagen) VALUES (%s, %s, %s, %s, %s, %s, %s)', (nombre, apellidos, correo, clave, fecha, token, '../static/img/user.png'))
                 mysql.connection.commit() #Guardamos los cambios
-                print('110')
                 #Obtenemos el nuevo usuario una vez ya está registrado en la base de datos
 
                 cursor.execute('SELECT id, nombre, apellidos, correo, clave, fecha_de_creacion, token FROM usuarios WHERE correo = %s', (correo,))
                 nuevo_usuario = cursor.fetchone()
-                print('111')
                 #Y aqui ya llevamos a cabo el inicio de sesión para que pueda acceder a las rutas protegidas
                 if nuevo_usuario:
-                    print('Hola')
                     usuario_obj = User(nuevo_usuario[0], nuevo_usuario[1], nuevo_usuario[2], nuevo_usuario[3], nuevo_usuario[4], nuevo_usuario[5], nuevo_usuario[6])
-                    print('Adios')
-                    print(type(nuevo_usuario[3]))
                     login_user(usuario_obj)
-                    print('112')
+
                     #Preparamos las credenciales del correo para poder enviar correos
 
                     servidor_smtp = "smtp.gmail.com"
                     puerto_smtp = 587
                     usuario_smtp = "infocurriculum360@gmail.com"
-                    clave_smtp = Config['EMAIL_KEY']
-
+                    clave_smtp = Config.EMAIL_KEY
 
                     #Preparamos el mensaje para enviarlo por correo
 
@@ -106,9 +99,11 @@ def register():
                     msg['From'] = usuario_smtp
                     msg['To'] = nuevo_usuario[3]
                     msg['Subject'] = "Bienvenido {}".format(nuevo_usuario[1])
-                    mensaje = "¡Bienvenido/a a Curriculum360! Nos alegra que formes parte de nuestra comunidad.Aquí encontrarás herramientas para mejorar tu perfil profesional, organizar tu experiencia y destacar tu talento. Nos comprometemos a ayudarte en cada paso del camino."
+                    mensaje = "¡Bienvenido/a a Curriculum360!\n\n Nos alegra que formes parte de nuestra comunidad. Aquí encontrarás herramientas para mejorar tu perfil profesional, organizar tu experiencia y destacar tu talento. Nos comprometemos a ayudarte en cada paso del camino."
                     msg.attach(MIMEText(mensaje, "plain")) #Esto introduce el mensaje de la linea superior en el cuerpo del correo
+                    print('110')
                     try:
+                        print('112')
                         with smtplib.SMTP(servidor_smtp, puerto_smtp) as server:
                             server.starttls() #Iniciamos la conexion con seguridad 
                             server.login(usuario_smtp, clave_smtp) #Iniciamos sesion en el correo
@@ -184,4 +179,4 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('index.index'))
+    return redirect(url_for('inicio.index'))

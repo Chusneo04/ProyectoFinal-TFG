@@ -36,7 +36,7 @@ def contacto():
             servidor_smtp = "smtp.gmail.com"
             puerto_smtp = 587
             usuario_smtp = "infocurriculum360@gmail.com"
-            clave_smtp = Config['EMAIL_KEY']
+            clave_smtp = Config.EMAIL_KEY
 
             #Preparamos el mensaje para enviarlo por correo
 
