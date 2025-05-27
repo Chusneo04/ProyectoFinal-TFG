@@ -49,13 +49,16 @@ def editar_perfil():
             id = current_user.id
             nombre = request.form.get('nombre')
             apellidos = request.form.get('apellidos')
-            correo = request.form.get('correo')
+            if current_user.correo == 'infocurriculum360@gmail.com':
+                correo = current_user.correo
+            else:
+                correo = request.form.get('correo')
 
             file = request.files.get('imagen')
             print(file)
             if file and hasattr(file, 'filename'):
                 filename = secure_filename(file.filename)
-                filepath = os.path.normpath(os.path.join(Config['UPLOAD_FOLDER'], filename))
+                filepath = os.path.normpath(os.path.join(Config.UPLOAD_FOLDER, filename))
                 print(filepath)
                 print("Ruta donde se intentará guardar el archivo:", os.path.abspath(filepath))
                 file.save(filepath)
