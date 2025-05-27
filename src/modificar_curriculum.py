@@ -11,8 +11,10 @@ def eliminar_curriculum(id_curriculum):
     try:
         cursor = mysql.connection.cursor()
         cursor.execute('SELECT id_usuario FROM curriculums WHERE id_curriculum = %s', (id_curriculum,))
-        id_usuario = cursor.fetchone()
-        if id_usuario == current_user.id or current_user.correo == 'infocurriculum360@gmail.com':
+        id_usuario = cursor.fetchone()[0]
+        print('ID USUARIO: {}'.format(id_usuario))
+        print('USUARIO ACTUAL: {}'.format(current_user.id))
+        if str(id_usuario) == str(current_user.id) or current_user.correo == 'infocurriculum360@gmail.com':
             cursor.execute('DELETE FROM curriculums WHERE id_curriculum = %s', (id_curriculum,))
             mysql.connection.commit()
             return redirect(url_for('perfil.perfil'))
