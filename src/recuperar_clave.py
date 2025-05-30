@@ -36,7 +36,7 @@ def recuperar_clave():
                 cursor = mysql.connection.cursor()
                 cursor.execute('UPDATE usuarios SET token = %s WHERE correo = %s', (token, correo))
                 mysql.connection.commit()
-                reset_url = url_for('nueva_clave', token = token, _external = True)
+                reset_url = url_for('recuperar_clave.nueva_clave', token = token, _external = True)
 
                 #Preparamos las credenciales del correo para poder enviar correos
 

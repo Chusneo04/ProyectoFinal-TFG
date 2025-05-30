@@ -95,8 +95,9 @@ def curriculum(plantilla):
                 cursor.execute('INSERT INTO formacion(id_curriculum, año, titulo, temas) VALUES (%s, %s, %s, %s)', (id_curriculum, formacion_1_año, formacion_1_titulo, formacion_1_temas))
                 mysql.connection.commit()
 
+                print(int(id_curriculum))
 
-                if int(id_curriculum) != 1 and int(id_curriculum) != 2 and int(id_curriculum) != 3:
+                if int(plantilla) != 1 and int(plantilla) != 2 and int(plantilla) != 3:
                     formacion_2_año = request.form.get('formacion_2_año')
                     formacion_2_titulo = request.form.get('formacion_2_titulo')
                     formacion_2_temas = request.form.get('formacion_2_temas')
@@ -104,7 +105,8 @@ def curriculum(plantilla):
                     cursor.execute('INSERT INTO formacion(id_curriculum, año, titulo, temas) VALUES (%s, %s, %s, %s)', (id_curriculum, formacion_2_año, formacion_2_titulo, formacion_2_temas))
                     mysql.connection.commit()
  
-                elif int(id_curriculum) != 7 and int(id_curriculum) != 8 and int(id_curriculum) != 9:
+                elif int(plantilla) != 7 and int(plantilla) != 8 and int(plantilla) != 9:
+                    print('108')
                     experiencia_2_fechas = request.form.get('experiencia_2_fechas')
                     experiencia_2_puesto = request.form.get('experiencia_2_puesto')
                     experiencia_2_labor_1 = request.form.get('experiencia_2_labor_1')
