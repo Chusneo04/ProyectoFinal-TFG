@@ -55,6 +55,7 @@ def editar_perfil():
                 correo = request.form.get('correo')
 
             file = request.files.get('imagen')
+            
             print(file)
             if file and hasattr(file, 'filename'):
                 filename = secure_filename(file.filename)
@@ -64,8 +65,13 @@ def editar_perfil():
                 file.save(filepath)
                 ruta_imagen_bd = '../static/img/{}'.format(filename)
                 print(ruta_imagen_bd)
+                cursor = mysql.connection.cursor()
+                cursor.execute('UPDATE usuarios SET nombre = %s, apellidos = %s, correo = %s, imagen = %s WHERE id = %s', (nombre, apellidos, correo, ruta_imagen_bd, id))
+                mysql.connection.commit()
+                flash('Datos actualizados correctamente')
+                return redirect(url_for('perfil.perfil'))
             cursor = mysql.connection.cursor()
-            cursor.execute('UPDATE usuarios SET nombre = %s, apellidos = %s, correo = %s, imagen = %s WHERE id = %s', (nombre, apellidos, correo, ruta_imagen_bd, id))
+            cursor.execute('UPDATE usuarios SET nombre = %s, apellidos = %s, correo = %s WHERE id = %s', (nombre, apellidos, correo, id))
             mysql.connection.commit()
             flash('Datos actualizados correctamente')
             return redirect(url_for('perfil.perfil'))
