@@ -52,8 +52,11 @@ def admin_usuarios():
 def eliminar_usuario(id):
     try:
         cursor = mysql.connection.cursor()
-        cursor.execute('DELETE FROM usuarios WHERE id = %s', (id,))
-        mysql.connection.commit()
+        if str(id) != str(current_user.id):
+            cursor.execute('DELETE FROM usuarios WHERE id = %s', (id,))
+            mysql.connection.commit()
+            return redirect(url_for('admin.admin'))
+        flash('No se puede borrar el usuario administrador')
         return redirect(url_for('admin.admin'))
     except Exception:
         flash('Ha ocurrido un error')

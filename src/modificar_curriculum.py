@@ -12,8 +12,6 @@ def eliminar_curriculum(id_curriculum):
         cursor = mysql.connection.cursor()
         cursor.execute('SELECT id_usuario FROM curriculums WHERE id_curriculum = %s', (id_curriculum,))
         id_usuario = cursor.fetchone()[0]
-        print('ID USUARIO: {}'.format(id_usuario))
-        print('USUARIO ACTUAL: {}'.format(current_user.id))
         if str(id_usuario) == str(current_user.id) or current_user.correo == 'infocurriculum360@gmail.com':
             cursor.execute('DELETE FROM curriculums WHERE id_curriculum = %s', (id_curriculum,))
             mysql.connection.commit()
@@ -21,7 +19,7 @@ def eliminar_curriculum(id_curriculum):
         flash('No puedes eliminar curriculums que no son tuyos.')
         return redirect(url_for('perfil.perfil'))
     except Exception as e:
-        flash(e)
+        flash('No existe ese currículum')
         return redirect(url_for('perfil.perfil'))
 
 @modificar_curriculum_bp.route('/editar_curriculum/<id_curriculum>', methods = ['GET', 'POST'])
@@ -131,7 +129,10 @@ def editar_curriculum(id_curriculum):
                 cursor.execute('UPDATE formacion SET año = %s, titulo = %s, temas = %s WHERE id_formacion = %s', (formacion_1_año, formacion_1_titulo, formacion_1_temas, id_formacion))
                 mysql.connection.commit()
 
-                if int(id_curriculum) != 1 and int(id_curriculum) != 2 and int(id_curriculum) != 3:
+                cursor.execute('SELECT plantilla FROM curriculums WHERE id_curriculum = %s', (id_curriculum,))
+                plantilla = cursor.fetchone()[0]
+
+                if int(plantilla) != 1 and int(plantilla) != 2 and int(plantilla) != 3:
                     formacion_2_año = request.form.get('formacion_2_año')
                     formacion_2_titulo = request.form.get('formacion_2_titulo')
                     formacion_2_temas = request.form.get('formacion_2_temas')
@@ -142,7 +143,7 @@ def editar_curriculum(id_curriculum):
                     mysql.connection.commit()
                     
 
-                elif int(id_curriculum) != 7 and int(id_curriculum) != 8 and int(id_curriculum) != 9:
+                elif int(plantilla) != 7 and int(plantilla) != 8 and int(plantilla) != 9:
                     experiencia_2_fechas = request.form.get('experiencia_2_fechas')
                     experiencia_2_puesto = request.form.get('experiencia_2_puesto')
                     experiencia_2_labor_1 = request.form.get('experiencia_2_labor_1')
@@ -162,5 +163,5 @@ def editar_curriculum(id_curriculum):
         return render_template('plantilla{}.html'.format(curriculum[1]), usuario = usuario, usuario_actual = usuario_actual, formulario = formulario, imagen = imagen, parametros = parametros_por_defecto_inputs)
     
     except Exception as e:
-        flash('Ha ocurrido un error: {}'.format(e))
+        flash('No puedes editar curriculums que no sean tuyos')
         return redirect(url_for('perfil.perfil'))
