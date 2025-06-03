@@ -16,21 +16,21 @@
         {% endfor %}
         {% endif %}
         {% endwith %}
-        <h1 class="text-[20px] sm:text-[45px] lg:text-[45px] font-bold mt-[10px]">Bienvenido a tu perfil, {{usuario.nombre}}</h1>
+        <h1 class="text-[20px] sm:text-[45px] text-center lg:text-[45px] font-bold mt-[10px]">Bienvenido a tu perfil, {{usuario.nombre}}</h1>
         <!--
         <p class="text-[16px] sm:text-[20px]">¿Todavia no tienes currículums? ¡Empieza a crear!</p>
         -->
         
         
-        <div class="w-full lg:w-[40%] flex items-center justify-evenly mt-[10px] gap-[20px]">
+        <div class="w-full lg:w-[40%] flex flex-wrap items-center justify-evenly mt-[10px] gap-[20px]">
             <a href="/elegir_plantilla" class="bg-[#4fa389] text-[16px] sm:text-[20px] text-[white] h-[50px] w-[8rem] sm:w-[12rem] rounded-[8px] flex items-center justify-center">Crear currículum</a>
             <a href="/editar_perfil" class="bg-[#FFAB45] text-[16px] sm:text-[20px] text-[white] h-[50px] w-[8rem] sm:w-[12rem] rounded-[8px] flex items-center justify-center">Editar perfil</a>
             {% if usuario.nombre == 'Administrador' %}
             <a href="/admin" class="bg-blue-500 text-[16px] sm:text-[20px] text-[white] h-[50px] w-[8rem] sm:w-[12rem] rounded-[8px] flex items-center justify-center">Administrar</a>
             {% endif %}
         </div>
-        <div class="w-full flex flex-col items-center justify-center lg:mt-[30px]">
-            <div class="w-full grid xl:grid-cols-3 place-items-center lg:gap-y-[50px]">
+        <div class="w-full flex flex-col items-center justify-center lg:mt-[30px] mt-[30px]">
+            <div class="w-full grid xl:grid-cols-3 place-items-center lg:gap-y-[50px] mb-[30px]">
                 {% for curriculum in curriculums_usuario %}
 
                 <div>
