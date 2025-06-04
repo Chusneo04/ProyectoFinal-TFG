@@ -56,10 +56,27 @@ def register():
 
             #Obtenemos todos los datos sobre el usuario para almacenarlo en la base de datos en caso de que no exista previamente
 
-            nombre = request.form.get('nombre')
-            apellidos = request.form.get('apellidos')
+            nombre = request.form.get('nombre').strip()
+            
+
+            apellidos = request.form.get('apellidos').strip()
+            
+            
             correo = request.form.get('correo')
             clave = request.form.get('clave')
+            
+
+            if not nombre.replace(' ', '').isalpha() or not apellidos.replace(' ', '').isalpha() or ' ' in clave:
+                if not nombre.replace(' ', '').isalpha():
+                    flash('El nombre debe contener solo letras')
+                if not apellidos.replace(' ', '').isalpha():
+                    flash('Los apellidos deben ser solo letras')
+                if ' ' in clave:
+                    flash('No deben haber espacios en la clave')
+
+                return render_template('register.html', usuario=usuario)   
+            
+            
             clave = generate_password_hash(clave)
             fecha = datetime.now()
             token = None
