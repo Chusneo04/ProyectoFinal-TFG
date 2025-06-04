@@ -1,72 +1,63 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request, Blueprint, flash
+from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, current_user, login_required
-from werkzeug.security import check_password_hash
-from models import User  # Asegúrate de importar tu modelo de usuario
-from forms import Usuario_login, Usuario_register  # Importa tu formulario
+from werkzeug.security import check_password_hash, generate_password_hash
+from models import User
+from forms import Usuario_login, Usuario_register  
 from config import Config
 from extensions import mysql, login_manager
-from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 
-auth_bp = Blueprint('auth', __name__)
+auth_bp = Blueprint('auth', __name__)  # Creamos el blueprint
 
 
-#Aqui tenemos la funcion con la que se carga el usuario para poder gestionar la sesión
+# Funcion que carga el usuario para gestionar la sesión con Flask-Login
 @login_manager.user_loader
 def load_user(id):
     try:
-        cursor = mysql.connection.cursor() #Aqui abrimos el cursor de la base de datos
-        cursor.execute("SELECT id, nombre, apellidos, correo, clave, fecha_de_creacion, token FROM usuarios WHERE id = %s", (id,)) #Aqui obtenemos el usuario para comprobar si existe en la base de datos
-        user = cursor.fetchone() #Aqui se introducen en una variable los campos que le hemos pedido sobre el usuario en la linea anterior
-        cursor.close() #Cerramos el cursor
+        cursor = mysql.connection.cursor()  # Abrimos cursor para la base de datos
+        # Consultamos al usuario por su id
+        cursor.execute("SELECT id, nombre, apellidos, correo, clave, fecha_de_creacion, token FROM usuarios WHERE id = %s", (id,))
+        user = cursor.fetchone()  # Guardamos el resultado
+        cursor.close()  # Cerramos el cursor
 
-    #En las 3 siguientes lineas gestionamos una excepcion para que en caso de haber cualquier tipo de error en la busqueda del usuario nos devuelva un mensaje de error
     except Exception as error:
-        flash("Error al cargar usuario")
+        flash("Error al cargar usuario")  # Mostramos mensaje de error por pantalla si falla algo
         return None
     
-    #Aqui nos devuelve el usuario en caso de que haya salido todo correcto y sin que haya saltado la excepción anterior
+    # Si se encuentra el usuario, devolvemos un objeto User con todos sus datos
     if user:
         return User(user[0], user[1], user[2], user[3], user[4], user[5], user[6])
     return None
 
 
-#Esta es la funcion de la interfaz de registro
-
-@auth_bp.route('/register', methods = ['GET', 'POST'])
+# Creamos la ruta register
+@auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
-
     try:
-        #Aqui comprobamos si el usuario ya esta autenticado, si lo está te redirije a la interfaz de perfil
-
+        # Si ya estamos autenticados nos manda directo al perfil
         if current_user.is_authenticated:
             return redirect(url_for('perfil.perfil'))
 
-
         cursor = mysql.connection.cursor()
-        usuario = Usuario_register() #Aqui traemos el formulario para llevar a cabo el registro del usuario
+        usuario = Usuario_register()  # Obtenemos el formulario del registrro
 
-        #Si todos los campos del formulario se han validado correctamente 
-
+        # Comprobamos que el formulario se haya enviado y sea válido
         if usuario.validate_on_submit and request.method == 'POST':
 
-            #Obtenemos todos los datos sobre el usuario para almacenarlo en la base de datos en caso de que no exista previamente
-
-            nombre = request.form.get('nombre').strip()
-            
-
-            apellidos = request.form.get('apellidos').strip()
-            
-            
+            # Obtenemos los datos del formulario 
+            nombre = request.form.get('nombre').strip() # El strip quita los posibles espacios que puedan haber al princcipio y final
+            apellidos = request.form.get('apellidos').strip() # El strip quita los posibles espacios que puedan haber al principio y final
             correo = request.form.get('correo')
             clave = request.form.get('clave')
-            
 
+            # Validamos que nombre y apellidos solo tengan letras y si hay espacios que esten en el interior y no al principio y final y que la clave no tenga espacios
             if not nombre.replace(' ', '').isalpha() or not apellidos.replace(' ', '').isalpha() or ' ' in clave:
+                
+                #Aqui abajo depende lo que falle muestra el error o errores que corresponda por pantalla
                 if not nombre.replace(' ', '').isalpha():
                     flash('El nombre debe contener solo letras')
                 if not apellidos.replace(' ', '').isalpha():
@@ -74,126 +65,119 @@ def register():
                 if ' ' in clave:
                     flash('No deben haber espacios en la clave')
 
-                return render_template('register.html', usuario=usuario)   
+                return render_template('register.html', usuario=usuario) # Muestra la interfaz de registro con los mensajes correspondientes por pantalla
             
-            
+            # Encriptamos la clave para guardarla en la base de datos de manera segura
             clave = generate_password_hash(clave)
-            fecha = datetime.now()
-            token = None
+            fecha = datetime.now() # La fecha de creación del usuario
+            token = None # Y token que no tiene ningun valor por ahora
 
-            cursor.execute('SELECT * FROM usuarios WHERE correo = %s', (correo,)) #Aqui comprobamos si el usuario existe ya en la base de datos
+            # Comprobamos si el correo ya existe en la base de datos
+            cursor.execute('SELECT * FROM usuarios WHERE correo = %s', (correo,))
             usuario_existente = cursor.fetchone()
 
-            #Aqui le mostramos un mensaje al usuario en caso de que ya esté registrado anteriormente
-
             if usuario_existente:
-                flash('El usuario ya existe')
-
-            #Aqui llevamos a cabo el registro del nuevo usuario
+                flash('El usuario ya existe') # Si el usuario existe muestra un mensaje por pantalla
             else:
-                #Introducimos al usuario en la base de datos con los campos correspondientes
-                cursor.execute('INSERT INTO usuarios(nombre, apellidos, correo, clave, fecha_de_creacion, token, imagen) VALUES (%s, %s, %s, %s, %s, %s, %s)', (nombre, apellidos, correo, clave, fecha, token, '../static/img/user.png'))
-                mysql.connection.commit() #Guardamos los cambios
-                #Obtenemos el nuevo usuario una vez ya está registrado en la base de datos
+                # Guardamos el usuario en la base de datos
+                cursor.execute(
+                    'INSERT INTO usuarios(nombre, apellidos, correo, clave, fecha_de_creacion, token, imagen) VALUES (%s, %s, %s, %s, %s, %s, %s)', 
+                    (nombre, apellidos, correo, clave, fecha, token, '../static/img/user.png')
+                )
+                mysql.connection.commit()  # Guardamos los cambios
 
+                # Recuperamos al usuario recién registrado para hacer login automático
                 cursor.execute('SELECT id, nombre, apellidos, correo, clave, fecha_de_creacion, token FROM usuarios WHERE correo = %s', (correo,))
                 nuevo_usuario = cursor.fetchone()
-                #Y aqui ya llevamos a cabo el inicio de sesión para que pueda acceder a las rutas protegidas
+
                 if nuevo_usuario:
                     usuario_obj = User(nuevo_usuario[0], nuevo_usuario[1], nuevo_usuario[2], nuevo_usuario[3], nuevo_usuario[4], nuevo_usuario[5], nuevo_usuario[6])
-                    login_user(usuario_obj)
+                    login_user(usuario_obj)  # Iniciamos sesión automáticamente
 
-                    #Preparamos las credenciales del correo para poder enviar correos
-
+                    # Configuramos los datos para enviar el correo de bienvenida
                     servidor_smtp = "smtp.gmail.com"
                     puerto_smtp = 587
                     usuario_smtp = "infocurriculum360@gmail.com"
-                    clave_smtp = Config.EMAIL_KEY
+                    clave_smtp = Config.EMAIL_KEY #Obtiene la clave para poder iniciar sesion
 
-                    #Preparamos el mensaje para enviarlo por correo
-
+                    # Construimos el mensaje del correo
                     msg = MIMEMultipart()
-                    msg['From'] = usuario_smtp
-                    msg['To'] = nuevo_usuario[3]
-                    msg['Subject'] = "Bienvenido {}".format(nuevo_usuario[1])
-                    mensaje = "¡Bienvenido/a a Curriculum360!\n\n Nos alegra que formes parte de nuestra comunidad. Aquí encontrarás herramientas para mejorar tu perfil profesional, organizar tu experiencia y destacar tu talento. Nos comprometemos a ayudarte en cada paso del camino."
-                    msg.attach(MIMEText(mensaje, "plain")) #Esto introduce el mensaje de la linea superior en el cuerpo del correo
-                    print('110')
+                    msg['From'] = usuario_smtp #Correo remitente
+                    msg['To'] = nuevo_usuario[3] #Correo destinatario
+                    msg['Subject'] = "Bienvenido {}".format(nuevo_usuario[1]) #Asunto
+                    mensaje = ("¡Bienvenido/a a Curriculum360!\n\n"
+                               "Nos alegra que formes parte de nuestra comunidad. "
+                               "Aquí encontrarás herramientas para mejorar tu perfil profesional, "
+                               "organizar tu experiencia y destacar tu talento. "
+                               "Nos comprometemos a ayudarte en cada paso del camino.") #Mensaje de bienvenida
+                    msg.attach(MIMEText(mensaje, "plain")) #Se introduce el propio mensaje de bienvenida en el conjunto del mensaje que hay que enviar
+
                     try:
-                        print('112')
                         with smtplib.SMTP(servidor_smtp, puerto_smtp) as server:
-                            server.starttls() #Iniciamos la conexion con seguridad 
-                            server.login(usuario_smtp, clave_smtp) #Iniciamos sesion en el correo
-                            server.sendmail(usuario_smtp, msg["To"], msg.as_string()) #Enviamos el mensaje de bienvenida al nuevo usuario
+                            server.starttls()  # Iniciamos conexión segura
+                            server.login(usuario_smtp, clave_smtp)  # Login en el servidor SMTP
+                            server.sendmail(usuario_smtp, msg["To"], msg.as_string())  # Enviamos el correo
                             print("Correo enviado correctamente")
-                            return redirect(url_for('perfil.perfil')) #Si todo va bien redirigirá al usuario a la interfaz de perfil
+                            return redirect(url_for('perfil.perfil'))  # Redirigimos al perfil
                     except Exception as e:
-                        print("Error al enviar correo: {}".format(e))
+                        print(f"Error al enviar correo: {e}")
                         return render_template('register.html', usuario=usuario)
 
+                return render_template('register.html', usuario=usuario)  # Si falla, volvemos a mostrar registro
 
-
-                return render_template('register.html', usuario=usuario) #Si algo falla te vuelve a mostrar la de registro
-
-        return render_template('register.html', usuario=usuario) #Muestra la interfaz de registro y envia al html el formulario para gestionar alli el diseño   
+        # Si no es POST o no es válido, mostramos el formulario vacío
+        return render_template('register.html', usuario=usuario)
 
     except:
         flash('Error al registrar')
         return render_template('register.html', usuario=usuario)
 
+
+# Ruta para iniciar sesión
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     try:
-        #Aqui comprobamos si el usuario ya esta autenticado, si lo está te redirije a la interfaz de perfil
-
+        # Si ya estamos logueados, nos manda directo al perfil
         if current_user.is_authenticated:
             return redirect(url_for('perfil.perfil'))
 
-
         cursor = mysql.connection.cursor()
-        usuario = Usuario_login() #Aqui traemos el formulario para llevar a cabo el registro del usuario
+        usuario = Usuario_login()  # Obtenemos el formulario de login
 
-        #Si todos los campos del formulario se han validado correctamente 
-
+        # Comprobamos que el formulario sea válido y se haya enviado por POST
         if usuario.validate_on_submit and request.method == 'POST':
-
-            #Obtenemos todos los datos sobre el usuario para proceder al inicio de sesión
 
             correo = request.form.get('correo')
             clave = request.form.get('clave')
 
-            cursor.execute('SELECT * FROM usuarios WHERE correo = %s', (correo,)) #Aqui comprobamos si el usuario existe ya en la base de datos
+            # Buscamos al usuario en la base de datos por correo
+            cursor.execute('SELECT * FROM usuarios WHERE correo = %s', (correo,))
             usuario_existente = cursor.fetchone()
-
-            #Aqui le mostramos un mensaje al usuario en caso de que no esté registrado
 
             if not usuario_existente:
                 flash('Las credenciales introducidas son incorrectas')
                 return render_template('login.html', usuario=usuario)
-
             else:
-                #Y aqui ya llevamos a cabo el inicio de sesión para que pueda acceder a las rutas protegidas
-                print('192')
+                # Verificamos la contraseña usando el hash guardado
                 if check_password_hash(usuario_existente[4], clave):
-                    print('194')
                     usuario_obj = User(usuario_existente[0], usuario_existente[1], usuario_existente[2], usuario_existente[3], usuario_existente[4], usuario_existente[5], usuario_existente[6])
-                    print('196')
-                    login_user(usuario_obj)
-                    print('198')
-                    return redirect(url_for('perfil.perfil')) #Si todo va bien redirige al usuario a la interfaz de perfil 
+                    login_user(usuario_obj)  # Iniciamos sesión
+                    return redirect(url_for('perfil.perfil'))  # Redirigimos al perfil
                 else:
                     flash('Las credenciales introducidas son incorrectas')
                     return render_template('login.html', usuario=usuario)
-        return render_template('login.html', usuario=usuario) #Muestra la interfaz de login y envia al html el formulario para gestionar alli el diseño   
+
+        # Si no es POST o formulario inválido, mostramos la página de login
+        return render_template('login.html', usuario=usuario)
 
     except:
-        flash('Error al Iniciar sesión')
+        flash('Error al iniciar sesión')
         return render_template('login.html', usuario=usuario)
 
 
-
+# Ruta para cerrar sesión, solo accesible si estás logueado
 @auth_bp.route('/logout')
 @login_required
 def logout():
-    logout_user()
-    return redirect(url_for('inicio.index'))
+    logout_user()  # Cerramos la sesión del usuario
+    return redirect(url_for('inicio.index'))  # Redirigimos al inicio
