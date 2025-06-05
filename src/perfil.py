@@ -50,19 +50,39 @@ def allowed_file(filename):
 def editar_perfil():
     try:
         formulario = Editar_perfil()  # Se obtiene el formulario para editar el perfil
-
+        
         # Si se envía el formulario por POST y pasa la validación...
         if formulario.validate_on_submit and request.method == 'POST':
             id = current_user.id  # ID del usuario actual
-            nombre = request.form.get('nombre')  # Nuevo nombre
-            apellidos = request.form.get('apellidos')  # Nuevos apellidos
+            nombre = request.form.get('nombre').strip()  # Nuevo nombre
+            apellidos = request.form.get('apellidos').strip()  # Nuevos apellidos
+            
 
             # Si el usuario es el administrador, no puede cambiar su correo
             if current_user.correo == 'infocurriculum360@gmail.com':
                 correo = current_user.correo
             else:
                 correo = request.form.get('correo')  # Nuevo correo
+            # Validamos que nombre y apellidos solo tengan letras y si hay espacios que esten en el interior y no al principio y final y que la clave no tenga espacios
+            cursor = mysql.connection.cursor()
+            cursor.execute('SELECT * FROM usuarios WHERE correo = %s', (correo,))
+            usuario_existente = cursor.fetchone()
+            #Comprobamos que el correo no es el del usuario actual, en ese caso declaramos que usuario_existente es false para que no entre en el condicional de los mensajes de error
+            if correo == current_user.correo:
+                usuario_existente = False
+            
+            if not nombre.replace(' ', '').isalpha() or not apellidos.replace(' ', '').isalpha() or usuario_existente:
+                
+                #Aqui abajo depende lo que falle muestra el error o errores que corresponda por pantalla
+                if not nombre.replace(' ', '').isalpha():
+                    flash('El nombre debe contener solo letras')
+                if not apellidos.replace(' ', '').isalpha():
+                    flash('Los apellidos deben ser solo letras')
+                if usuario_existente:
+                    flash('El correo ya esta en uso')
+                return render_template('editar_perfil.html', formulario=formulario) # Muestra la interfaz de editar perfil con los mensajes correspondientes por pantalla
 
+            
             # Se intenta obtener la imagen del formulario
             file = request.files.get('imagen')
 
@@ -83,11 +103,12 @@ def editar_perfil():
                                (nombre, apellidos, correo, ruta_imagen_bd, id))
                 mysql.connection.commit()
                 cursor.close()
+                
                 flash('Datos actualizados correctamente') # Muestra un mensaje de que todo se ha actualizado bien
                 return redirect(url_for('perfil.perfil'))
 
             # Si no se subió imagen, solo actualiza nombre, apellidos y correo
-            cursor = mysql.connection.cursor()
+            
             cursor.execute('UPDATE usuarios SET nombre = %s, apellidos = %s, correo = %s WHERE id = %s',
                            (nombre, apellidos, correo, id))
             mysql.connection.commit()
