@@ -13,13 +13,14 @@
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         {% for msg in messages %}
+        <!-- Mensajes que envia el backend por pantalla -->
         <div id="usuario_existe" class="bg-gray-500 text-white p-4 rounded text-center fixed top-4 right-4 shadow-lg z-50 duration-2500 opacity-200">
             <p>{{msg}}</p>
         </div>
         {% endfor %}
         {% endif %}
         {% endwith %}
-
+        <!-- Se muestran las imagenes de todas las plantillas -->
         <h1 class="text-[30px] w-[90%] min-[568px]:text-[40px] text-center font-bold italic mt-[20px] mb-[20px]">Elige una plantilla</h1>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-items-center w-full gap-[50px]">
             <div class="relative group bg-gray-300 flex items-center justify-center overflow-hidden">

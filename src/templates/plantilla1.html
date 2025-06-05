@@ -10,15 +10,19 @@
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         {% for msg in messages %}
+
+        <!-- Mensajes que envia el backend por pantalla -->
         <div id="usuario_existe" class="bg-gray-500 text-white p-4 rounded text-center fixed top-4 right-4 shadow-lg z-50 duration-2500 opacity-200">
             <p>{{msg}}</p>
         </div>
         {% endfor %}
         {% endif %}
         {% endwith %}
-        
+        <!-- Interfaz completa -->
         <div class="w-full flex flex-col items-center overflow-y-scroll">
+            <!-- Recuadro del currículum -->
             <form id="plantilla_1" class="flex w-[90%] sm:w-[80%] bg-[white] mt-[50px] mb-[50px] xl:w-[60%]" method="POST" >
+                <!-- Parte lateral izquierda -->
                 <div class="w-[60%] bg-[#4d7180]">
                      <div class="h-[50px] sm:h-[120px] lg:h-[8rem] bg-[#124459]">
 
@@ -26,18 +30,22 @@
                      <div class="w-full flex flex-col items-center gap-[20px] text-[white]">
                         <img src="{{ url_for('static', filename=imagen) }}" alt="imagen de perfil de {{usuario[0]}}" class="mt-[-40px] bg-[white] border-[1px] w-[75%] sm:mt-[-80px] lg:mt-[-110px] rounded-full static">
                         <div class="w-[85%] flex flex-col gap-[10px]">
+                            <!-- Parte de direccion -->
                             <div class="w-full flex items-start justify-start">
                                 <i class="fa-solid fa-location-dot text-[8px] sm:text-[10px] lg:text-[15px] sm:mt-[4px] items-center justify-center"></i>
                                 {{ formulario.direccion(value=parametros.direccion, class="text-[5px] ml-[3px] sm:text-[11px] lg:text-[15px] font-semibold w-full sm:ml-[5px]")}}
                             </div>
+                            <!-- Parte de telefono -->
                             <div class="w-full flex items-start justify-start">
                                 <i class="fa-solid fa-phone text-[8px] sm:text-[10px] lg:text-[15px] sm:mt-[4px] items-center justify-center"></i>
                                 {{ formulario.telefono(value=parametros.telefono, class="text-[6px] ml-[3px] sm:text-[11px] lg:text-[17px] font-semibold w-full sm:ml-[5px]")}}
                             </div>
+                            <!-- Parte de correo electrónico -->
                             <div class="w-full flex items-start justify-start">
                                 <i class="fa-solid fa-paper-plane text-[8px] sm:text-[10px] lg:text-[15px] sm:mt-[4px] items-center justify-center"></i>
                                 <p class="text-[6px] ml-[3px] sm:text-[11px] lg:text-[17px] font-semibold w-full sm:ml-[5px]">{{ usuario_actual[0][3] }}</p>
                             </div>
+                            <!-- Parte de resumen profesional -->
                             <div class="w-full flex flex-col items-center">
                                 <hr class="text-[white] font-[extrabold] text-center w-full">
                                 <div class="w-full">
@@ -45,6 +53,9 @@
                                     {{ formulario.resumen_profesional( value="", placeholder="Escribe sobre ti...", class="w-full text-[white] text-[7px] sm:text-[13px] lg:text-[18px] resize-none h-[8rem] sm:h-[12rem] lg:h-[15rem] outline-none")}}
                                 </div>
                             </div>
+
+                            <!-- Parte de aptitudes -->
+
                             <div class="w-full flex flex-col items-center gap-[10px]">
                                 <hr class="text-[white] font-[extrabold] text-center w-full">
                                 <div class="w-full flex flex-col gap-[5px]">
@@ -59,13 +70,15 @@
                         </div>
                      </div>
                 </div>
-
+                <!-- Parte de la derecha -->
                 <div class="w-full flex flex-col items-center gap-[20px] pb-[20px]">
+                    <!-- Nombre y primer apellido del usuario -->
                     <h1 class="text-center font-bold text-[25px] lg:text-[60px] mt-[20px]">{{ usuario_actual[0][1] }} {{usuario_actual[0][2].split()[0]}}</h1>
                     <div class="w-[90%] flex flex-col gap-[5px]">
                         <hr class="bg-[#124459] border-none h-[2px] text-center w-full">
+                        <!-- Experiencias -->
                         <h1 class="text-[15px] sm:text-[20px] text-[#124459] font-bold">Experiencia</h1>
-
+                        <!-- Campos de la experiencia 1 -->
                         {{ formulario.experiencia_1_fechas(class="text-[11px] sm:text-[15px] lg:text-[30px]", value=parametros.experiencia_1_fechas) }}
                         {{ formulario.experiencia_1_puesto(class="text-[7px] sm:text-[15px] lg:text-[20px] font-bold w-full outline-none", value=parametros.experiencia_1_puesto) }}
                         <div class="flex w-full gap-[3px]">
@@ -86,6 +99,8 @@
                             </div>
                             {{ formulario.experiencia_1_labor_3(class="text-[black] max-[321px]:text-[6px] text-[10px] h-[90px] lg:text-[20px] lg:h-[12rem] sm:text-[12px] sm:h-[70px] max-[321px]:h-[40px] outline-none resize-none w-full") }}
                         </div>
+
+                        <!-- Campos de la experiencia 2 -->
                         {{ formulario.experiencia_2_fechas(class="text-[11px] sm:text-[15px] lg:text-[30px]", value=parametros.experiencia_2_fechas) }}
                         {{ formulario.experiencia_2_puesto(class="text-[7px] sm:text-[15px] lg:text-[20px] font-bold w-full outline-none", value=parametros.experiencia_2_puesto) }}
                         <div class="flex w-full gap-[3px]">
@@ -108,6 +123,7 @@
                         </div>
 
                         <hr class="bg-[#124459] border-none h-[2px] text-center w-full">
+                        <!-- Campos de la formación -->
                         <h1 class="text-[15px] sm:text-[20px] lg:text-[30px] text-[#124459] font-bold">Formación</h1>
                         {{ formulario.formacion_1_año(class="text-[12px] sm:text-[15px] lg:text-[30px] outline-none", value=parametros.formacion_1_año) }}
                         {{ formulario.formacion_1_titulo(class="text-[8px] sm:text-[15px] lg:text-[20px] font-bold w-full outline-none", value=parametros.formacion_1_titulo) }}
@@ -116,7 +132,9 @@
                     </div>
                 </div>
             </form>
+            <!-- Boton de finalizar y guardar -->
             {{ formulario.finalizar(form="plantilla_1", class="bg-[#FFAB45] h-[50px] w-[13rem]  text-[20px] text-[white] rounded-[10px] cursor-[pointer] mb-[40px]") }}
+            <!-- Botón de ejemplo de descargar -->
             <a class="bg-[lightseagreen] h-[50px] w-[13rem] flex text-center items-center justify-center text-[20px] text-[white] rounded-[10px] cursor-[pointer] mb-[40px]" href="/descargar">Descargar</a>
         </div>
     </div>

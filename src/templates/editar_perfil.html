@@ -10,6 +10,7 @@
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         {% for msg in messages %}
+        <!-- Mensajes que envia el backend por pantalla -->
         <div id="usuario_existe" class="bg-gray-500 text-white p-4 rounded text-center fixed top-4 right-4 shadow-lg z-50 duration-2500 opacity-200">
             <p>{{msg}}</p>
         </div>
