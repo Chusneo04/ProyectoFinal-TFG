@@ -10,6 +10,7 @@
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         {% for msg in messages %}
+        <!-- Mensajes que envia el backend por pantalla -->
         <div id="usuario_existe" class="bg-gray-500 text-white p-4 rounded text-center fixed top-4 right-4 shadow-lg z-50 duration-2500 opacity-200">
             <p>{{msg}}</p>
         </div>
@@ -17,17 +18,15 @@
         {% endif %}
         {% endwith %}
         <h1 class="text-[20px] sm:text-[45px] lg:text-[45px] font-bold mt-[10px]">Interfaz de administración</h1>
-        <!--
-        <p class="text-[16px] sm:text-[20px]">¿Todavia no tienes currículums? ¡Empieza a crear!</p>
-        -->
         
-        
+
+        <!-- Boton que lleva a la interfaz de la tabla de usuarios -->
         <div class="w-full lg:w-[40%] flex items-center justify-evenly mt-[10px]">
             <a href="/admin/usuarios" class="bg-[#FFAB45] text-[16px] sm:text-[20px] text-[white] h-[50px] w-[8rem] sm:w-[12rem] rounded-[8px] flex items-center justify-center">Listado de usuarios</a>
         </div>
         <div class="w-full flex flex-col items-center justify-center lg:mt-[30px]">
             {% for usuario in usuarios %}
-            {% if usuario.curriculums != [] %}
+            {% if usuario.curriculums != [] %} <!-- En caso de que un usuario tenga curriculums mostrara lo siguiente -->
 
             <h1 class="text-[40px] font-bold mb-[50px]">Currículums de {{ usuario['nombre'] }} {{usuario['apellidos']}}</h1>
             {% endif %}
@@ -35,7 +34,7 @@
                 
 
                 {% for curriculum in usuario.curriculums %}
-
+                <!-- Por cada uno de los curriculums muestra la imagen de su plantilla, un boton para editarlo y un boton para eliminarlo -->
                 <div>
                     <img src="../static/img/plantilla{{curriculum['plantilla']}}.png" alt="Plantilla {{ curriculum['plantilla'] }}" class=" w-[20rem] h-[27rem]">
                     <div class="flex w-full items-center justify-evenly mt-[10px]">

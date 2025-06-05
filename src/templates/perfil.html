@@ -10,6 +10,7 @@
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         {% for msg in messages %}
+        <!-- Mensajes que envia el backend por pantalla -->
         <div id="usuario_existe" class="bg-gray-500 text-white p-4 rounded text-center fixed top-4 right-4 shadow-lg z-50 duration-2500 opacity-200">
             <p>{{msg}}</p>
         </div>
@@ -17,9 +18,7 @@
         {% endif %}
         {% endwith %}
         <h1 class="text-[20px] sm:text-[45px] lg:text-[45px] font-bold mt-[10px]">Bienvenido a tu perfil, {{usuario.nombre}}</h1>
-        <!--
-        <p class="text-[16px] sm:text-[20px]">¿Todavia no tienes currículums? ¡Empieza a crear!</p>
-        -->
+        
         
         
         <div class="w-full lg:w-[40%] flex items-center justify-evenly mt-[10px] gap-[20px]">
