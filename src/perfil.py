@@ -26,6 +26,7 @@ def perfil():
             curriculums_usuario.append({'id_curriculum': curriculum[0], 'plantilla': curriculum[1]})
             print(curriculums_usuario)  # Muestra los currículums en consola (útil para depuración)
 
+        cursor.close()
         # Renderiza la plantilla de perfil, enviando los datos del usuario y sus currículums
         return render_template('perfil.html', usuario=current_user, curriculums_usuario=curriculums_usuario)
     
@@ -81,7 +82,7 @@ def editar_perfil():
                 cursor.execute('UPDATE usuarios SET nombre = %s, apellidos = %s, correo = %s, imagen = %s WHERE id = %s',
                                (nombre, apellidos, correo, ruta_imagen_bd, id))
                 mysql.connection.commit()
-
+                cursor.close()
                 flash('Datos actualizados correctamente') # Muestra un mensaje de que todo se ha actualizado bien
                 return redirect(url_for('perfil.perfil'))
 
@@ -90,7 +91,7 @@ def editar_perfil():
             cursor.execute('UPDATE usuarios SET nombre = %s, apellidos = %s, correo = %s WHERE id = %s',
                            (nombre, apellidos, correo, id))
             mysql.connection.commit()
-
+            cursor.close()
             flash('Datos actualizados correctamente')
             return redirect(url_for('perfil.perfil'))
 

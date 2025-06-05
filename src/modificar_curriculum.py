@@ -170,14 +170,14 @@ def editar_curriculum(id_curriculum):
                     id_experiencia = cursor.fetchall()[-1][0]
                     cursor.execute('UPDATE experiencia SET fechas = %s, puesto = %s, labor_1 = %s, labor_2 = %s, labor_3 = %s WHERE id_experiencia = %s', (experiencia_2_fechas, experiencia_2_puesto, experiencia_2_labor_1, experiencia_2_labor_2, experiencia_2_labor_3, id_experiencia))
                     mysql.connection.commit()
-
+                cursor.close()
                 # Mensaje de éxito por pantalla y redirección
                 flash('Datos guardados correctamente')
                 return redirect(url_for('perfil.perfil'))
-
+            cursor.close()
             # Si GET o formulario no válido, renderiza plantilla con datos cargados
             return render_template('plantilla{}.html'.format(curriculum[1]), usuario = usuario, usuario_actual = usuario_actual, formulario = formulario, imagen = imagen, parametros = parametros_por_defecto_inputs)
-
+        cursor.close()
         # Si no es propietario ni admin, aún así renderiza plantilla
         return render_template('plantilla{}.html'.format(curriculum[1]), usuario = usuario, usuario_actual = usuario_actual, formulario = formulario, imagen = imagen, parametros = parametros_por_defecto_inputs)
 

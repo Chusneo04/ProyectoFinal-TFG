@@ -21,7 +21,7 @@ def editar_clave():
             # Consultamos la contraseña almacenada en la base de datos
             cursor.execute('SELECT clave FROM usuarios WHERE id = %s', (id,))
             clave_almacenada = cursor.fetchone()
-
+            cursor.close()
             # Obtenemos la contraseña introducida por el usuario
             clave_introducida = request.form.get('contraseña')
 
@@ -33,9 +33,9 @@ def editar_clave():
             flash('La contraseña introducida no es correcta')
         # Renderizamos la plantilla del formulario
         return render_template('editar_clave.html', formulario = formulario, usuario = current_user)
-    except Exception as e:
+    except:
         # Mostramos un mensaje de error si algo falla
-        flash('Ha ocurrrido un error: {}'.format(e))
+        flash('Ha ocurrrido un error')
         return render_template('editar_clave.html', formulario = formulario, usuario = current_user)
 
 # Definimos la ruta para introducir una nueva contraseña
@@ -57,7 +57,7 @@ def clave_nueva():
             # Actualizamos la contraseña en la base de datos
             cursor.execute('UPDATE usuarios SET clave = %s WHERE id = %s', (clave, id))
             mysql.connection.commit()
-
+            cursor.close()
             # Mostramos un mensaje de confirmación por pantalla y redirigimos al perfil
             flash('Clave actualizada correctamente')
             return redirect(url_for('perfil.perfil'))

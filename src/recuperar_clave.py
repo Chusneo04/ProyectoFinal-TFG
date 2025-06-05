@@ -30,6 +30,7 @@ def recuperar_clave():
             # Si no existe ningún usuario con ese correo, mostramos mensaje
             if not usuario_existe:
                 flash('El usuario no existe')
+                cursor.close()
                 return render_template('recuperar_contraseña.html', formulario=formulario_email)
             
             else:
@@ -62,11 +63,13 @@ def recuperar_clave():
                         server.login(usuario_smtp, clave_smtp)  # Iniciamos sesión en el servidor SMTP
                         server.sendmail(usuario_smtp, msg["To"], msg.as_string())  # Enviamos el email
                         flash("Correo enviado correctamente")
+                        cursor.close()
                         return render_template('recuperar_contraseña.html', formulario=formulario_email)
                      
                 except:
                     # Si falla algo mostramos un mensaje
                     flash("Error al enviar correo")
+                    cursor.close()
                     return render_template('recuperar_contraseña.html', formulario=formulario_email)
 
     except:
