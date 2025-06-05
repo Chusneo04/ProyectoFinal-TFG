@@ -24,6 +24,7 @@ def admin():
         for usuario_obtenido in usuarios_obtenidos: # Para cada usuario que hemos extraido de la base de datos, obtenemos todos sus currículums
             cursor.execute('SELECT id_curriculum, plantilla FROM curriculums WHERE id_usuario = %s', (usuario_obtenido[0],))
             curriculums = cursor.fetchall()
+
             lista_curriculums = [] # Creamos la lista de los currículums
             for curriculum in curriculums: # Una vez obtenidos todos los currículums del usuario los metemos en la lista
                 lista_curriculums.append({
@@ -40,7 +41,7 @@ def admin():
                 })
 
             
-
+        cursor.close()
         return render_template('admin.html', usuario=current_user, usuarios=usuarios) # Muestra la plantilla de administración
     except: # Si algo va mal salta un error y redirige a la interfaz de perfil con un mensaje de qque ha ocurrido un error
         flash('Ha ocurrido un error')
@@ -54,6 +55,7 @@ def admin_usuarios():
             cursor = mysql.connection.cursor()
             cursor.execute('SELECT * FROM usuarios') # Obtenemos todos los usuarios de la base de datos
             usuarios = cursor.fetchall()
+            cursor.close()
             return render_template('admin_usuarios.html', usuarios=usuarios) # Redirigimos a la interfaz de admin_usuarios y enviamos al frontend los datos de los usuarios para que los pueda mostrar
 
         return redirect(url_for('perfil.perfil')) # En caso de que el usuario no sea el administrador redirije a perfil
@@ -71,6 +73,7 @@ def eliminar_usuario(id):
             if str(id) != str(current_user.id): # Se comprueba que no es el id el mismo que el del usuario actual que debe ser el del admin
                 cursor.execute('DELETE FROM usuarios WHERE id = %s', (id,)) # Se borra el usuario introducido de la base de datos
                 mysql.connection.commit()
+                cursor.close()
                 return redirect(url_for('admin.admin')) # Y redirige a admin
             # Si se intenta borrar el usuario administrador se impide y lanza un mensaje de que no se puede borrar, redirigiendo a admin
             flash('No se puede borrar el usuario administrador')

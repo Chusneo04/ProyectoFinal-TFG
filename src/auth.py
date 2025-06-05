@@ -89,7 +89,7 @@ def register():
                 # Recuperamos al usuario recién registrado para hacer login automático
                 cursor.execute('SELECT id, nombre, apellidos, correo, clave, fecha_de_creacion, token FROM usuarios WHERE correo = %s', (correo,))
                 nuevo_usuario = cursor.fetchone()
-
+                cursor.close()
                 if nuevo_usuario:
                     usuario_obj = User(nuevo_usuario[0], nuevo_usuario[1], nuevo_usuario[2], nuevo_usuario[3], nuevo_usuario[4], nuevo_usuario[5], nuevo_usuario[6])
                     login_user(usuario_obj)  # Iniciamos sesión automáticamente
@@ -119,8 +119,8 @@ def register():
                             server.sendmail(usuario_smtp, msg["To"], msg.as_string())  # Enviamos el correo
                             print("Correo enviado correctamente")
                             return redirect(url_for('perfil.perfil'))  # Redirigimos al perfil
-                    except Exception as e:
-                        print(f"Error al enviar correo: {e}")
+                    except:
+                        print("Error al enviar correo")
                         return render_template('register.html', usuario=usuario)
 
                 return render_template('register.html', usuario=usuario)  # Si falla, volvemos a mostrar registro
@@ -153,7 +153,7 @@ def login():
             # Buscamos al usuario en la base de datos por correo
             cursor.execute('SELECT * FROM usuarios WHERE correo = %s', (correo,))
             usuario_existente = cursor.fetchone()
-
+            cursor.close()
             if not usuario_existente:
                 flash('Las credenciales introducidas son incorrectas')
                 return render_template('login.html', usuario=usuario)

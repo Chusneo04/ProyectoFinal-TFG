@@ -149,9 +149,9 @@ def curriculum(plantilla):
                     cursor.execute('INSERT INTO experiencia(id_curriculum, fechas, puesto, labor_1, labor_2, labor_3) VALUES(%s, %s, %s, %s, %s, %s)', 
                                    (id_curriculum, experiencia_2_fechas, experiencia_2_puesto, experiencia_2_labor_1, experiencia_2_labor_2, experiencia_2_labor_3))
                     mysql.connection.commit()
-
+                cursor.close()    
                 return redirect(url_for('perfil.perfil'))
-
+            
             # Renderiza la plantilla elegida devolviendo todos los datos necesarios para que el frontend los gestione
             return render_template('plantilla{}.html'.format(plantilla), 
                                    usuario_actual = usuario_actual, curriculum_id = id, usuario = current_user, 
