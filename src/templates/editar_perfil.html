@@ -9,12 +9,14 @@
         </header>
         {% with messages = get_flashed_messages() %}
         {% if messages %}
-        {% for msg in messages %}
         <!-- Mensajes que envia el backend por pantalla -->
-        <div id="usuario_existe" class="bg-gray-500 text-white p-4 rounded text-center fixed top-4 right-4 shadow-lg z-50 duration-2500 opacity-200">
-            <p>{{msg}}</p>
+        <div id="usuario_existe" class="flex flex-col w-full items-end justify-end mr-[30px] gap-[20px] mt-[120px] lg:mt-[150px] absolute">
+            {% for msg in messages %}
+            <div class="bg-gray-500 text-white p-4 rounded text-center top-4 right-4 shadow-lg z-50 opacity-200">
+                <p>{{msg}}</p>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
         {% endif %}
         {% endwith %}
         <h1 class="text-[20px] sm:text-[45px] lg:text-[45px] font-bold mt-[10px]">Editar perfil</h1>
