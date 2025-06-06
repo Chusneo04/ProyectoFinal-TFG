@@ -24,7 +24,7 @@ def editar_clave():
             cursor.close()
             # Obtenemos la contraseña introducida por el usuario
             clave_introducida = request.form.get('contraseña')
-
+            
             # Verificamos si la contraseña introducida coincide con la almacenada
             if check_password_hash(clave_almacenada[0], clave_introducida):
                 # Si es correcta, redirigimos a la vista para introducir la nueva contraseña
@@ -51,6 +51,12 @@ def clave_nueva():
         if formulario.validate_on_submit and request.method == 'POST':
             id = current_user.id  # Obtenemos el ID del usuario actual
             clave = request.form.get('contraseña')  # Obtenemos la nueva contraseña introducida por el usuario
+            
+            if ' ' in clave:
+                flash('No deben haber espacios en la clave')
+                return render_template('clave_nueva.html', formulario=formulario) # Muestra la interfaz de recuperacion de clave con los mensajes correspondientes por pantalla
+
+            
             clave = generate_password_hash(clave)  # Encriptamos la nueva contraseña para guardarla con mayor seguridad
             cursor = mysql.connection.cursor()
 
