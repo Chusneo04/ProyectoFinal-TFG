@@ -104,6 +104,12 @@ def nueva_clave(token):
             if formulario.validate_on_submit and request.method == 'POST':
                 clave = request.form.get('contraseña')
                 clave_confirmada = request.form.get('confirmar_clave')
+                
+                #Aqui comprobamos si la contraseña tiene espacios en su interior, en ese caso se muestra un mensaje por pantalla
+                
+                if ' ' in clave:
+                    flash('No deben haber espacios en la clave')
+                    return render_template('nueva_clave.html', formulario=formulario) # Muestra la interfaz de recuperacion de clave con los mensajes correspondientes por pantalla
 
                 # Comprobamos que ambas contraseñas coincidan
                 if clave != clave_confirmada:
@@ -120,6 +126,7 @@ def nueva_clave(token):
                 mysql.connection.commit()
 
                 # Redirigimos al login para que inicie sesión con la nueva contraseña
+                flash('Contraseña recuperada correctamente. Ya puedes iniciar sesión')
                 return redirect(url_for('auth.login'))
 
     except:
