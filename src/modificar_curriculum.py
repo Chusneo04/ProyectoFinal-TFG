@@ -148,7 +148,7 @@ def editar_curriculum(id_curriculum):
                 plantilla = cursor.fetchone()[0]
 
                 # Condicional según el tipo de plantilla actualiza formación 2
-                if int(plantilla) != 1 and int(plantilla) != 2 and int(plantilla) != 3:
+                if str(plantilla) != '1' and str(plantilla) != '2' and str(plantilla) != '3':
                     formacion_2_año = request.form.get('formacion_2_año')
                     formacion_2_titulo = request.form.get('formacion_2_titulo')
                     formacion_2_temas = request.form.get('formacion_2_temas')
@@ -159,7 +159,8 @@ def editar_curriculum(id_curriculum):
                     mysql.connection.commit()
 
                 # Si es otro tipo de plantilla, actualiza experiencia 2
-                elif int(plantilla) != 7 and int(plantilla) != 8 and int(plantilla) != 9:
+                if str(plantilla) != '7' and str(plantilla) != '8' and str(plantilla) != '9':
+                    print('SI QUE ENTRA')
                     experiencia_2_fechas = request.form.get('experiencia_2_fechas')
                     experiencia_2_puesto = request.form.get('experiencia_2_puesto')
                     experiencia_2_labor_1 = request.form.get('experiencia_2_labor_1')
@@ -174,6 +175,7 @@ def editar_curriculum(id_curriculum):
                 # Mensaje de éxito por pantalla y redirección
                 flash('Datos guardados correctamente')
                 return redirect(url_for('perfil.perfil'))
+            
             cursor.close()
             # Si GET o formulario no válido, renderiza plantilla con datos cargados
             return render_template('plantilla{}.html'.format(curriculum[1]), usuario = usuario, usuario_actual = usuario_actual, formulario = formulario, imagen = imagen, parametros = parametros_por_defecto_inputs)
