@@ -36,14 +36,6 @@ def perfil():
         return render_template('perfil.html', usuario=current_user, curriculums_usuario=curriculums_usuario)
 
 
-# Extensiones permitidas para archivos de imagen
-extensiones_permitidas = {'png', 'jpg', 'jpeg', 'gif'}
-
-# Función que valida si el archivo tiene una extensión permitida
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in extensiones_permitidas
-
-
 # Ruta para editar el perfil del usuario
 @perfil_bp.route('/editar_perfil', methods=['GET', 'POST'])
 @login_required  # Solo usuarios autenticados pueden acceder
@@ -89,7 +81,15 @@ def editar_perfil():
             # Si se sube un archivo de imagen válido
             if file and hasattr(file, 'filename'):
                 filename = secure_filename(file.filename)  # Se asegura que el nombre del archivo sea seguro
+                
                 filepath = os.path.normpath(os.path.join(Config.UPLOAD_FOLDER, filename))  # Ruta segura
+                
+                extension = '.' in filename and filename.rsplit('.', 1)[1].lower() #Obtenemos la extensión del archivo introducido
+                extensiones_permitidas = ['png', 'jpg', 'jpeg', 'gif'] #Estas son las extensiones que permitiremos introducir 
+                if extension not in extensiones_permitidas: #Comprobamos si la extensión del fichero es una de las permitidas, en caso contrario mostrara un mensaje por pantalla de que no puede introducir ese archivo y con los que tiene que probar.
+                    flash('La extensión de la imagen introducida no está permitida. Pruebe con .jpg, .jpeg, .png o .gif')
+                    return render_template('editar_perfil.html', usuario=current_user, formulario=formulario)
+                print(filename)
                 print(filepath)
                 print("Ruta donde se intentará guardar el archivo:", os.path.abspath(filepath))
                 file.save(filepath)  # Guarda la imagen en el servidor
