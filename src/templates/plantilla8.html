@@ -20,7 +20,7 @@
         
         <div class="w-full flex flex-col items-center overflow-y-scroll">
             <!-- Contenido del curriculum -->
-            <form id="plantilla_8" class="flex flex-col w-[90%] sm:w-[80%] bg-[white] mt-[50px] mb-[50px] xl:w-[60%]" method="POST" >
+            <form id="plantilla_7" class="flex flex-col w-[90%] sm:w-[80%] bg-[white] mt-[50px] mb-[50px] xl:w-[60%] pb-[10px]" method="POST" >
                 <div class="w-full flex flex-col items-center justify-center">
                     <div class="h-[30px] md:h-[70px] w-[80%] bg-[#a52680]">
 
@@ -29,20 +29,20 @@
                 
                 <div class="flex flex-row-reverse">
                     <!-- Parte de la derecha -->
-                    <div class="w-[60%] bg-[white]">
+                    <div class="w-[40%] bg-[white]">
                      
-                     <div class="w-full flex flex-col items-center gap-[20px] text-[black]">
-                        <img src="{{ url_for('static', filename=imagen) }}" alt="imagen de perfil de {{usuario_actual[0][1]}}" class=" bg-[white] border-none w-[75%]  static">
+                     <div class="w-full flex flex-col items-center gap-[20px] text-[black] mt-[20px]">
+                        <img src="{{ url_for('static', filename=imagen) }}" alt="imagen de perfil de {{usuario_actual[0][1]}}" class=" bg-[white] w-[80px] h-[100px] lg:w-[12rem] lg:h-[12rem] rounded-full static">
                         <div class="w-[85%] flex flex-col gap-[10px]">
                             <!-- Parte direccion -->
                             <div class="w-full flex items-start justify-start">
                                 <i class="fa-solid fa-location-dot text-[8px] sm:text-[10px] lg:text-[15px] sm:mt-[4px] items-center justify-center"></i>
-                                {{ formulario.direccion(value=parametros.direccion, class="text-[5px] ml-[3px] sm:text-[11px] lg:text-[15px] font-semibold w-full sm:ml-[5px]")}}
+                                {{ formulario.direccion(value=parametros.direccion, class="text-[5px] ml-[3px] sm:text-[11px] lg:text-[13px] font-semibold w-full sm:ml-[5px] outline-none")}}
                             </div>
                             <!-- Parte telefono -->
                             <div class="w-full flex items-start justify-start">
                                 <i class="fa-solid fa-phone text-[8px] sm:text-[10px] lg:text-[15px] sm:mt-[4px] items-center justify-center"></i>
-                                {{ formulario.telefono(value=parametros.telefono, class="text-[6px] ml-[3px] sm:text-[11px] lg:text-[17px] font-semibold w-full sm:ml-[5px]")}}
+                                {{ formulario.telefono(value=parametros.telefono, class="text-[6px] ml-[3px] sm:text-[11px] lg:text-[17px] font-semibold w-full sm:ml-[5px] outline-none")}}
                             </div>
                             <!-- Parte correo -->
                             <div class="w-full flex items-start justify-start">
@@ -54,7 +54,7 @@
                                 <hr class="text-[white] font-[extrabold] text-center w-full">
                                 <div class="w-full">
                                     {{ formulario.resumen_profesional.label(class="text-[7px] sm:text-[14px] lg:text-[20px] font-bold") }}
-                                    {{ formulario.resumen_profesional( value="", placeholder="Escribe sobre ti...", class="w-full text-[black] text-[7px] sm:text-[13px] lg:text-[18px] resize-none h-[8rem] sm:h-[12rem] lg:h-[15rem] outline-none")}}
+                                    {{ formulario.resumen_profesional( value="", placeholder="Escribe sobre ti...", class="w-full text-[black] text-[7px] sm:text-[13px] lg:text-[18px] resize-none h-[6rem] sm:h-[12rem] lg:h-[15rem] outline-none")}}
                                 </div>
                             </div>
                             <!-- Parte Aptitudes -->
@@ -62,11 +62,11 @@
                                 <hr class="text-[white] font-[extrabold] text-center w-full">
                                 <div class="w-full flex flex-col gap-[5px]">
                                     <h1 class="text-[10px] sm:text-[14px] lg:text-[20px] font-bold">APTITUDES</h1>
-                                    {{ formulario.Aptitud_1( placeholder="Aptitud 1", class="text-[9px] sm:text-[13px] lg:text-[20px] max-[321px]:h-[15px] h-[30px] sm:h-[40px] lg:h-[60px] outline-none resize-none" ) }}
-                                    {{ formulario.Aptitud_2( placeholder="Aptitud 2", class="text-[9px] sm:text-[13px] lg:text-[20px] max-[321px]:h-[15px] h-[30px] sm:h-[40px] lg:h-[60px] outline-none resize-none" ) }}
-                                    {{ formulario.Aptitud_3( placeholder="Aptitud 3", class="text-[9px] sm:text-[13px] lg:text-[20px] max-[321px]:h-[15px] h-[30px] sm:h-[40px] lg:h-[60px] outline-none resize-none" ) }}
-                                    {{ formulario.Aptitud_4( placeholder="Aptitud 4", class="text-[9px] sm:text-[13px] lg:text-[20px] max-[321px]:h-[15px] h-[30px] sm:h-[40px] lg:h-[60px] outline-none resize-none" ) }}
-                                    {{ formulario.Aptitud_5( placeholder="Aptitud 5", class="text-[9px] sm:text-[13px] lg:text-[20px] max-[321px]:h-[15px] h-[30px] sm:h-[40px] lg:h-[60px] outline-none resize-none" ) }}
+                                    {{ formulario.Aptitud_1( placeholder="Aptitud 1", class="text-[9px] sm:text-[13px] lg:text-[20px] max-[321px]:h-[30px] h-[30px] sm:h-[40px] lg:h-[60px] outline-none resize-none" ) }}
+                                    {{ formulario.Aptitud_2( placeholder="Aptitud 2", class="text-[9px] sm:text-[13px] lg:text-[20px] max-[321px]:h-[30px] h-[30px] sm:h-[40px] lg:h-[60px] outline-none resize-none" ) }}
+                                    {{ formulario.Aptitud_3( placeholder="Aptitud 3", class="text-[9px] sm:text-[13px] lg:text-[20px] max-[321px]:h-[30px] h-[30px] sm:h-[40px] lg:h-[60px] outline-none resize-none" ) }}
+                                    {{ formulario.Aptitud_4( placeholder="Aptitud 4", class="text-[9px] sm:text-[13px] lg:text-[20px] max-[321px]:h-[30px] h-[30px] sm:h-[40px] lg:h-[60px] outline-none resize-none" ) }}
+                                    {{ formulario.Aptitud_5( placeholder="Aptitud 5", class="text-[9px] sm:text-[13px] lg:text-[20px] max-[321px]:h-[30px] h-[30px] sm:h-[40px] lg:h-[60px] outline-none resize-none" ) }}
                                 </div>
                             </div>
                             
@@ -75,7 +75,7 @@
                      </div>
                 </div>
                 <!-- Parte izquierda -->
-                <div>
+                <div class="w-full">   
                     <div class="w-full flex flex-col items-center gap-[20px] pb-[20px]">
                         <!-- Nombre y apellidos del usuario -->
                         <h1 class="text-center font-bold text-[25px] md:text-[40px] lg:text-[60px] mt-[20px]">{{ usuario_actual[0][1] }} {{ usuario_actual[0][2].split()[0] }}</h1>
@@ -84,51 +84,54 @@
                             <hr class="bg-[#a52680] border-none h-[2px] text-center w-full">
                             <h1 class="text-[15px] sm:text-[20px] text-[#a52680] font-bold">Experiencia</h1>
                             <!-- Experiencia 1 -->
-                            {{ formulario.experiencia_1_fechas(class="text-[11px] sm:text-[15px] lg:text-[30px]", value=parametros.experiencia_1_fechas) }}
-                            {{ formulario.experiencia_1_puesto(class="text-[7px] sm:text-[15px] lg:text-[20px] font-bold w-full outline-none", value=parametros.experiencia_1_puesto) }}
+                            {{ formulario.experiencia_1_fechas(class="text-[10px] max-[321px]:text-[7px] sm:text-[15px] lg:text-[30px] outline-none", value=parametros.experiencia_1_fechas )}}
+                            {{ formulario.experiencia_1_puesto(class="text-[10px] max-[321px]:text-[7px] sm:text-[15px] lg:text-[20px] font-bold w-full outline-none", value=parametros.experiencia_1_puesto) }}
                             <div class="flex w-full gap-[3px]">
                                 <div class="h-[1px] flex flex-col justify-start items-start">
                                     <p class="mt-[-18px] text-[30px] sm:mt-[-25px] sm:text-[40px] lg:mt-[-20px]">·</p>
                                 </div>
-                                {{ formulario.experiencia_1_labor_1(class="text-[black] max-[321px]:text-[6px] text-[10px] h-[90px] lg:text-[20px] lg:h-[12rem] sm:text-[12px] sm:h-[70px] max-[321px]:h-[40px] outline-none resize-none w-full") }}
+                                {{ formulario.experiencia_1_labor_1(class="text-[black] max-[321px]:text-[6px] text-[10px] h-[90px] lg:text-[20px] lg:h-[12rem] sm:text-[12px] sm:h-[70px] max-[321px]:h-[70px] outline-none resize-none w-full") }}
                             </div>
                             <div class="flex w-full gap-[3px]">
                                 <div class="h-[1px] flex flex-col justify-start items-start">
                                     <p class="mt-[-18px] text-[30px] sm:mt-[-25px] sm:text-[40px] lg:mt-[-20px]">·</p>
                                 </div>
-                                {{ formulario.experiencia_1_labor_2(class="text-[black] max-[321px]:text-[6px] text-[10px] h-[90px] lg:text-[20px] lg:h-[12rem] sm:text-[12px] sm:h-[70px] max-[321px]:h-[40px] outline-none resize-none w-full") }}
+                                {{ formulario.experiencia_1_labor_2(class="text-[black] max-[321px]:text-[6px] text-[10px] h-[90px] lg:text-[20px] lg:h-[12rem] sm:text-[12px] sm:h-[70px] max-[321px]:h-[70px] outline-none resize-none w-full") }}
                             </div>
                             <div class="flex w-full gap-[3px]">
                                 <div class="h-[1px] flex flex-col justify-start items-start">
                                     <p class="mt-[-18px] text-[30px] sm:mt-[-25px] sm:text-[40px] lg:mt-[-20px]">·</p>
                                 </div>
-                                {{ formulario.experiencia_1_labor_3(class="text-[black] max-[321px]:text-[6px] text-[10px] h-[90px] lg:text-[20px] lg:h-[12rem] sm:text-[12px] sm:h-[70px] max-[321px]:h-[40px] outline-none resize-none w-full") }}
+                                {{ formulario.experiencia_1_labor_3(class="text-[black] max-[321px]:text-[6px] text-[10px] h-[90px] lg:text-[20px] lg:h-[12rem] sm:text-[12px] sm:h-[70px] max-[321px]:h-[70px] outline-none resize-none w-full") }}
                             </div>
                             <!-- Parte Formaciones -->
                             <hr class="bg-[#a52680] border-none h-[2px] text-center w-full">
                             <h1 class="text-[15px] sm:text-[20px] lg:text-[30px] text-[#a52680] font-bold">Formación</h1>
+                            
                             <!-- Formacion 1 -->
-                            {{ formulario.formacion_1_año(class="text-[12px] sm:text-[15px] lg:text-[30px] outline-none", value=parametros.formacion_1_año) }}
-                            {{ formulario.formacion_1_titulo(class="text-[8px] sm:text-[15px] lg:text-[20px] font-bold w-full outline-none", value=parametros.formacion_1_titulo) }}
-                            {{ formulario.formacion_1_temas(class="text-[black] max-[321px]:text-[6px] text-[10px] h-[90px] lg:text-[20px] lg:h-[12rem] sm:text-[12px] sm:h-[70px] max-[321px]:h-[40px] outline-none resize-none w-full") }}
+
+                            {{ formulario.formacion_1_año(class="text-[12px] sm:text-[15px] lg:text-[30px] outline-none", value=parametros.formacion_1_año )}}
+                            {{ formulario.formacion_1_titulo(class="text-[8px] sm:text-[15px] lg:text-[20px] font-bold w-full outline-none max-[321px]:text-[6px]", value=parametros.formacion_1_titulo) }}
+                            {{ formulario.formacion_1_temas(class="text-[black] max-[321px]:text-[6px] text-[10px] h-[90px] lg:text-[20px] lg:h-[12rem] sm:text-[12px] sm:h-[70px] max-[321px]:h-[70px] outline-none resize-none w-full") }}
 
                             <!-- Formacion 2 -->
+
                             {{ formulario.formacion_2_año(class="text-[12px] sm:text-[15px] lg:text-[30px] outline-none", value=parametros.formacion_2_año) }}
-                            {{ formulario.formacion_2_titulo(class="text-[8px] sm:text-[15px] lg:text-[20px] font-bold w-full outline-none", value=parametros.formacion_2_titulo) }}
-                            {{ formulario.formacion_2_temas(class="text-[black] max-[321px]:text-[6px] text-[10px] h-[90px] lg:text-[20px] lg:h-[12rem] sm:text-[12px] sm:h-[70px] max-[321px]:h-[40px] outline-none resize-none w-full") }}
+                            {{ formulario.formacion_2_titulo(class="text-[8px] sm:text-[15px] lg:text-[20px] font-bold w-full outline-none max-[321px]:text-[6px]", value=parametros.formacion_2_titulo) }}
+                            {{ formulario.formacion_2_temas(class="text-[black] max-[321px]:text-[6px] text-[10px] h-[90px] lg:text-[20px] lg:h-[12rem] sm:text-[12px] sm:h-[70px] max-[321px]:h-[70px] outline-none resize-none w-full") }}
 
 
                         </div>
                     </div>
                 </div>
-                
-                
             </form>
-            <!-- Boton guardar -->
-            {{ formulario.finalizar(form="plantilla_8", class="bg-[#FFAB45] h-[50px] w-[13rem]  text-[20px] text-[white] rounded-[10px] cursor-[pointer] mb-[40px]") }}
-            <!-- Botón de ejemplo de descargar -->
-            <a class="bg-[lightseagreen] h-[50px] w-[13rem] flex text-center items-center justify-center text-[20px] text-[white] rounded-[10px] cursor-[pointer] mb-[40px] opacity-50" href="/descargar">Descargar</a>
-
+            
         </div>
+        <!-- Boton guardar -->
+        {{ formulario.finalizar(form="plantilla_7", class="bg-[#FFAB45] h-[50px] w-[13rem]  text-[20px] text-[white] rounded-[10px] cursor-[pointer] mb-[40px]") }}
+        <!-- Botón de ejemplo de descargar -->
+        <a class="bg-[lightseagreen] h-[50px] w-[13rem] flex text-center items-center justify-center text-[20px] text-[white] rounded-[10px] cursor-[pointer] mb-[40px] opacity-50" href="/descargar">Descargar</a>
+
     </div>
     {% endblock %}
+
