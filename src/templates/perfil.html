@@ -28,11 +28,11 @@
             <a href="/admin" class="bg-blue-500 text-[16px] sm:text-[20px] text-[white] h-[50px] w-[8rem] sm:w-[12rem] rounded-[8px] flex items-center justify-center">Administrar</a>
             {% endif %}
         </div>
-        <div class="w-full flex flex-col items-center justify-center lg:mt-[30px] mb-[30px]">
+        <div class="w-full flex flex-col items-center justify-center mt-[20px] lg:mt-[30px] mb-[30px]">
             <div class="w-full grid xl:grid-cols-3 place-items-center lg:gap-y-[50px]">
                 {% for curriculum in curriculums_usuario %}
 
-                <div>
+                <div class="mt-[10px]">
                     <img src="../static/img/plantilla{{curriculum['plantilla']}}.png" alt="Plantilla {{ curriculum['plantilla'] }}" class=" w-[20rem] h-[27rem]">
                     <div class="flex w-full items-center justify-evenly mt-[10px]">
                         <a href="/editar_curriculum/{{ curriculum['id_curriculum'] }}" class="bg-[#FFAB45] w-[50px] h-[50px] flex items-center justify-center rounded-full pointer"><i class="fa-solid fa-pen-to-square text-[white]"></i></a>
