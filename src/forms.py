@@ -176,10 +176,10 @@ class Curriculum(FlaskForm):
 
     # Experiencia laboral 1
     experiencia_1_fechas = StringField('', validators = [
-        Length(max=50)
+        Length(max=40)
     ])
     experiencia_1_puesto = StringField('', validators = [
-        Length(max=100)
+        Length(max=40)
     ])
     experiencia_1_labor_1 = TextAreaField('',validators = [
         Length(max=255)
@@ -193,10 +193,10 @@ class Curriculum(FlaskForm):
 
     # Experiencia laboral 2
     experiencia_2_fechas = StringField('', validators = [
-        Length(max=50)
+        Length(max=40)
     ])
     experiencia_2_puesto = StringField('', validators = [
-        Length(max=100)
+        Length(max=40)
     ])
     experiencia_2_labor_1 = TextAreaField('', validators = [
         Length(max=255)
@@ -213,7 +213,7 @@ class Curriculum(FlaskForm):
         Length(min=4,max=5)
     ])
     formacion_1_titulo = StringField('', validators=[
-        Length(max=100)
+        Length(max=40)
     ])
     formacion_1_temas = TextAreaField('', validators=[
         Length(max=255)
@@ -224,7 +224,7 @@ class Curriculum(FlaskForm):
         Length(min=4,max=4)
     ])
     formacion_2_titulo = StringField('', validators=[
-        Length(max=100)
+        Length(max=40)
     ])
     formacion_2_temas = TextAreaField('', validators=[
         Length(max=255)
