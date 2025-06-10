@@ -32,14 +32,14 @@ def admin():
                     'plantilla': curriculum[1]
                 }) # Introducimos cada uno en la lista
 
-                # Ahora añadimos cada dato del usuario y sus currículums son la lista de curriculums creada justo arriba ya con todos sus currículums dentro
-                usuarios.append({
-                    'id_usuario': usuario_obtenido[0],
-                    'nombre': usuario_obtenido[1],
-                    'apellidos': usuario_obtenido[2],
-                    'curriculums': lista_curriculums
-                })
-
+            # Ahora añadimos cada dato del usuario y sus currículums son la lista de curriculums creada justo arriba ya con todos sus currículums dentro
+            usuarios.append({
+                'id_usuario': usuario_obtenido[0],
+                'nombre': usuario_obtenido[1],
+                'apellidos': usuario_obtenido[2],
+                'curriculums': lista_curriculums
+            })
+        print(usuarios)
             
         cursor.close()
         return render_template('admin.html', usuario=current_user, usuarios=usuarios) # Muestra la plantilla de administración
