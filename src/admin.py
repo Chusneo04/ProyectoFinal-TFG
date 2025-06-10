@@ -39,7 +39,6 @@ def admin():
                 'apellidos': usuario_obtenido[2],
                 'curriculums': lista_curriculums
             })
-        print(usuarios)
             
         cursor.close()
         return render_template('admin.html', usuario=current_user, usuarios=usuarios) # Muestra la plantilla de administración
