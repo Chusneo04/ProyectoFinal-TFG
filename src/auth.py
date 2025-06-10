@@ -53,9 +53,10 @@ def register():
             apellidos = request.form.get('apellidos').strip() # El strip quita los posibles espacios que puedan haber al principio y final
             correo = request.form.get('correo')
             clave = request.form.get('clave')
+            confirmar_clave = request.form.get('confirmar_clave')
 
             # Validamos que nombre y apellidos solo tengan letras y si hay espacios que esten en el interior y no al principio y final y que la clave no tenga espacios
-            if not nombre.replace(' ', '').isalpha() or not apellidos.replace(' ', '').isalpha() or ' ' in clave:
+            if not nombre.replace(' ', '').isalpha() or not apellidos.replace(' ', '').isalpha() or ' ' in clave or clave != confirmar_clave:
                 
                 #Aqui abajo depende lo que falle muestra el error o errores que corresponda por pantalla
                 if not nombre.replace(' ', '').isalpha():
@@ -64,6 +65,8 @@ def register():
                     flash('Los apellidos deben ser solo letras')
                 if ' ' in clave:
                     flash('No deben haber espacios en la clave')
+                if clave != confirmar_clave:
+                    flash('Las claves no coinciden')
 
                 return render_template('register.html', usuario=usuario) # Muestra la interfaz de registro con los mensajes correspondientes por pantalla
             
