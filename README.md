@@ -9,6 +9,9 @@ Creación de currículums a partir de plantillas prediseñadas a elección del u
 Edición de perfil
 
 RUTA DE ADMINISTRADOR:
+
+¡¡¡PARA QUE EXISTA UN USUARIO ADMINISTRADOR SE DEBE CREAR CON EL CORREO "infocurriculum360@gmail.com"!!!
+
 El administrador puede Editar y eliminar los curriculums de cualquier usuario además de crear los suyos
 Eliminar usuarios
 
