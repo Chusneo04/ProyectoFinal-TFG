@@ -95,7 +95,8 @@ def editar_perfil():
                 file.save(filepath)  # Guarda la imagen en el servidor
                 
                 # Ruta relativa para guardar en la base de datos
-                ruta_imagen_bd = '../static/img/{}'.format(filename)
+                ruta_imagen_bd = '{}/{}'.format(Config.UPLOAD_FOLDER, filename)
+                
 
                 # Actualiza la información del usuario incluyendo la nueva imagen
                 cursor = mysql.connection.cursor()
