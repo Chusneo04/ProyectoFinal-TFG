@@ -105,7 +105,7 @@ def editar_perfil():
                 mysql.connection.commit()
                 cursor.close()
 
-                flash('La imagen pesa demasiado') # Muestra un mensaje de que todo se ha actualizado bien
+                flash('Datos actualizados correctamente') # Muestra un mensaje de que todo se ha actualizado bien
                 return redirect(url_for('perfil.perfil'))
 
             # Si no se subió imagen, solo actualiza nombre, apellidos y correo
@@ -120,5 +120,5 @@ def editar_perfil():
         return render_template('editar_perfil.html', usuario=current_user, formulario=formulario)
 
     except:
-        flash('La imagen pesa demasiado')
+        flash('Ha ocurrido un error')
         return render_template('editar_perfil.html', usuario=current_user, formulario=formulario)
