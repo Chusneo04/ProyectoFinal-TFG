@@ -5,3 +5,9 @@ if (usuario_existe) {
     usuario_existe.style.opacity = '0'
   }, 2500);
 }
+
+if ( window.location.search){
+    let newUrl=window.location.origin+window.location.pathname
+    window.history.replaceState({},document.title,newUrl)
+
+}

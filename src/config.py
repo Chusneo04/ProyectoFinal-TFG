@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()  # Cargar variables desde .env
 
 #AQUI SE OBTIENEN TODAS LAS VARIABLES DE ENTORNO DEL .env
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
     MYSQL_HOST = os.getenv('MYSQL_HOST') # Host de la BD

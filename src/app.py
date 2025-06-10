@@ -12,6 +12,7 @@ from modificar_curriculum import modificar_curriculum_bp
 from inicio import inicio_bp
 from admin import admin_bp
 
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)  # Le pasamos config 
