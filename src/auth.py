@@ -85,7 +85,7 @@ def register():
                 # Guardamos el usuario en la base de datos
                 cursor.execute(
                     'INSERT INTO usuarios(nombre, apellidos, correo, clave, fecha_de_creacion, token, imagen) VALUES (%s, %s, %s, %s, %s, %s, %s)', 
-                    (nombre, apellidos, correo, clave, fecha, token, '../static/img/user.png')
+                    (nombre, apellidos, correo, clave, fecha, token, '../static/img/user.jpg')
                 )
                 mysql.connection.commit()  # Guardamos los cambios
 
